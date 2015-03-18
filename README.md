@@ -2,14 +2,14 @@
 This library wraps the [Force.com REST API](https://www.salesforce.com/us/developer/docs/api_rest/). Force.com is a suite of point-and-click tools that make creating custom employee-facing apps lightning fast. The Electric Imp Salesforce library enables you to interact with your Force.com objects, allowing you to easily create products that can interact with a powerful CRM backend.
 
 ## Callbacks
-All methods that make requests to the Force.com API can be called asyncronously (by providing the optional callback) or syncronously (by not provinding the callback). If a callback is supplied, it must take two parameters: *err*, and *data*. If no errors were encountered, *err* will be null and *data* will contain the result of the request. If an error occured during the request, *err* will contain the error inforamtion, and *data* will be null.
+All methods that make requests to the Force.com API can be called asynchronously (by providing the optional callback) or synchronously (by not provinding the callback). If a callback is supplied, it must take two parameters: *err*, and *data*. If no errors were encountered, *err* will be null and *data* will contain the result of the request. If an error occured during the request, *err* will contain the error information, and *data* will be null.
 
-If no callback is supplied (i.e. a syncronous request was made), the method will return a table containing *err*, and *data* and follow the same conventions as above.
+If no callback is supplied (i.e. a synchronous request was made), the method will return a table containing *err* and *data*, and follow the same conventions as above.
 
 **NOTE**: If you receive an error with an *errorCode* of "INVALID_SESSION_ID" it means that your login is no longer valid (or you never logged in).
 
 ## constructor(consumerKey, consumerSecret, [loginService], [version])
-To create a new Salesforce object you will need the Consumer Key and Consumer Secret of a Connected App. Information about creating a Connected App can be found [here](https://help.salesforce.com/apex/HTViewHelpDoc?id=connected_app_create.htm). The constructor also allows you to pass in two additional parameters to override defaults: loginService (default value is "login.salesforce.com") and version (default value is "v33.0").
+To create a new Salesforce object you will need the Consumer Key and Consumer Secret of a Connected App. Information about creating a Connected App can be found [here](https://help.salesforce.com/apex/HTViewHelpDoc?id=connected_app_create.htm). The constructor also allows you to pass in two additional parameters to override defaults: loginService (default value is "login.salesforce.com") and version (default value is "v33.0"). If you are working in a Salesforce sandbox environment, you should pass "test.salesforce.com" as loginService.
 
 ```squirrel
 #require "Salesforce.class.nut:1.0"
@@ -42,20 +42,20 @@ force.login(USERNAME, PASSWORD, SECURITY_TOKEN, function(err, data) {
 ```
 
 ## force.isLoggedIn()
-The **isLoggedIn** method immediately returns a boolean value indicating whether or not the Salesforce object has completed a login requests and stored the authentication token.
+The **isLoggedIn** method immediately returns a boolean value indicating whether or not the Salesforce object has completed a login request and stored the authentication token.
 
 ## force.setVersion(versionString)
-The **setVersion** method can be used to set/change what version of the Force.com REST API you are working with:
+The **setVersion** method can be used to set/change the version of the Force.com REST API you are working with:
 
 ```squirrel
 force.setVersion("v27.0");  // set to v27.0 instead of v33.0
 ```
 
 ## force.setLoginService(loginService)
-The **setLoginService** method can be used to set/change what endpoint the Salesforce object uses in it's login requests:
+The **setLoginService** method can be used to set/change the endpoint the Salesforce object uses in its login requests:
 
 ```squirrel
-//const ENVIRONMENT = LIVE;
+//const ENVIRONMENT = "LIVE";
 const ENVIRONMENT = "TEST";
 
 // if we're not using our live Salesforce instance:
@@ -67,7 +67,7 @@ if (ENVIRONMENT == "TEST") {
 ```
 
 ## force.getRefreshToken()
-The **getRefreshToken** will return the authentication's [refresh_token](https://help.salesforce.com/HTViewHelpDoc?id=remoteaccess_oauth_refresh_token_flow.htm&language=en_US) (if it exists). If the login flow did not result in a refresh_token, or a succesfull call to **login** has not been made yet, this method will return ```null```.
+The **getRefreshToken** will return the authentication's [refresh_token](https://help.salesforce.com/HTViewHelpDoc?id=remoteaccess_oauth_refresh_token_flow.htm&language=en_US) (if it exists). If the login flow did not result in a refresh_token, or a succesfull call to **login** has not been made yet, this method will return ```null```. Since the only authentication mechanism currently supported is username/password, which does not result in a refresh token, ```getRefreshToken()``` always returns null.
 
 ## force.getUser([callback])
 The **getUser** method makes a request to Salesforce to retreive information about the currently logged in user. If a successful call to the **login** method has not yet occured, an error will be thrown.
@@ -96,7 +96,7 @@ force.login(USERNAME, PASSWORD, SECURITY_TOKEN, function(err, data) {
 ## force.request(verb, service, [body], [callback])
 The **request** method is the most basic way of interacting with objects in your Salesforce database. It creates an HTTP request with properly formated authentication headers, etc. If a successful call to the **login** method has not yet occured, an error will be thrown.
 
-The data from the *request* method will be the parsed body of the request's response. In the example below, we are fetching a set of custom objects (campsites) from our Salesforce database:
+The data from the *request* method will be the parsed body of the request's response. In the example below, we are fetching data on custom objects (campsites) from our Salesforce database:
 
 ```squirrel
 force.login(USERNAME, PASSWORD, SECURITY_TOKEN, function(err, data) {
