@@ -22,6 +22,8 @@ To create a new Salesforce object you will need the Consumer Key and Consumer Se
 force <- Salesforce("<-- CONSUMER_KEY -->", "<-- CONSUMER_SECRET -->");
 ```
 
+### Class Methods
+
 ### login(*username, password, [securityToken], [callback]*)
 
 Once you’ve created a Salesforce object, you need to provide the login credentials via the *login()* method. This requires *username* and *password* parameter values. You may also provide an optional *securityToken* value (information about acquiring your security token can be found [here](https://help.salesforce.com/apex/HTViewHelpDoc?id=user_security_token.htm)). The method may also be called with an optional callback function (see note [above](#callbacks)) that will be executed upon the completion of the login request.
