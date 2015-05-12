@@ -1,6 +1,8 @@
 #Salesforce
 This library wraps the [Force.com REST API](https://www.salesforce.com/us/developer/docs/api_rest/). Force.com is a suite of point-and-click tools that make creating custom employee-facing apps lightning fast. The Electric Imp Salesforce library enables you to interact with your Force.com objects, allowing you to easily create products that can interact with a powerful CRM backend.
 
+**To add this library to your project, add** `#require "Salesforce.class.nut:1.0.0"` **to the top of your agent code**
+
 ## Callbacks
 All methods that make requests to the Force.com API can be called asynchronously (by providing the optional callback function) or synchronously (by not provinding the callback). If a callback is supplied, it must take two parameters: *err* and *data*. If no errors were encountered, *err* will be `null` and *data* will contain the result of the request. If an error occured during the request, *err* will contain the error information and *data* will be `null`.
 
