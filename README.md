@@ -1,6 +1,10 @@
 #Salesforce
 This library wraps the [Force.com REST API](https://www.salesforce.com/us/developer/docs/api_rest/). Force.com is a suite of point-and-click tools that make creating custom employee-facing apps lightning fast. The Electric Imp Salesforce library enables you to interact with your Force.com objects, allowing you to easily create products that can interact with a powerful CRM backend.
 
+**To add this library to your project, add `#require "Salesforce.class.nut:1.1.0"`` to the top of your agent code.**
+
+You can view the library’s source code on [GitHub](https://github.com/electricimp/Salesforce/tree/v1.1.0).
+
 ## Callbacks
 All methods that make requests to the Force.com API can be called asynchronously (by providing the optional callback function) or synchronously (by not provinding the callback). If a callback is supplied, it must take two parameters: *err* and *data*. If no errors were encountered, *err* will be `null` and *data* will contain the result of the request. If an error occured during the request, *err* will contain the error information and *data* will be `null`.
 
@@ -10,14 +14,12 @@ If no callback is supplied (ie. a synchronous request was made), the method will
 
 ## Class Usage
 
-### Constructor
-
-### constructor(*consumerKey, consumerSecret, [loginService], [version]*)
+### Constructor: Salesforce(*consumerKey, consumerSecret, [loginService], [version]*)
 
 To create a new Salesforce object you will need the Consumer Key and Consumer Secret of a Connected App. Information about creating a Connected App can be found [here](https://help.salesforce.com/apex/HTViewHelpDoc?id=connected_app_create.htm). The constructor also allows you to pass in two additional parameters to override defaults: *loginService* (default value is "login.salesforce.com") and *version* (default value is "v33.0"). If you are working in a Salesforce sandbox environment, you should pass `"test.salesforce.com"` as *loginService*.
 
 ```squirrel
-#require "Salesforce.class.nut:1.0"
+#require "Salesforce.class.nut:1.1.0"
 
 force <- Salesforce("<-- CONSUMER_KEY -->", "<-- CONSUMER_SECRET -->");
 ```
@@ -34,20 +36,19 @@ The data from the *login()* method consists of a table with a single field, *res
 force.login(USERNAME, PASSWORD, SECURITY_TOKEN, function(err, data) {
     if (err != null) {
         // if there was an error, log it
-        server.error (err)
-        return
+        server.error (err);
+        return;
     }
 
     // If the login failed
-    
     if(data.result == false) {
-        server.error("Could not login")
-        return
+        server.error("Could not login");
+        return;
     }
 
     // Do things after logging in:
     // ...
- })
+ });
 ```
 
 ### isLoggedIn()
@@ -59,7 +60,7 @@ The **isLoggedIn()** method immediately returns a boolean value indicating wheth
 The **setVersion()** method can be used to set or change the version of the Force.com REST API you are working with:
 
 ```squirrel
-force.setVersion("v27.0")  // set to v27.0 instead of v33.0 (default)
+force.setVersion("v27.0");  // set to v27.0 instead of v33.0 (default)
 ```
 
 ### setLoginService(*loginService*)
@@ -67,16 +68,23 @@ force.setVersion("v27.0")  // set to v27.0 instead of v33.0 (default)
 The **setLoginService()** method can be used to set or change the endpoint the Salesforce object uses in its login requests:
 
 ```squirrel
-//const ENVIRONMENT = "LIVE"
-const ENVIRONMENT = "TEST"
+//const ENVIRONMENT = "LIVE";
+const ENVIRONMENT = "TEST";
 
 // If we're not using our live Salesforce instance:
-
-if (ENVIRONMENT == "TEST") force.setLoginService("https://test.salesforce.com")
+if (ENVIRONMENT == "TEST") force.setLoginService("https://test.salesforce.com");
 
 // Login
 // ...
 ```
+
+### setToken(*token*)
+
+The **setToken()** method can be used to manually set the token the Salesforce object uses in its requests. This method is intended to be used with the OAuth2 flow.
+
+### setInstanceUrl(url)
+
+The **setInstanceUrl()** method can be used to manually set or change the instanceUrl the Salesforce object uses in its requests.
 
 ### getRefreshToken()
 
@@ -89,20 +97,20 @@ The **getUser()** method makes a request to Salesforce to retreive information a
 ```squirrel
 force.login(USERNAME, PASSWORD, SECURITY_TOKEN, function(err, data) {
     if (err != null || (data != null && data.result == false)) {
-        server.error("Could not login to Salesforce")
-        return
+        server.error("Could not login to Salesforce");
+        return;
     }
 
     force.getUser(function(err, data) {
         if (err) {
-            server.error("ERROR: " + http.jsonencode(err))
-            return
+            server.error("ERROR: " + http.jsonencode(err));
+            return;
         }
 
         // If it worked, log all the information we have about the user
-        
+
         foreach(idx, val in data) {
-            server.log(idx + ": " + val)
+            server.log(idx + ": " + val);
         }
     })
 })
@@ -117,28 +125,27 @@ The data from the *request()* method will be the parsed body of the request’s 
 ```squirrel
 force.login(USERNAME, PASSWORD, SECURITY_TOKEN, function(err, data) {
     if (err != null || (data != null && data.result == false)) {
-        server.error("Could not login to Salesforce")
-        return
+        server.error("Could not login to Salesforce");
+        return;
     }
+
     force.request("get", "sobjects/campsites__c", null, function(err, data) {
-        if (err) 
-        {
-            server.error("ERROR: " + http.jsonencode(err))
-            return
+        if (err) {
+            server.error("ERROR: " + http.jsonencode(err));
+            return;
         }
 
         // Log the names of all the recent campsites
-        if ("recentItems" in data) 
-        {
-            server.log("Recent Campsites: ")
-            foreach(campsite in data.recentItems) 
-            {
-                server.log(campsite.Name)
+        if ("recentItems" in data) {
+            server.log("Recent Campsites: ");
+            foreach(campsite in data.recentItems) {
+                server.log(campsite.Name);
             }
         }
-    })
-})
+    });
+});
 ```
 
 ## License
-The Salesforce library is licensed under the [MIT License](./LICENSE).
+
+The Salesforce library is licensed under the [MIT License](https://github.com/electricimp/salesforce/blob/master/LICENSE).

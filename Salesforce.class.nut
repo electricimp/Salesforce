@@ -1,4 +1,12 @@
+// Copyright (c) 2015 Electric Imp
+// This file is licensed under the MIT License
+// http://opensource.org/licenses/MIT
+
 class Salesforce {
+
+    // Library version
+    static version = [1,1,0];
+
     // service URLs
     _loginServiceBase = "https://login.salesforce.com/";
     _loginService = "/services/oauth2/token"
@@ -18,12 +26,12 @@ class Salesforce {
     _userUrl = null;        // URL to get info about logged in user
 
     // Set OAuth tokens
-    constructor(consumerKey, consumerSecret, loginServiceBase = null, version = null) {
+    constructor(consumerKey, consumerSecret, loginServiceBase = null, salesforceVersion = null) {
         _clientId = consumerKey;
         _clientSecret = consumerSecret;
 
         if (loginServiceBase != null) _loginServiceBase = loginServiceBase;
-        if (version != null) _version = version;
+        if (salesforceVersion != null) _version = salesforceVersion;
     }
 
     function setLoginService(loginService) {
@@ -32,6 +40,14 @@ class Salesforce {
 
     function setVersion(versionString) {
         _version = versionString;
+    }
+
+    function setInstanceUrl(url) {
+        _instanceUrl = url;
+    }
+
+    function setToken(token) {
+        _token = token;
     }
 
     function login(username, password, securityToken = null, cb = null) {
