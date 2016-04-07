@@ -38,7 +38,7 @@ Step by step instructions to create a Connected App:
 
 Open the Electric Imp IDE & select your device.  Find the *SALESFORCE CONSTANTS* section in the Agent code and enter your Consumer Key and Consumer Secret.
 
-**Note:** These instructions were written 3/16 and may not be accurate if Salesforce updates their web portal.
+**Note:** These instructions were written in March 2016 and may not be up to date with the latest Salesforce web portal.
 
 ##Open a Case Example
 
@@ -103,7 +103,7 @@ This example takes a bit more setup in Salesforce.  You will need to create a cu
 
 Open the Electric Imp IDE & select your device.  Under the *APPLICATION CODE* find the *RUNTIME VARIABLES* section in the Agent code (this will be towards the bottom) and set the **obj_api_name** variable to your **API Name**.  If you named your Custom Object *Env_Tail_Reading* you will be able to skip this step.
 
-**Note:** These instructions were written 3/16 and may not be accurate if Salesforce updates their web portal.
+**Note:** These instructions were written in March 2016 and may not be up to date with the latest Salesforce web portal.
 
 
 ##Launching App
