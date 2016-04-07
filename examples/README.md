@@ -42,7 +42,7 @@ Open the Electric Imp IDE & select your device.  Find the *SALESFORCE CONSTANTS*
 
 ##Open a Case Example
 
-In this example the Imp will open a case in Salesforce if the device triggers an event.  The device takes a temperature, humidity, and ambient light reading every 3 seconds then passes the readings to the agent.  The agent runs some logic to determine if the temperature has gone above 29°C or below 20°C, or if the ambient light has gone below 20 lux.  If any of these conditions have been met a case will be opened in Salesforce with the details of the event that triggered the case.
+In this example the Imp will open a case in Salesforce if the device triggers an event.  The device takes a temperature, humidity, and ambient light reading every 3 seconds then passes the readings to the agent.  The agent runs some logic to determine if the temperature has gone above 29°C or below 20°C, or if the ambient light has gone below 20 lux.  If any of these conditions have been met a case will be opened in Salesforce with the details of the event that triggered the case.  You are now ready to [launch your app](#launchingapp).
 
 
 ##Custom Object Example
@@ -101,7 +101,7 @@ This example takes a bit more setup in Salesforce.  You will need to create a cu
 - You will be redirected to the *Custom Object - your object name* page
   - Make a note of your API Name (you will need to enter this into your agent code)
 
-Open the Electric Imp IDE & select your device.  Under the *APPLICATION CODE* find the *RUNTIME VARIABLES* section in the Agent code (this will be towards the bottom) and set the **obj_api_name** variable to your **API Name**.  If you named your Custom Object *Env_Tail_Reading* you will be able to skip this step.
+Open the Electric Imp IDE & select your device.  Under the *APPLICATION CODE* find the *RUNTIME VARIABLES* section in the Agent code (this will be towards the bottom) and set the **obj_api_name** variable to your **API Name**.  If you named your Custom Object *Env_Tail_Reading* you will be able to skip this step. You are now ready to [launch your app](#launchingapp).
 
 **Note:** These instructions were written in March 2016 and may not be up to date with the latest Salesforce web portal.
 
