@@ -114,7 +114,7 @@ class APDS9007 {
 // ----------------------------------------------------------
 
 // How many seconds to wait between sensor readings
-const READING_INTERVAL = 60;
+const READING_INTERVAL = 300;
 
 
 // CONFIGURE HARDWARE

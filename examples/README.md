@@ -47,7 +47,7 @@ In this example the Imp will open a case in Salesforce if the device triggers an
 
 ##Custom Object Example
 
-Imp will update a record in Salesforce every 60 seconds.  The device takes a temperature, humidity, air pressure, and ambient light reading every 60 seconds then passes those readings to the agent.  The agent then updates the Salesforce record with the new readings.
+Imp will create a record in Salesforce every 5 minutes.  The device takes a temperature, humidity, air pressure, and ambient light reading every 5 minutes then passes those readings to the agent.  The agent then creates a record in Salesforce with the new readings.
 
 ### Creating a Custom Object in Salesforce
 
@@ -89,13 +89,10 @@ This example takes a bit more setup in Salesforce.  You will need to create a cu
       - Select **text**
       - then click **Next** button
     - Step 2 of 4
-      - Enter **Field Label** enter **DeviceId**
+      - Enter **Field Label** enter **deviceId**
       - Enter **Length** - for example *32*
-      - Enter **Field Name** enter **DeviceId**
+      - Enter **Field Name** enter **deviceId**
       - check **Required**
-      - check **Unique**
-      - check **Treat "ABC" and "abc" as different values (case sensitive)**
-      - check **External ID**
       - then click **Next** button
     - Step 3 of 4
       - click **Next** button

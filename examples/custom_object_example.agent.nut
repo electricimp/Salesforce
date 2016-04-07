@@ -143,18 +143,20 @@ local obj_api_name = "Env_Tail_Reading__c"; // Salesforce object api name where 
 // RUNTIME FUNCTIONS
 // ----------------------------------------------------------
 
-// Description: Updates a record in Salesforce
+// Description: Creates a record in Salesforce
 // Parameters: table - the readings table from the device
 //             function - callback used to process response from Salesforce
 // Return: null
-function sendReading(data, cb = null) {
-    local url = format("sobjects/%s/DeviceId__c/%s?_HttpMethod=PATCH", obj_api_name, force.agentId);
+function createRecord(data, cb = null) {
+    local url = format("sobjects/%s/?_HttpMethod=POST", obj_api_name);
     local body = {};
 
     // add salesforce custom object postfix to data keys
     foreach(k, v in data) {
         body[k + "__c"] <- v;
     }
+    // add the device id
+    body.deviceId__c <- force.agentId;
 
     force.request("POST", url, http.jsonencode(body), cb);
 }
@@ -170,10 +172,8 @@ function handleReadingResponse(err, respData) {
     }
 
     // Log a message for creating/updating a record
-    if ("id" in respData) {
-        server.log("Created record with id: " + respData.id);
-    } else {
-        server.log("Updated record with DeviceId: " + force.agentId);
+    if ("success" in respData) {
+        server.log("Record created: " + respData.success);
     }
 }
 
@@ -186,5 +186,5 @@ device.on("reading", function(reading) {
     if (!force.isLoggedIn()) return;
 
     // Send reading to Salesforce
-    sendReading(reading, handleReadingResponse);
+    createRecord(reading, handleReadingResponse);
 });
