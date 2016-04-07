@@ -51,22 +51,67 @@ Imp will update a record in Salesforce every 60 seconds.  The device takes a tem
 
 ### Creating a Custom Object in Salesforce
 
-This example takes a bit more setup in Salesforce.  You will need to create a custom object with fields that correspond to each reading.
+This example takes a bit more setup in Salesforce.  You will need to create a custom object with fields that correspond to each reading.  Step by step instructions for creating a Custom Object:
 
-log into your salesforce developer account
-click setup
-open the schema builder
+- Log into Salesforce and click on the **Setup** tab in the top right navigation menu
+- In the sidebar under **Build** unfold the **Create** menu and select **Objects**
+- At the top of the page click the **New Custom Object** button
+- In the **New Custom Object** form fill in:
+  - Custom Object Information
+    - **Label** - for example *Env_Tail_Reading*
+    - **Plural Label** - for example *Env_Tail_Readings*
+    - **Object Name** - for example *Env_Tail_Reading*
+  - Enter Record Name Label and Format
+    - **Record Name** - for example *Reading Id*
+    - **Data Type** select **Auto Number**
+    - **Display Format** - for example *R-{0000}*
+  - When above info is filled out click **Save**
+- On the **Custom Objects Page** click on your object name
+- You will be redirected to the *Custom Object - your object name* page <br> You will repeat the following steps 4 times to add fields for each sensor reading collected <br> The **Field Name** must match the data table from the device. This example has 4 readings that need Field Names: **temperature**, **humidity**, **pressure**, and **amb_lx**
+  - At the bottom of the page under **Custom Fields & Relationships** click the **New** button
+    - Step 1 *Data Type*
+      - Select **Number**
+      - then click *Next*
+    - Step 2 of 4
+      - Enter *Field Label* - for example *temperature*
+      - Enter *Length* - for example *4*
+      - Enter *Decimal Places* - for example *2*
+      - Enter *Field Name* - for example *tempertature*
+      - Enter *Description* - for example *Temperature reading in °C*
+      - then click *Next*
+    - Step 3 of 4
+      - click *Next*
+    - Step 4 of 4
+      - click *Save & New* <br>
+      **Repeat** Steps 1-4 for humidity, pressure and amb_lx
+  - We need to create one more Field the *Device Id field*
+    - Step 1 *Data Type*
+      - Select **text**
+      - then click *Next*
+    - Step 2 of 4
+      - Enter *Field Label* enter **DeviceId**
+      - Enter *Length* - for example *32*
+      - Enter *Field Name* enter **DeviceId**
+      - check *Required*
+      - check *Unique*
+      - check *Treat "ABC" and "abc" as different values (case sensitive)*
+      - check *External ID*
+      - then click *Next*
+    - Step 3 of 4
+      - click *Next*
+    - Step 4 of 4
+      - click *Save*
+- You will be redirected to the *Custom Object - your object name* page
+  - Make a note of your API Name (you will need to enter this into your agent code)
 
-create a new custom object - show attribute settings
+Open the Electric Imp IDE & select your device.  Under the *APPLICATION CODE* find the *RUNTIME VARIABLES* section in the Agent code (this will be towards the bottom) and enter your API Name in the obj_api_name variable.  If you named your Custom Object "Env_Tail_Reading" you will be able to skip this step.
 
-add fields - show this - need to match device
-
-add text field with device id - show this
+**Note:** These instructions were written 3/16 and may not be accurate if Salesforce updates their web portal.
 
 
 ##Launching App
 
-These examples uses OAuth 2.0 for authentication, so the agent has been set up as a web server to handle the log in.
+These examples use OAuth 2.0 for authentication, so the agent has been set up as a web server to handle the log in.
 Go to the Electric Imp IDE and select your device for the final setup steps.
 
 - Hit **Build and Run** to save and launch the code
