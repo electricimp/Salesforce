@@ -71,40 +71,40 @@ This example takes a bit more setup in Salesforce.  You will need to create a cu
   - At the bottom of the page under **Custom Fields & Relationships** click the **New** button
     - Step 1 *Data Type*
       - Select **Number**
-      - then click *Next*
+      - then click **Next** button
     - Step 2 of 4
-      - Enter *Field Label* - for example *temperature*
-      - Enter *Length* - for example *4*
-      - Enter *Decimal Places* - for example *2*
-      - Enter *Field Name* - for example *tempertature*
-      - Enter *Description* - for example *Temperature reading in °C*
-      - then click *Next*
+      - Enter **Field Label** - for example *temperature*
+      - Enter **Length** - for example *4*
+      - Enter **Decimal Places** - for example *2*
+      - Enter **Field Name** - for example *tempertature*
+      - Enter **Description** - for example *Temperature reading in °C*
+      - then click **Next** button
     - Step 3 of 4
-      - click *Next*
+      - click **Next** button
     - Step 4 of 4
-      - click *Save & New* <br>
+      - click **Save & New** <br>
       **Repeat** Steps 1-4 for humidity, pressure and amb_lx
   - We need to create one more Field the *Device Id field*
     - Step 1 *Data Type*
       - Select **text**
-      - then click *Next*
+      - then click **Next** button
     - Step 2 of 4
-      - Enter *Field Label* enter **DeviceId**
-      - Enter *Length* - for example *32*
-      - Enter *Field Name* enter **DeviceId**
-      - check *Required*
-      - check *Unique*
-      - check *Treat "ABC" and "abc" as different values (case sensitive)*
-      - check *External ID*
-      - then click *Next*
+      - Enter **Field Label** enter **DeviceId**
+      - Enter **Length** - for example *32*
+      - Enter **Field Name** enter **DeviceId**
+      - check **Required**
+      - check **Unique**
+      - check **Treat "ABC" and "abc" as different values (case sensitive)**
+      - check **External ID**
+      - then click **Next** button
     - Step 3 of 4
-      - click *Next*
+      - click **Next** button
     - Step 4 of 4
-      - click *Save*
+      - click **Save**
 - You will be redirected to the *Custom Object - your object name* page
   - Make a note of your API Name (you will need to enter this into your agent code)
 
-Open the Electric Imp IDE & select your device.  Under the *APPLICATION CODE* find the *RUNTIME VARIABLES* section in the Agent code (this will be towards the bottom) and enter your API Name in the obj_api_name variable.  If you named your Custom Object "Env_Tail_Reading" you will be able to skip this step.
+Open the Electric Imp IDE & select your device.  Under the *APPLICATION CODE* find the *RUNTIME VARIABLES* section in the Agent code (this will be towards the bottom) and set the **obj_api_name** variable to your **API Name**.  If you named your Custom Object *Env_Tail_Reading* you will be able to skip this step.
 
 **Note:** These instructions were written 3/16 and may not be accurate if Salesforce updates their web portal.
 
