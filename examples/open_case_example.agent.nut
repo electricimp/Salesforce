@@ -102,7 +102,6 @@ app.get("/", function(context) {
         local location = format("https://%s/services/oauth2/authorize?response_type=code&client_id=%s&redirect_uri=%s", LOGIN_HOST, CONSUMER_KEY, http.agenturl());
         context.setHeader("Location", location);
         context.send(302, "Found");
-
         return;
     }
 
@@ -138,8 +137,8 @@ app.get("/", function(context) {
 
 // Event varaiable used to define limits for each sensor that should open a case
 // Keys should correspond to the keys used in the device readings data table
-local event_limits = { "temperature" : {"min": 20, "max": 29, "unit" : "°C"},
-                       "amb_lx" : {"min": 20, "max": null, "unit": " lux"} };
+event_limits <- { "temperature" : {"min": 20, "max": 29, "unit" : "°C"},
+                  "amb_lx" : {"min": 20, "max": null, "unit": " lux"} };
 
 
 // RUNTIME FUNCTIONS
