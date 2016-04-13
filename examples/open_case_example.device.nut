@@ -60,8 +60,7 @@ function takeReadings() {
     }
 
     // Take a sync light reading
-    // Note on first boot up this take 5sec before a reading is returned
-    // This is expected
+    // Note on first boot up this take 5sec before a reading is returned, this is expected
     local lxReading = ambLight.read();
     if("err" in lxReading) {
         server.error("Amblient Light Sensor.  Error reading light Level. " + lxReading.err);
