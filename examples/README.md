@@ -84,7 +84,7 @@ These examples take a bit more setup in Salesforce.  You will need to create a c
     - Step 4 of 4
       - click **Save & New** <br>
       **Repeat** Steps 1-4 for humidity, pressure and amb_lx
-8. We need to create one more Field the *Device Id field* <br>**Note**: Step 2 is slightly different for **Updating a Custom Object** and **Creating a Custom Object** examples.
+8. We need to create one more Field the *Device Id field* <br>**Note**: Step 2 is slightly different for **Update Custom Object** and **Create Custom Object** examples.
     - Step 1 *Data Type*
       - Select **text**
       - then click **Next** button
