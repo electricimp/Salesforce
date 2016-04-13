@@ -1,7 +1,7 @@
 #Salesforce
 This library wraps the [Force.com REST API](https://www.salesforce.com/us/developer/docs/api_rest/). Force.com is a suite of point-and-click tools that make creating custom employee-facing apps lightning fast. The Electric Imp Salesforce library enables you to interact with your Force.com objects, allowing you to easily create products that can interact with a powerful CRM backend.
 
-**To add this library to your project, add `#require "Salesforce.class.nut:1.1.0"`` to the top of your agent code.**
+**To add this library to your project, add `#require "Salesforce.class.nut:1.1.0"` to the top of your agent code.**
 
 You can view the library’s source code on [GitHub](https://github.com/electricimp/Salesforce/tree/v1.1.0).
 
