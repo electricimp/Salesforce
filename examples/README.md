@@ -65,6 +65,7 @@ These examples take a bit more setup in Salesforce.  You will need to create a c
       - **Record Name** - for example *Reading Id*
       - **Data Type** select **Auto Number**
       - **Display Format** - for example *R-{0000}*
+      - **Starting Number** - 0
     - When above info is filled out click **Save**
 5. On the **Custom Objects Page** click on your object name
 6. You will be redirected to the *Custom Object - your object name* page <br> You will repeat step 7 four times to add fields for each sensor reading collected <br> The **Field Name** must match the data table from the device. The **Field Names** in the exmple code are: **temperature**, **humidity**, **pressure**, and **amb_lx**

@@ -13,6 +13,7 @@ const CONSUMER_KEY = "<YOUR CONSUMER KEY>";
 const CONSUMER_SECRET = "<YOUR CONSUMER SECRET>";
 const LOGIN_HOST = "login.salesforce.com";
 
+
 // EXTEND SALESFORCE CLASS TO HANDLE OAUTH 2.0
 // ----------------------------------------------------------
 class ConnectedDevice extends Salesforce {
@@ -154,8 +155,6 @@ function updateRecord(data, cb = null) {
     foreach(k, v in data) {
         body[k + "__c"] <- v;
     }
-    // add the device id
-    body.deviceId__c <- force.agentId;
 
     force.request("POST", url, http.jsonencode(body), cb);
 }
@@ -173,6 +172,8 @@ function handleResponse(err, respData) {
     // Log a message for creating/updating a record
     if ("success" in respData) {
         server.log("Record created: " + respData.success);
+    } else {
+        server.log("Record updated.")
     }
 }
 
