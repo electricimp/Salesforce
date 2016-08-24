@@ -137,7 +137,7 @@ app.get("/", function(context) {
 // ----------------------------------------------------------
 
 // The API name
-local obj_api_name = "Env_Tail_Reading__c"; // Salesforce object api name where readings are defined
+obj_api_name <- "Env_Tail_Reading__c"; // Salesforce object api name where readings are defined
 
 
 // RUNTIME FUNCTIONS
