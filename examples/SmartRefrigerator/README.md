@@ -22,7 +22,9 @@ The following Trailhead project will use an Electric Imp to monitor a refrigerat
 
 ## Getting Started
 
-### Hardware Setup
+### Step 1: Setup the Electric Imp hardware
+
+#### Hardware Setup
  - Plug the imp001 into the breakout board
  - Connect the Env Sensor tail to the April breakout board
  - Power up your Imp with the USB cable and power adapter
@@ -30,7 +32,7 @@ The following Trailhead project will use an Electric Imp to monitor a refrigerat
 
 <img src="http://i.imgur.com/erBvo7d.jpg" width="400">
 
-### Electric Imp BlinkUp
+#### Electric Imp BlinkUp
 
 Use the Electric Imp mobile app to BlinkUp your device
 
@@ -38,7 +40,14 @@ Use the Electric Imp mobile app to BlinkUp your device
  - Enter your WIFI credentials
  - Follow the instructions in the app to [BlinkUp](https://electricimp.com/platform/blinkup/) your device
 
-### Electric Imp IDE / Code
+### Step 2: Add Code for the Electric Imp
+
+#### How Electric Imp's cloud based programming works
+
+The Electric Imp IDE provides all the tools you need to write and deploy the software that will control your imp-enabled connected product. The IDE runs in a desktop web browser. If you have want a quick overview of the IDE features please visit the Electric Imp [Dev Center](https://electricimp.com/docs/gettingstarted/ide/).
+
+#### Electric Imp IDE / Code
+
  - In your favorite web browser log into the [Electric Imp IDE](https://ide.electricimp.com/login)
  - Click the *Create New Model* button
  - In the pop up name your code model, select your device and click *Create Model* button
@@ -49,9 +58,9 @@ Use the Electric Imp mobile app to BlinkUp your device
 
  ![IDE code windows](http://i.imgur.com/d0eO0TP.png)
 
-If you need guides to help you get started with Electric Imp visit the [Dev Center](https://electricimp.com/docs/gettingstarted/).
+### Step 3: Create a Salesforce Connected App
 
-### Creating a Connected App in Salesforce
+#### Creating a Connected App in Salesforce
 
 Step by step instructions to create a Connected App:
 
@@ -78,14 +87,18 @@ Step by step instructions to create a Connected App:
     - Make note of your Consumer Secret (you will need to enter this into your agent code)
   ![Salesforce Keys](http://i.imgur.com/uussyzV.png)
 
+#### Adding API keys to your Electric Imp Code
+
 Open the Electric Imp IDE & select your device.  Find the *SALESFORCE CONSTANTS* section at the bottom of the Agent code and enter your **Consumer Key** and **Consumer Secret**.
 
 ![IDE with code](http://i.imgur.com/hvligYx.png)
 
 
-### Creating a Custom Object in Salesforce
+### Step 4: Create a Custom Object in Salesforce
 
-You will need to create a custom object with fields that correspond to each reading.  Step by step instructions for creating a Custom Object:
+#### Creating a Custom Object in Salesforce
+
+You will need to create a custom object with fields that correspond to each key in the reading table.  Here are the step by step instructions for creating a Custom Object:
 
 1. Log into Salesforce and click on the **Setup** tab in the top right navigation menu
 ![Salesforce Navbar](http://i.imgur.com/mhYIfBx.png)
@@ -141,12 +154,40 @@ You will need to create a custom object with fields that correspond to each read
     - Make a note of your **API Name** (you will need to enter this into your agent code)
 ![Salesforce API Name](http://i.imgur.com/tL6ar7Z.png)
 
-Open the Electric Imp IDE & select your device.  Find the *SALESFORCE CONSTANTS* section at the bottom of the Agent code and enter your **OBJ_API_NAME**. You are now ready to [launch your app](#launching-app).
+#### Adding Object Name to your Electric Imp Code
+
+Open the Electric Imp IDE & select your device.  Find the *SALESFORCE CONSTANTS* section at the bottom of the Agent code and enter your **OBJ_API_NAME**.
 
 ![IDE with code](http://i.imgur.com/hvligYx.png)
 
+### Step 5: Create a Custom Case Field in Salesforce
 
-##Launching App
+We want the cases opened to contain the Device ID for our refrigerator.  To do this we need to create a custom field for our Salesforce case.  Here are the step by step instructions for creating a Custom Case Field:
+
+1. Log into Salesforce and click on the **Setup** tab in the top right navigation menu
+![Salesforce Navbar](http://i.imgur.com/mhYIfBx.png)
+2. In the sidebar under **Build** unfold the **Customize** menu then unfold **Cases** and select **Fields**
+3. Scroll to the bottom of the page and under **Case Custom Fileds & Relationships** click the **New** button
+![Salesforce Custom Object](http://i.imgur.com/FhF0J8w.png)
+4. In the **New Custom Field** form fill in:
+    - Step 1 *Data Type*
+      - Select **text**
+      - then click **Next** button
+    - Step 2 of 4
+      - Enter **Field Label** enter **Related_Fridge**
+      - Enter **Length** - for example *16*
+      - Enter **Field Name** enter **Related_Fridge**
+      - Enter **Description** (optional) for example *Device Id of the assoceated refrigerator*
+      - then click **Next** button
+    - Step 3 of 4
+      - click **Next** button
+    - Step 4 of 4
+      - click **Save**
+9. You will be redirected to the *Case Custom Field - your field name* page
+    - Make a note of your **API Name** - this must be *Related_Fridge__c*
+![Salesforce Custom Object](http://i.imgur.com/FhF0J8w.png)
+
+### Step 6: Build and Run the Electric Imp Application
 
 These examples use OAuth 2.0 for authentication, so the agent has been set up as a web server to handle the log in.
 Go to the Electric Imp IDE and select your device from the sidebar for the final setup steps.
@@ -159,10 +200,81 @@ Go to the Electric Imp IDE and select your device from the sidebar for the final
 
 Your App should now be up and running.  You can monitor the device logs in the IDE, or log into Salesforce web prortal to see updates there.
 
-##Install Hardware
+### Step 7: Install Device in Refrigerator
 
 Open your refrigerator and tape the Imp and Env Tail inside with the sensors facing away from the refrigerator ceiling/wall.
 
 Run the USB cable to the outside of the refrigerator and plug into power.
 
 <img src="http://i.imgur.com/BUuEpjt.png" width="400">
+
+
+### Step 8: Monitor the data in Salesforce1
+
+Now that you have connected your Imp to Salesforce, it might be handy to see that data on a mobile device.  Using Salesforce1, it is easy to keep track of your Smart Fridge on the go.
+
+
+#### Create a Custom Object
+First, let's give the custom object a tab so that Salesforce1 can add it to the left navigation.
+
+1. Go to Setup
+2. Under *Create*, click *Tabs*
+3. Next to "Custom Object Tabs", click *New*
+4. In the objects drop down, select "Frig_Reading"
+5. Select an Icon
+6. Click "Save"
+
+
+#### Open Salesforce1 in Chrome
+You can access the Salesforce1 mobile app in three ways:
+
+*As a downloadable mobile app (Salesforce1) that you install on your phone from the Apple AppStore or Google Play
+*By navigating to login.salesforce.com using a mobile browser
+*By using the Chrome Developer Tools
+
+For this step, we'll use the last option.
+
+Open a new tab in your Chrome browser and open the Developer Tools by clicking View | Developer | Developer Tools
+Click the Toggle Device Mode button to simulate your browser as a mobile device.
+
+1.To simulate the Salesforce1 app in your browser, copy and paste in the URL from the previous tab. Remove the part of the URL immediately after salesforce.com/.
+
+2. Append /one/one.app to the end of the URL after salesforce.com to start the Salesforce1 Application simulator. For example:
+image
+
+3. If the display is too small, change the size to 100%.
+
+4. Click the three white bars in the upper left to open the left navigation
+
+5. Under the "Recent" section, scroll down and click "More"
+
+6. You will see "Frig_Reading" somewhere on the list.  Select it and you can now browse the readings as if it it were on a mobile device.
+
+
+### Step 9: Use Process Builder to Chatter Fridge data
+
+Finally, let's add some finesse to our application by using Process Builder to drive a Chatter conversation based on the incoming readings which create the case.
+
+
+#### Create a new Process Builder
+1. Go to Setup
+2. Go to Create | Workflows & Approvals | Process Builder
+3. Click "New"
+4. Name the new Process "Update Case for Smart Fridge"
+5. Click "Add Object" and for "Find an Object" select "Case"
+6. Leave the process at "only when a record is created"
+7. Click "Add Criteria" and name it "Related to Smart Fridge"
+8. Under set conditions, click "Find a Field".
+9. Use field selector to find "Related Fridge" and then "DeviceId"
+10. Under "Operator" select "Is Null"
+11. Leave "Boolean" and "False"
+12. Click "Save"
+13. Under "Immediate Actions" next to the new criteria, click "Add Action"
+14. Under Action Type, select "Post to Chatter"
+15. Under Action name, type "Post Smart Fridge Data"
+16. Under "Post To", select "This Record"
+17. In the message section, type a message using the merge field lookup which reads something like "This case is related to Smart Fridge {![Case].Related_Fridge__c.DeviceId__c}.  It was recorded at a temperature of {![Case].Related_Fridge__c.Temperature__c}, humidity of {![Case].Related_Fridge__c.Temperature__c}{![Case].Related_Fridge__c.Humidity__c} and the door with a status of {![Case].Related_Fridge__c.Door__c}."
+18. Click Save
+19. Click "Activate"
+
+Now whenever a case is created that has a related Smart Fridge, the important data about that fridge will be accessible right from the case's chatter feed.

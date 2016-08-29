@@ -424,10 +424,9 @@ class SmartFrigDataManager {
 
 }
 
-/***************************************************************************************
- * Application Class:
- *      Sends data and alerts to Salesforce
- **************************************************************************************/
+
+// APPLICATION CLASS TO SEND FRIG DATA/ALERTS TO SALESFORCE
+// ----------------------------------------------------------
 class Application {
 
     _dm = null;
@@ -435,14 +434,6 @@ class Application {
     _deviceID = null;
     _objName = null;
 
-    /***************************************************************************************
-     * Constructor
-     * Returns: null
-     * Parameters:
-     *      key : string - salesforce app api consumer key
-     *      secret : string - salesforce app api consumer secret
-     *      objName : string - salesforce custom object name
-     **************************************************************************************/
     constructor(key, secret, objName) {
         _deviceID = imp.configparams.deviceid.tostring();
         _objName = objName;
@@ -450,13 +441,6 @@ class Application {
         setDataMngrHandlers();
     }
 
-    /***************************************************************************************
-     * initializeClasses
-     * Returns: null
-     * Parameters:
-     *      key : string - salesforce app api consumer key
-     *      secret : string - salesforce app api consumer secret
-     **************************************************************************************/
     function initializeClasses(key, secret) {
         local _bull = Bullwinkle();
 
@@ -464,11 +448,6 @@ class Application {
         _force = SalesforceOAuth2(key, secret);
     }
 
-    /***************************************************************************************
-     * setDataMngrHandlers
-     * Returns: null
-     * Parameters: none
-     **************************************************************************************/
     function setDataMngrHandlers() {
         _dm.setDoorOpenHandler(doorOpenHandler.bindenv(this));
         _dm.setStreamReadingsHandler(streamReadingsHandler.bindenv(this));
@@ -476,13 +455,6 @@ class Application {
         _dm.setHumidAlertHandler(humidAlertHandler.bindenv(this));
     }
 
-    /***************************************************************************************
-     * updateRecord
-     * Returns: null
-     * Parameters:
-     *      data : table - of readings from device
-     *      cb (optional) : function - called when response from salesforce is received
-     **************************************************************************************/
     function updateRecord(data, cb = null) {
         local url = format("sobjects/%s/DeviceId__c/%s?_HttpMethod=PATCH", _objName, _deviceID);
         local body = {};
@@ -500,18 +472,12 @@ class Application {
         _force.request("POST", url, http.jsonencode(body), cb);
     }
 
-    /***************************************************************************************
-     * openCase
-     * Returns: null
-     * Parameters:
-     *      subject : string - alert string
-     *      description : string - longer description of alert
-     *      cb (optional) : function - called when response from salesforce is received
-     **************************************************************************************/
+
     function openCase(subject, description, cb = null) {
         local data = {
             "Subject": subject,
-            "Description": description
+            "Description": description,
+            "Related_Fridge__c" : _deviceID
         };
 
         // don't send if we are not logged in
@@ -522,25 +488,12 @@ class Application {
         _force.request("POST", "sobjects/Case", http.jsonencode(data), cb);
     }
 
-    /***************************************************************************************
-     * openCase
-     * Returns: null
-     * Parameters:
-     *      reading : table - of readings from device
-     *      ts : integer - epoch time stamp
-     **************************************************************************************/
     function streamReadingsHandler(reading, ts) {
         reading.ts <- ts;
         server.log(http.jsonencode(reading));
         updateRecord(reading, updateRecordResHandler);
     }
 
-    /***************************************************************************************
-     * doorOpenHandler
-     * Returns: null
-     * Parameters:
-     *      doorOpenFor : integer - number of seconds the door has been open for
-     **************************************************************************************/
     function doorOpenHandler(doorOpenFor) {
         local alert = "Refrigerator Door Open";
         local description = format("Refrigerator with id %s door has been open for %s seconds.", _deviceID, doorOpenFor.tostring());
@@ -548,14 +501,6 @@ class Application {
         openCase(alert, description, caseResponseHandler);
     }
 
-    /***************************************************************************************
-     * tempAlertHandler
-     * Returns: null
-     * Parameters:
-     *      latestReading : integer - latest temperature reading
-     *      alertTiggeredTime : integer - epoch time stamp when alert was triggered
-     *      threshold : current temperature threshold value
-     **************************************************************************************/
     function tempAlertHandler(latestReading, alertTiggeredTime, threshold) {
         local alert = "Temperature Over Threshold";
         local description = format("Refrigerator with id %s temperature above %s °C. Refrigerator temperature is %s °C", _deviceID, threshold.tostring(), latestReading.tostring());
@@ -563,14 +508,6 @@ class Application {
         openCase(alert, description, caseResponseHandler);
     }
 
-    /***************************************************************************************
-     * tempAlertHandler
-     * Returns: null
-     * Parameters:
-     *      latestReading : integer - latest humidity reading
-     *      alertTiggeredTime : integer - epoch time stamp when alert was triggered
-     *      threshold : current humidity threshold value
-     **************************************************************************************/
     function humidAlertHandler(latestReading, alertTiggeredTime, threshold) {
         local alert = "Humidity Over Threshold";
         local description = format("Refrigerator with id %s humidity above %s%s. Refrigerator humidity is %s%s", _deviceID, threshold.tostring(), "%", latestReading.tostring(), "%");
@@ -578,13 +515,6 @@ class Application {
         openCase(alert, description, caseResponseHandler);
     }
 
-    /***************************************************************************************
-     * caseResponseHandler
-     * Returns: null
-     * Parameters:
-     *      err : table / null - error if request encountered an error
-     *      data : table - response received from salesforce
-     **************************************************************************************/
     function caseResponseHandler(err, data) {
         if (err) {
             server.error(http.jsonencode(err));
@@ -594,13 +524,6 @@ class Application {
         server.log("Created case with id: " + data.id);
     }
 
-    /***************************************************************************************
-     * updateRecordResHandler
-     * Returns: null
-     * Parameters:
-     *      err : table / null - error if request encountered an error
-     *      data : table - response received from salesforce
-     **************************************************************************************/
     function updateRecordResHandler(err, respData) {
         if (err) {
             server.error(http.jsonencode(err));
