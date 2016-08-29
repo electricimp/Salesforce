@@ -168,7 +168,7 @@ We want the cases opened to contain the Device ID for our refrigerator.  To do t
 ![Salesforce Navbar](http://i.imgur.com/mhYIfBx.png)
 2. In the sidebar under **Build** unfold the **Customize** menu then unfold **Cases** and select **Fields**
 3. Scroll to the bottom of the page and under **Case Custom Fileds & Relationships** click the **New** button
-![Salesforce Custom Object](http://i.imgur.com/FhF0J8w.png)
+![Salesforce Case Custom Field](http://i.imgur.com/XJf6KSg.png)
 4. In the **New Custom Field** form fill in:
     - Step 1 *Data Type*
       - Select **text**
@@ -185,7 +185,7 @@ We want the cases opened to contain the Device ID for our refrigerator.  To do t
       - click **Save**
 9. You will be redirected to the *Case Custom Field - your field name* page
     - Make a note of your **API Name** - this must be *Related_Fridge__c*
-![Salesforce Custom Object](http://i.imgur.com/FhF0J8w.png)
+![Salesforce Case Custom Field](http://i.imgur.com/UuEJDnh.png)
 
 ### Step 6: Build and Run the Electric Imp Application
 
