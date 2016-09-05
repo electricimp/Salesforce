@@ -223,6 +223,7 @@ Run the USB cable to the outside of the refrigerator and plug into power.
 
 <img src="http://i.imgur.com/BUuEpjt.png" width="400">
 
+If you don't have a fridge handy for this scenario, you can also test the door being open or close by shining a bright light against the Environment Sensor board.  A door open for thirty seconds should register a case.
 
 ### Step 8: Monitor the data in Salesforce1
 
