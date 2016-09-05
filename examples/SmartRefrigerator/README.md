@@ -229,7 +229,7 @@ Run the USB cable to the outside of the refrigerator and plug into power.
 Now that you have connected your Imp to Salesforce, it might be handy to see that data on a mobile device.  Using Salesforce1, it is easy to keep track of your Smart Fridge on the go.
 
 
-#### Create a Custom Object
+#### Create a Custom Object Tab
 First, let's give the custom object a tab so that Salesforce1 can add it to the left navigation.
 
 1. Go to Setup
@@ -275,21 +275,26 @@ Finally, let's add some finesse to our application by using Process Builder to d
 1. Go to Setup
 2. Go to Create | Workflows & Approvals | Process Builder
 3. Click "New"
-4. Name the new Process "Update Case for Smart Fridge"
-5. Click "Add Object" and for "Find an Object" select "Case"
-6. Leave the process at "only when a record is created"
-7. Click "Add Criteria" and name it "Related to Smart Fridge"
-8. Under set conditions, click "Find a Field".
-9. Use field selector to find "Related Fridge" and then "Related Fridge"
-10. Under "Operator" select "Is Null"
-11. Leave "Boolean" and "False"
-12. Click "Save"
-13. Under "Immediate Actions" next to the new criteria, click "Add Action"
-14. Under Action Type, select "Post to Chatter"
-15. Under Action name, type "Post Smart Fridge Data"
-16. Under "Post To", select "This Record"
-17. In the message section, type a message using the merge field lookup which reads something like "This case is related to Smart Fridge {![Case].Related_Fridge__c.DeviceId__c}.  It was recorded at a temperature of {![Case].Related_Fridge__c.Temperature__c}, humidity of {![Case].Related_Fridge__c.Temperature__c}{![Case].Related_Fridge__c.Humidity__c} and the door with a status of {![Case].Related_Fridge__c.Door__c}."
-18. Click Save
-19. Click "Activate"
+4. Name the new Process "Post Chatter for Smart Fridge"
 
-Now whenever a case is created that has a related Smart Fridge, the important data about that fridge will be accessible right from the case's chatter feed.
+
+#### Setup the Process Criteria
+1. Click "Add Object" and for "Find an Object" select "Case"
+2. Leave the process at "only when a record is created"
+3. Click "Add Criteria" and name it "Related to Smart Fridge"
+4. Under set conditions, click "Find a Field".
+5. Use field selector to find "Related Fridge" and then "Related Fridge"
+6. Under "Operator" select "Is Null"
+7. Leave "Boolean" and "False"
+8. Click "Save"
+
+#### Create the Action
+1. Under "Immediate Actions" next to the new criteria, click "Add Action"
+2. Under Action Type, select "Post to Chatter"
+3. Under Action name, type "Post Smart Fridge Data"
+4. Under "Post To", select "User", "Select a User from a Record" and then pick the OwnerID field
+5. In the message section, type a message using the merge field lookup which reads something like "A case ({![Case].Id}) was opened related to Smart Fridge {![Case].Related_Fridge__c.DeviceId__c}.  It was recorded at a temperature of {![Case].Related_Fridge__c.Temperature__c}, humidity of {![Case].Related_Fridge__c.Temperature__c}{![Case].Related_Fridge__c.Humidity__c} and the door with a status of {![Case].Related_Fridge__c.Door__c}."
+6. Click Save
+7. Click "Activate"
+
+Now whenever a case is created that has a related Smart Fridge, the important data about that fridge will be accessible right from the case owners's chatter feed.
