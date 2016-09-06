@@ -298,4 +298,8 @@ Finally, let's add some finesse to our application by using Process Builder to d
 6. Click Save
 7. Click "Activate"
 
+<<<<<<< HEAD
 Now whenever a case is created that has a related Smart Fridge, the important data about that fridge will be accessible right from the case owners's chatter feed.
+=======
+Now whenever a case is created that has a related Smart Fridge, the important data about that fridge will be accessible right from the case owners's chatter feed.
+>>>>>>> 9d85b40cb8355dd036e0d6efe8198021fe44c11c
