@@ -477,7 +477,7 @@ class Application {
         local data = {
             "Subject": subject,
             "Description": description,
-            "Related_Fridge__c" : _deviceID
+            "Related_Fridge__r" : {"DeviceId__c": _deviceID}
         };
 
         // don't send if we are not logged in
@@ -545,6 +545,6 @@ class Application {
 // ----------------------------------------------------------
 const CONSUMER_KEY = "<YOUR CONSUMER KEY HERE>";
 const CONSUMER_SECRET = "<YOUR CONSUMER SECRET HERE>";
-const OBJ_API_NAME = "Frig_Reading__c"
+const OBJ_API_NAME = "SmartFridge__c";
 
 Application(CONSUMER_KEY, CONSUMER_SECRET, OBJ_API_NAME);
