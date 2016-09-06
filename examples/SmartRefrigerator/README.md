@@ -1,6 +1,6 @@
 #Salesforce Smart Refrigerator
 
-The following Trailhead project will use the Electric Imp platform to monitor a refrigerator and a Salesforce *Connected App* to track the current temperature and humidity in the fridge.  This example will also *open a case* in Salesforce if:  1) the refrigerator door is open for more than 30 seconds, or 2) the temperature remains over 11°C for more than 15 min, or 3) the relative humidity is over 70% for more than 15 min.  To track the current temperature and humidity we will create a Salesforce *custom object*, then update it with new readings every 15 sec.
+The following Trailhead project will use an Electric Imp to monitor a refrigerator and a Salesforce *Connected App* to track the current temperature and humidity in the fridge.  This example will also *open a case* in Salesforce if:  1) the refrigerator door is open for more than 30 seconds, or 2) the temperature remains over 11°C for more than 15 min, or 3) the relative humidity is over 70% for more than 15 min.  To track the current temperature and humidity we will create a Salesforce *custom object*, then update it with new readings every 15 sec.
 
 
 ## What you need
@@ -17,6 +17,9 @@ The following Trailhead project will use the Electric Imp platform to monitor a 
 
 ### Hardware
   - An Electric Imp developer kit - to purchase email saleforce.devkit@electricimp.com
+
+And if you want to install the board into a fridge:
+
   - [USB AC adapter](https://www.amazon.com/Omni-Universal-Adapter-Charger-Samsung/dp/B00YG0QALS/ref=sr_1_2?ie=UTF8&qid=1470954944&sr=8-2&keywords=usb+ac+adapter+5v)
   - [Electrical tape](https://www.amazon.com/Duck-299006-4-Inch-Utility-Electrical/dp/B001B19JLS/ref=sr_1_1?s=industrial&ie=UTF8&qid=1470867277&sr=1-1)
 
@@ -24,11 +27,15 @@ The following Trailhead project will use the Electric Imp platform to monitor a 
 
 ### Step 1: Setup the Electric Imp hardware
 
+First we will need to assemble the Electric Imp Developer Kit.  The kit comes with the imp001 card, which drives all the logic for the board, the breakout board and an environmental sensor "tail".  A tail is a specific kind of board which can be swapped out with the breakout board.  For this project the environmental sensor will read temperature, humidity and light to determine the current state of your fridge.
+
 #### Hardware Setup
- - Plug the imp001 into the breakout board
+ - Plug the imp001 card into the breakout board slot.  
  - Connect the Env Sensor tail to the April breakout board
  - Power up your Imp with the USB cable and power adapter
  - The imp001 should now have power and be blinking amber/red
+
+Assmbled it should look like this:
 
 <img src="http://i.imgur.com/erBvo7d.jpg" width="400">
 
@@ -36,22 +43,30 @@ The following Trailhead project will use the Electric Imp platform to monitor a 
 
 Use the Electric Imp mobile app to BlinkUp your device
 
- - Log into your Electric Imp account
+ - Log into your Electric Imp account.  
  - Enter your WIFI credentials
  - Follow the instructions in the app to [BlinkUp](https://electricimp.com/platform/blinkup/) your device
+
+ If you have any issues getting started with your Electric Imp account or device, see [the full getting started guide](https://electricimp.com/docs/gettingstarted/quickstartguide/).
 
 ### Step 2: Add Code for the Electric Imp
 
 #### How Electric Imp's cloud based programming works
 
-The Electric Imp IDE provides all the tools you need to write and deploy the software that will control your imp-enabled connected product. The IDE runs in a desktop web browser. If you have want a quick overview of the IDE features please visit the Electric Imp [Dev Center](https://electricimp.com/docs/gettingstarted/ide/).
+The Electric Imp IDE provides all the tools you need to write and deploy the software that will control your imp-enabled connected product. The IDE runs in a desktop web browser and communicates between the device and cloud solutions.  Here is a broad overview of the flow between the device code, the agent code and the Salesforce:
+
+<img src="http://i.imgur.com/fJm7vlO.jpg" width="400">
+
+
+ If you have want a quick overview of the IDE features please visit the Electric Imp [Dev Center](https://electricimp.com/docs/gettingstarted/ide/).
 
 #### Electric Imp IDE / Code
 
  - In your favorite web browser log into the [Electric Imp IDE](https://ide.electricimp.com/login)
  - Click the *Create New Model* button
  - In the pop up name your code model, select your device and click *Create Model* button
- - Copy and paste the Salesforce Trailhead example code into the agent and device coding windows.  The agent.nut file should go in the agent coding window, the device.nut file in the device coding window.
+ - Copy and Paste the [agent code](https://raw.githubusercontent.com/electricimp/Salesforce/master/examples/SmartRefrigerator/SmartRefrigerator_Salesforce.agent.nut) from github into the left side agent window
+ - Copy and Paste the [device code](https://raw.githubusercontent.com/electricimp/Salesforce/master/examples/SmartRefrigerator/SmartRefrigerator_Salesforce.device.nut) from github into the right side device window
  - In the sidebar select your device (this should open up a device logs window under the agent and device coding windows)
  - At the top of your agent coding window there is now an agent url. It will look something like this ```"https://agent.electricimp.com/szPc0sLfAqlu"```
  - Make a note of your agent url. You will need the it when creating your connected app in Salesforce.
@@ -71,12 +86,12 @@ Step by step instructions to create a Connected App:
   ![Salesforce Apps](http://i.imgur.com/40aXTlL.png)
   4. In the **New Connected App** form fill in:
     - Basic Information
-      - Connected App Name
-      - API Name
-      - Contact Email
+      - Connect App Name: "Electric Imp SmartFridge"
+      - API Name should fill out to be "Electric_Imp_SmartFridge"
+      - Contact Email should be your email
     - API (Enable OAuth Settings)
       - Check the *Enable OAuth Settings* Box
-      - Callback URL - this should be your agent url
+      - Callback URL - this should be your agent URL from the Electic Imp IDE (see last step)
       - Selected OAuth Scopes
         - Select *Access and manage your data (api)*
         - then click *Add*
@@ -107,9 +122,9 @@ You will need to create a custom object with fields that correspond to each key 
 ![Salesforce Custom Object](http://i.imgur.com/FhF0J8w.png)
 4. In the **New Custom Object** form fill in:
     - Custom Object Information
-      - **Label** - for example *Frig_Reading*
-      - **Plural Label** - for example *Frig_Readings*
-      - **Object Name** - for example *Frig_Reading*
+      - **Label** - for example *SmartFridge*
+      - **Plural Label** - for example *SmartFridges*
+      - **Object Name** - for example *SmartFridge*
     - Enter Record Name Label and Format
       - **Record Name** - for example *Reading Id*
       - **Data Type** select **Auto Number**
@@ -171,13 +186,13 @@ We want the cases opened to contain the Device ID for our refrigerator.  To do t
 ![Salesforce Case Custom Field](http://i.imgur.com/XJf6KSg.png)
 4. In the **New Custom Field** form fill in:
     - Step 1 *Data Type*
-      - Select **text**
+      - Select **Lookup**
       - then click **Next** button
+      - Select "SmartFridge" as the related object
     - Step 2 of 4
-      - Enter **Field Label** enter **Related_Fridge**
-      - Enter **Length** - for example *16*
+      - Enter **Field Label** enter **Related Fridge**
       - Enter **Field Name** enter **Related_Fridge**
-      - Enter **Description** (optional) for example *Device Id of the assoceated refrigerator*
+      - Enter **Description** (optional) for example *Device Id of the associated refrigerator*
       - then click **Next** button
     - Step 3 of 4
       - click **Next** button
@@ -208,19 +223,20 @@ Run the USB cable to the outside of the refrigerator and plug into power.
 
 <img src="http://i.imgur.com/BUuEpjt.png" width="400">
 
+If you don't have a fridge handy for this scenario, you can also test the door being open or close by shining a bright light against the Environment Sensor board.  A door open for thirty seconds should register a case.
 
 ### Step 8: Monitor the data in Salesforce1
 
 Now that you have connected your Imp to Salesforce, it might be handy to see that data on a mobile device.  Using Salesforce1, it is easy to keep track of your Smart Fridge on the go.
 
 
-#### Create a Custom Object
+#### Create a Custom Object Tab
 First, let's give the custom object a tab so that Salesforce1 can add it to the left navigation.
 
 1. Go to Setup
 2. Under *Create*, click *Tabs*
 3. Next to "Custom Object Tabs", click *New*
-4. In the objects drop down, select "Frig_Reading"
+4. In the objects drop down, select "SmartFridge"
 5. Select an Icon
 6. Click "Save"
 
@@ -248,7 +264,7 @@ image
 
 5. Under the "Recent" section, scroll down and click "More"
 
-6. You will see "Frig_Reading" somewhere on the list.  Select it and you can now browse the readings as if it it were on a mobile device.
+6. You will see "SmartFridge" somewhere on the list.  Select it and you can now browse the readings as if it it were on a mobile device.
 
 
 ### Step 9: Use Process Builder to Chatter Fridge data
@@ -260,21 +276,26 @@ Finally, let's add some finesse to our application by using Process Builder to d
 1. Go to Setup
 2. Go to Create | Workflows & Approvals | Process Builder
 3. Click "New"
-4. Name the new Process "Update Case for Smart Fridge"
-5. Click "Add Object" and for "Find an Object" select "Case"
-6. Leave the process at "only when a record is created"
-7. Click "Add Criteria" and name it "Related to Smart Fridge"
-8. Under set conditions, click "Find a Field".
-9. Use field selector to find "Related Fridge" and then "DeviceId"
-10. Under "Operator" select "Is Null"
-11. Leave "Boolean" and "False"
-12. Click "Save"
-13. Under "Immediate Actions" next to the new criteria, click "Add Action"
-14. Under Action Type, select "Post to Chatter"
-15. Under Action name, type "Post Smart Fridge Data"
-16. Under "Post To", select "This Record"
-17. In the message section, type a message using the merge field lookup which reads something like "This case is related to Smart Fridge {![Case].Related_Fridge__c.DeviceId__c}.  It was recorded at a temperature of {![Case].Related_Fridge__c.Temperature__c}, humidity of {![Case].Related_Fridge__c.Temperature__c}{![Case].Related_Fridge__c.Humidity__c} and the door with a status of {![Case].Related_Fridge__c.Door__c}."
-18. Click Save
-19. Click "Activate"
+4. Name the new Process "Post Chatter for Smart Fridge"
 
-Now whenever a case is created that has a related Smart Fridge, the important data about that fridge will be accessible right from the case's chatter feed.
+
+#### Setup the Process Criteria
+1. Click "Add Object" and for "Find an Object" select "Case"
+2. Leave the process at "only when a record is created"
+3. Click "Add Criteria" and name it "Related to Smart Fridge"
+4. Under set conditions, click "Find a Field".
+5. Use field selector to find "Related Fridge" and then "Related Fridge"
+6. Under "Operator" select "Is Null"
+7. Leave "Boolean" and "False"
+8. Click "Save"
+
+#### Create the Action
+1. Under "Immediate Actions" next to the new criteria, click "Add Action"
+2. Under Action Type, select "Post to Chatter"
+3. Under Action name, type "Post Smart Fridge Data"
+4. Under "Post To", select "User", "Select a User from a Record" and then pick the OwnerID field
+5. In the message section, type a message using the merge field lookup which reads something like "A case ({![Case].Id}) was opened related to Smart Fridge {![Case].Related_Fridge__c.DeviceId__c}.  It was recorded at a temperature of {![Case].Related_Fridge__c.Temperature__c}, humidity of {![Case].Related_Fridge__c.Temperature__c}{![Case].Related_Fridge__c.Humidity__c} and the door with a status of {![Case].Related_Fridge__c.Door__c}."
+6. Click Save
+7. Click "Activate"
+
+Now whenever a case is created that has a related Smart Fridge, the important data about that fridge will be accessible right from the case owners's chatter feed.
