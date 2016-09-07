@@ -54,11 +54,11 @@ Use the Electric Imp mobile app to BlinkUp your device
 #### How Electric Imp's connectivity platform works
 
 
-The Electric Imp IoT Connectivity Platform has two main components -- the impDevice and the impCloud.  The impDevice includes a small OS, the impOS, as well as a bytecode virtual machine (VM). Inside this VM runs the device code, which in this case consolidates the data gathered by the temperature/humidity/light sensors.  Each device is paired one-to-one with a "virtual twin" -- or, as we call it, an agent -- in the impCloud.  This agent code in this example runs the logic on the sensor data and communicates with the Salesforce cloud.  Here's a broad overview of this flow:
+The Electric Imp IoT Connectivity Platform has two main components -- the impDevice and the impCloud.  The impDevice runs the device code, which in this use case consolidates the data gathered by the temperature/humidity/light sensors.  Each device is paired one-to-one with a "virtual twin" -- or, as we call it, an agent -- in the impCloud.  The device sends this data to its agent, which runs agent code. In this example the agent executes the logic on the sensor data (e.g. light values show fridge is open) and communicates with the Salesforce cloud.  Here's a broad overview of this flow:
 
 <img src="http://i.imgur.com/fJm7vlO.jpg" width="400">
 
-The Electric Imp IDE provides all the tools you need to write and deploy the software that will control your imp-enabled connected product. The IDE runs in a desktop web browser and communicates between the device and cloud solutions.  
+The Electric Imp IDE provides all the tools you need to write and deploy the software (to the device and agent) that will control your imp-enabled connected product. The IDE runs in a desktop web browser and communicates between the device and cloud solutions.  
 
  If you have want a quick overview of the IDE features please visit the Electric Imp [Dev Center](https://electricimp.com/docs/gettingstarted/ide/).
 
