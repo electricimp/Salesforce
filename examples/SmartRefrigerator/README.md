@@ -1,6 +1,6 @@
 #Salesforce Smart Refrigerator
 
-The following Trailhead project will use  the Electric Imp platform to connect and monitor a refrigerator and a Salesforce *Connected App* to track the current temperature and humidity in the fridge.  This example will also *open a case* in Salesforce if:  1) the refrigerator door is open for more than 30 seconds, or 2) the temperature remains over 11°C for more than 15 min, or 3) the relative humidity is over 70% for more than 15 min.  To track the current temperature and humidity we will create a Salesforce *custom object*, then update it with new readings every 15 sec.
+The following Trailhead project will use  the Electric Imp platform to connect and monitor a refrigerator and a Salesforce *Connected App* to track the current temperature and humidity in the fridge.  This example will also *open a case* in Salesforce if:  1) the refrigerator door is open for more than 30 seconds, or 2) the temperature remains over 11°C for more than 15 min, or 3) the relative humidity is over 70% for more than 15 min.  To track the current temperature and humidity we will create a Salesforce *custom object*, then update it with new readings every 15 seconds.
 
 
 ## What you need
@@ -51,12 +51,14 @@ Use the Electric Imp mobile app to BlinkUp your device
 
 ### Step 2: Add Code for the Electric Imp
 
-#### How Electric Imp's cloud based programming works
+#### How Electric Imp's connectivity platform works
 
-The Electric Imp IDE provides all the tools you need to write and deploy the software that will control your imp-enabled connected product. The IDE runs in a desktop web browser and communicates between the device and cloud solutions.  Here is a broad overview of the flow between the device code, the agent code and the Salesforce:
+
+The Electric Imp IoT Connectivity Platform has two main components -- the impDevice and the impCloud.  The impDevice includes a small OS, the impOS, as well as a bytecode virtual machine (VM). Inside this VM runs the device code, which in this case consolidates the data gathered by the temperature/humidity/light sensors.  Each device is paired one-to-one with a "virtual twin" -- or, as we call it, an agent -- in the impCloud.  This agent code in this example runs the logic on the sensor data and communicates with the Salesforce cloud.  Here's a broad overview of this flow:
 
 <img src="http://i.imgur.com/fJm7vlO.jpg" width="400">
 
+The Electric Imp IDE provides all the tools you need to write and deploy the software that will control your imp-enabled connected product. The IDE runs in a desktop web browser and communicates between the device and cloud solutions.  
 
  If you have want a quick overview of the IDE features please visit the Electric Imp [Dev Center](https://electricimp.com/docs/gettingstarted/ide/).
 
