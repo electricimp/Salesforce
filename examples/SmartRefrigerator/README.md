@@ -37,7 +37,7 @@ First we will need to assemble the Electric Imp Developer Kit.  The kit comes wi
 
 Assmbled it should look like this:
 
-<img src="http://i.imgur.com/VpZHzdS.jpg" width="400">
+<img src="http://i.imgur.com/erBvo7d.jpg" width="400">
 
 #### Electric Imp BlinkUp
 
