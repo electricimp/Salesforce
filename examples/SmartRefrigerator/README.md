@@ -60,7 +60,7 @@ The Electric Imp IoT Connectivity Platform has two main components -- the impDev
 
 The Electric Imp IDE provides all the tools you need to write and deploy the software (to the device and agent) that will control your imp-enabled connected product. The IDE runs in a desktop web browser and communicates between the device and cloud solutions.  
 
- If you have want a quick overview of the IDE features please visit the Electric Imp [Dev Center](https://electricimp.com/docs/gettingstarted/ide/).
+ If you'd like a quick overview of the IDE features please visit the Electric Imp [Dev Center](https://electricimp.com/docs/gettingstarted/ide/).
 
 #### Electric Imp IDE / Code
 
