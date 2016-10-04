@@ -387,6 +387,6 @@ class Application {
 // Create instances of our classes
 app <- Application();
 
-// Give agent time to configure watson device
+// Give agent time to come online
 // Then start the sensor reading & connection loops
 imp.wakeup(5, app.run.bindenv(app));
