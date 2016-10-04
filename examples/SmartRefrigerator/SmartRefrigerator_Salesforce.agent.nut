@@ -143,8 +143,8 @@ class SmartFrigDataManager {
     // NOTE: changing the device reading or reporting intervals will impact timing of event and alert conditions
     static DOOR_OPEN_ALERT = 10; // Number of reading cycles before activating a door alert (currently 30s: DOOR_OPEN_ALERT * device reading interval = seconds before sending door alert)
     static CLEAR_DOOR_OPEN_EVENT = 180; // Clear door open event after num seconds (prevents temperature or humidity alerts right after is opened)
-    static TEMP_ALERT_CONDITION = 300; // Number of seconds the temperature must be over threshold before triggering event
-    static HUMID_ALERT_CONDITION = 300; // Number of seconds the humidity must be over threshold before triggering event
+    static TEMP_ALERT_CONDITION = 900; // Number of seconds the temperature must be over threshold before triggering event
+    static HUMID_ALERT_CONDITION = 900; // Number of seconds the humidity must be over threshold before triggering event
 
     // Class variables
     _bull = null;
