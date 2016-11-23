@@ -215,7 +215,7 @@ These examples use OAuth 2.0 for authentication, so the agent has been set up as
 Go to the Electric Imp IDE and select your device from the sidebar for the final setup steps.
 
 - Hit **Build and Run** to save and launch the code
-- Click on the agent url (at the top of the agent coding window) to launch the log in page
+- Click on the agent url to launch the log in page
 - Log into salesforce
 
 ![IDE Screenshot](http://i.imgur.com/epCLa2O.png)
