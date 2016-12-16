@@ -1,7 +1,7 @@
 //line 1 "device.nut"
 // Utility Libraries
 #require "promise.class.nut:3.0.0"
-#require "bullwinkle.class.nut:2.3.0"
+#require "bullwinkle.class.nut:2.3.2"
 
 // Sensor Libraries
 // Accelerometer Library
@@ -9,6 +9,7 @@
 // Temperature Humidity sensor Library
 #require "HTS221.class.nut:1.0.0"
 
+// Class to configure and take readings from Explorer Kit sensors
 //line 1 "ExplorerKitSensors.class.nut"
 /***************************************************************************************
  * ExplorerKitSensors Class:
@@ -253,7 +254,9 @@ class ExplorerKitSensors {
         return this;
     }
 
-}//line 1 "SmartFridgeApp.class.nut"
+}//line 13 "device.nut"
+// Smart Refrigerator Application class
+//line 1 "SmartFridgeApp.class.nut"
 /***************************************************************************************
  * SmartFridgeApp Class:
  *      Configures sleep/wake behavior, and interrupts
@@ -303,6 +306,10 @@ class SmartFridgeApp {
     static EVENT_TYPE_DOOR_ALERT = "door alert";
     static EVENT_TYPE_DOOR_STATUS = "door status";
 
+    // Door status strings
+    static DOOR_OPEN = "open";
+    static DOOR_CLOSED = "closed";
+
     // Debug logging flags, note logging requires a connection to the server, so logging will decrease battery life
     static DEBUG_LOGGING = true;
     static LX_LOGGING = false;
@@ -311,7 +318,7 @@ class SmartFridgeApp {
     _bull = null;
     _exKit = null;
 
-    _boot = false;
+    _boot = null;
 
     /***************************************************************************************
      * constructor
@@ -341,7 +348,9 @@ class SmartFridgeApp {
                 if (DEBUG_LOGGING) nv.logs.push("Woke on timer.");
                 break;
             case WAKEREASON_POWER_ON:
-                _boot = true;
+                _boot = imp.wakeup(BOOT_TIMEOUT, function() {
+                    _boot = null;
+                }.bindenv(this));
             default :
                 if (DEBUG_LOGGING) {
                     nv.logs.push("Woke on boot, etc.");
@@ -351,25 +360,24 @@ class SmartFridgeApp {
         }
 
         _configureDevice();
-        // Take Readings/Run Connection Flow
-        runConnectionFlow();
+        // Take Readings
+        runWakeUpFlow();
     }
 
     /***************************************************************************************
-     * runConnectionFlow
-     *          - run connection promise passed in
-     *          - then check if we should connect
-     *          - then check if we should take readings
-     *          - then go back to sleep
+     * runWakeUpFlow
+     *          - take readings
+     *          - then check if we should connect & send data
+     *          - then go to sleep, or start wake loop
      * Returns: null
      * Parameters: none
      **************************************************************************************/
-    function runConnectionFlow() {
+    function runWakeUpFlow() {
         takeReadings()
             .then(function(msg) {
                 if (DEBUG_LOGGING) nv.logs.push(msg);
-                // Check if time to connect
-                if ( _connectTime() || nv.events.len() > 0) {
+                // Check whether to connect
+                if (server.isconnected() || _connectTime() || nv.events.len() > 0) {
                     return sendUpdate();
                 } else {
                     return "Not connection time yet.";
@@ -377,14 +385,7 @@ class SmartFridgeApp {
             }.bindenv(this))
             .then(function(msg) {
                 if (DEBUG_LOGGING) nv.logs.push(msg);
-                // Wait before power down if we just woke because of boot up
-                if (_boot) {
-                    imp.wakeup(BOOT_TIMEOUT, function() {
-                        powerDown();
-                    }.bindenv(this))
-                } else {
-                    powerDown();
-                }
+                powerDown();
             }.bindenv(this));
     }
 
@@ -415,7 +416,7 @@ class SmartFridgeApp {
             local update = _createUpdateTable();
 
             // We are connecting so log messages
-            if (DEBUG_LOGGING) server.log("SENDING UPDATE at " + time());
+            server.log("SENDING UPDATE at " + time());
             if (DEBUG_LOGGING) _logStoredMsgs();
 
             // Send update to agent
@@ -458,7 +459,7 @@ class SmartFridgeApp {
                 if (reading.temperature < TEMP_THRESHOLD) {
                     // reset event flag if set, b/c we have dropped back to acceptable range
                     if (nv.env.eventReported.temperature) nv.env.eventReported.temperature = false;
-                } else if (nv.door.currentStatus == "closed" && nv.env.doorTimeout == null && !nv.env.eventReported.temperature) {
+                } else if (nv.door.currentStatus == DOOR_CLOSED && nv.env.doorTimeout == null && !nv.env.eventReported.temperature) {
                     // We have met all conditions, so check for temp event
                     _checkEnvTimer("temperature", now, reading.temperature);
                 }
@@ -468,7 +469,7 @@ class SmartFridgeApp {
                 if (reading.humidity < HUMID_THRESHOLD) {
                     // reset event flag if set, b/c we have dropped back to acceptable range
                     if (nv.env.eventReported.humidity) nv.env.eventReported.humidity = false;
-                } else if (nv.door.currentStatus == "closed" && nv.env.doorTimeout == null && !nv.env.eventReported.humidity) {
+                } else if (nv.door.currentStatus == DOOR_CLOSED && nv.env.doorTimeout == null && !nv.env.eventReported.humidity) {
                     // We have met all conditions, so check for humid event
                     _checkEnvTimer("humidity", now, reading.humidity);
                 }
@@ -487,26 +488,26 @@ class SmartFridgeApp {
     }
 
     /***************************************************************************************
-     * getWakeTimer - sets at timestamp for the next scheduled reading
-     * Returns: Time in seconds to sleep for
+     * setNextReadingTime - sets at timestamp for the next scheduled reading
+     * Returns: Time in seconds before next reading
      * Parameters:
      *          now (optional): current time
      **************************************************************************************/
-    function getWakeTimer(now = null) {
-        local wakeTimer, nextWakeTime;
+    function setNextReadingTime(now = null) {
+        local readingTimer;
         if (now == null) now = time();
-        if ("nextWakeTime" in nv.timers) wakeTimer = nv.timers.nextWakeTime - now;
+        if ("nextWakeTime" in nv.timers) readingTimer = nv.timers.nextReadingTime - now;
 
-        if (wakeTimer == null || wakeTimer <= 1) {
+        if (readingTimer == null || readingTimer <= 1) {
             // Next wake time has not been configured or we just took a reading
             // Set next wake time to default
-            wakeTimer = READING_INTERVAL;
+            readingTimer = READING_INTERVAL;
         }
 
-        // Store next wake time
-        nv.timers.nextWakeTime <- now + wakeTimer;
-        // Return time to sleep for
-        return nextWakeTime;
+        // Store next readig/wake time
+        nv.timers.nextReadingTime <- now + readingTimer;
+        // Return time til next reading
+        return readingTimer;
     }
 
     /***************************************************************************************
@@ -521,21 +522,26 @@ class SmartFridgeApp {
     }
 
     /***************************************************************************************
-     * powerDown - if door is open turn off WiFi, otherwise sleep
+     * powerDown - if cold boot stay connected, if door is open turn off WiFi, otherwise sleep
      * Returns: null
      * Parameters: none
      **************************************************************************************/
     function powerDown() {
-        if (nv.door.currentStatus == "open") {
+        local nextReading = setNextReadingTime();
+
+        if (_boot) {
+            // Start loop to check for changes in door status
+            _startWakeLoop();
+        } else if (nv.door.currentStatus == DOOR_OPEN) {
             // Disconnect from WiFi
             imp.onidle(function() {
                 server.disconnect();
             }.bindenv(this));
 
             // Start loop to check for Door Close event
-            _checkForDoorEvents();
+            _startWakeLoop();
         } else {
-            sleep(getWakeTimer());
+            sleep(nextReading);
         }
     }
 
@@ -583,7 +589,7 @@ class SmartFridgeApp {
         imp.setpowersave(true); // will slow connection time when true
         // Configure sensors and interrupts
         _exKit.configureSensors();
-        _exKit.enableAccelerometerClickInterrupt(_checkForDoorEvents.bindenv(this));
+        _exKit.enableAccelerometerClickInterrupt(_startWakeLoop.bindenv(this));
     }
 
     /***************************************************************************************
@@ -593,7 +599,7 @@ class SmartFridgeApp {
      **************************************************************************************/
     function _configureNVTable() {
         local root = getroottable();
-        local door = { "currentStatus" : "closed",
+        local door = { "currentStatus" : DOOR_CLOSED,
                               "openAlertSent" : false,
                               "ts" : time() };
         local env = { "doorTimeout" : null,
@@ -601,11 +607,11 @@ class SmartFridgeApp {
                              "humidTimer" : null,
                              "eventReported" : {"temperature": false , "humidity" : false} };
         if (!("nv" in root)) root.nv <- { "readings" : [],
-                                                      "events" : [],
-                                                      "timers" : {},
-                                                      "logs" : [],
-                                                      "door" : door,
-                                                      "env" : env };
+                                          "events" : [],
+                                          "timers" : {},
+                                          "logs" : [],
+                                          "door" : door,
+                                          "env" : env };
     }
 
     /***************************************************************************************
@@ -615,7 +621,7 @@ class SmartFridgeApp {
      **************************************************************************************/
     function _configureTimers() {
         local now = time();
-        getWakeTimer(now);
+        setNextReadingTime(now);
         setNextConnect(now);
     }
 
@@ -626,6 +632,15 @@ class SmartFridgeApp {
      **************************************************************************************/
     function _connectTime() {
         return (time() >= nv.timers.nextConnectTime) ? true : false;
+    }
+
+    /***************************************************************************************
+     * _readingTime - checks current time with next scheduled reading time
+     * Returns: boolean
+     * Parameters: none
+     **************************************************************************************/
+    function _readingTime() {
+        return (time() >= nv.timers.nextReadingTime) ? true : false;
     }
 
     /***************************************************************************************
@@ -668,20 +683,20 @@ class SmartFridgeApp {
     }
 
     /***************************************************************************************
-     * _checkForDoorEvents -
+     * _startWakeLoop -
      *             loops until door close detected, then runs connection
      *             flow to notify agent of the change, and then sleep
      * Returns: null
      * Parameters: none
      **************************************************************************************/
-    function _checkForDoorEvents() {
+    function _startWakeLoop() {
         _updateDoorStatus(_exKit.getLightLevel());
-        if (nv.events.len() > 0) {
-            // Door event was found, connect and send
-            runConnectionFlow();
+        if (nv.events.len() > 0 || _readingTime()) {
+            // Door event was found or time for a reading, connect and send
+            runWakeUpFlow();
         } else {
             // No change in door status, so check again in a bit
-            imp.wakeup(DOOR_CHECK_TIMER, _checkForDoorEvents.bindenv(this));
+            imp.wakeup(DOOR_CHECK_TIMER, _startWakeLoop.bindenv(this));
         }
     }
 
@@ -691,7 +706,7 @@ class SmartFridgeApp {
      * Parameters: none
      **************************************************************************************/
     function _updateDoorStatus(lxReading) {
-        local doorStatus = ( LIGHT_THRESHOLD < lxReading ) ?  "open" : "closed";
+        local doorStatus = ( LIGHT_THRESHOLD < lxReading ) ?  DOOR_OPEN : DOOR_CLOSED;
 
         if (LX_LOGGING) {
             nv.logs.push("Lx level: " + lxReading);
@@ -699,13 +714,13 @@ class SmartFridgeApp {
             nv.logs.push("STORED DOOR STATUS: " +  nv.door.currentStatus);
         }
 
-        // Event triggered
+        // Door state changed - Event triggered
         if (doorStatus != nv.door.currentStatus) {
             // Get a time stamp for event
             local ts = time();
 
             // Door close event has just happened
-            if (doorStatus == "closed") {
+            if (doorStatus == DOOR_CLOSED) {
                 // Set door timeout
                 nv.env.doorTimeout = ts + DOOR_CONDITION_TIMEOUT;
                 // Reset alert flag
@@ -717,16 +732,16 @@ class SmartFridgeApp {
             nv.door.ts <- ts;
             // Update events
             nv.events.push({ "type" : EVENT_TYPE_DOOR_STATUS,
-                                        "description": format("door %s.", doorStatus.tolower()),
-                                        "ts" : ts });
+                             "description": format("door %s.", doorStatus.tolower()),
+                             "ts" : ts });
 
-        } else if (doorStatus == "open" && !nv.door.openAlertSent) {
+        } else if (doorStatus == DOOR_OPEN && !nv.door.openAlertSent) {
             // Determine if door alert should be triggered
             local doorOpenDuration = time() - nv.door.ts;
             if (doorOpenDuration >  DOOR_ALERT_TIMEOUT) {
                 nv.events.push({ "type" : EVENT_TYPE_DOOR_ALERT,
-                                            "description" : format("door has been open for %i seconds", doorOpenDuration),
-                                            "ts" : time() });
+                                 "description" : format("door has been open for %i seconds", doorOpenDuration),
+                                 "ts" : time() });
                 // Don't send multiple alerts
                 nv.door.openAlertSent <- true;
             }
@@ -781,7 +796,7 @@ class SmartFridgeApp {
         }
         return copy;
     }
-}//line 13 "device.nut"
+}//line 15 "device.nut"
 
 
 // RUNTIME
@@ -790,4 +805,5 @@ class SmartFridgeApp {
 // Select sensors to initialize
 local sensors = [ ExplorerKitSensors.TEMP_HUMID,
                   ExplorerKitSensors.ACCELEROMETER ];
+// Start Application
 SmartFridgeApp(sensors);

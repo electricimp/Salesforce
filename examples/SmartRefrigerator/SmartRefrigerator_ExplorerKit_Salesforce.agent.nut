@@ -1,8 +1,11 @@
 //line 1 "agent.nut"
-#require "Salesforce.class.nut:1.1.0"
+// Utility Libraries
 #require "Rocky.class.nut:1.2.3"
-#require "bullwinkle.class.nut:2.3.0"
+#require "bullwinkle.class.nut:2.3.2"
+// Web Integration Library
+#require "Salesforce.class.nut:1.1.0"
 
+// Extends Salesforce Library to handle authorization
 //line 1 "SalesforceOAuth2.class.nut"
 // EXTEND SALESFORCE CLASS TO HANDLE OAUTH 2.0
 // ----------------------------------------------------------
@@ -122,7 +125,9 @@ class SalesforceOAuth2 extends Salesforce {
             if (cb) imp.wakeup(0, function() { cb(err, resp, respData); });
         });
     }
-}//line 1 "SmartFrigDataManager.class.nut"
+}//line 9 "agent.nut"
+// Class that receives and handles data sent from device SmartFridgeApp
+//line 1 "SmartFrigDataManager.class.nut"
 /***************************************************************************************
  * SmartFrigDataManager Class:
  *      Handle incoming device readings and events
@@ -290,7 +295,7 @@ class SmartFrigDataManager {
     }
 
 }
-//line 7 "agent.nut"
+//line 11 "agent.nut"
 
 
 /***************************************************************************************
@@ -299,6 +304,7 @@ class SmartFrigDataManager {
  *
  * Dependencies
  *      Bullwinkle Library
+ *      Rocky Library
  *      Salesforce Library, SalesforceOAuth2 Class
  *      SmartFrigDataManager Class
  **************************************************************************************/
@@ -313,6 +319,14 @@ class Application {
     _deviceID = null;
     _objName = null;
 
+    /***************************************************************************************
+     * Constructor
+     * Returns: null
+     * Parameters:
+     *      key : string - Yor Consumer Key (created in Salesforce App settings)
+     *      secret : string - Yor Consumer Secret (created in Salesforce App settings)
+     *      objName : string - Your Object API Name (created in Salesforce)
+     **************************************************************************************/
     constructor(key, secret, objName) {
         _deviceID = imp.configparams.deviceid.tostring();
         _objName = objName;
@@ -320,6 +334,13 @@ class Application {
         setDataMngrHandlers();
     }
 
+    /***************************************************************************************
+     * initializeClasses
+     * Returns: null
+     * Parameters:
+     *      key : string - Yor Consumer Key (created in Salesforce App settings)
+     *      secret : string - Yor Consumer Secret (created in Salesforce App settings)
+     **************************************************************************************/
     function initializeClasses(key, secret) {
         local _bull = Bullwinkle();
 
@@ -327,6 +348,11 @@ class Application {
         _force = SalesforceOAuth2(key, secret);
     }
 
+    /***************************************************************************************
+     * setDataMngrHandlers
+     * Returns: null
+     * Parameters: none
+     **************************************************************************************/
     function setDataMngrHandlers() {
         _dm.setDoorOpenAlertHandler(doorOpenHandler.bindenv(this));
         _dm.setStreamReadingsHandler(streamReadingsHandler.bindenv(this));
@@ -334,20 +360,22 @@ class Application {
         _dm.setHumidAlertHandler(humidAlertHandler.bindenv(this));
     }
 
+    /***************************************************************************************
+     * updateRecord
+     * Returns: null
+     * Parameters:
+     *      data : table - temperature, humidity, door status and ts
+     *      cb(optional) : function - callback executed when http request completes
+     **************************************************************************************/
     function updateRecord(data, cb = null) {
         local url = format("sobjects/%s/DeviceId__c/%s?_HttpMethod=PATCH", _objName, _deviceID);
         local body = {};
 
         // add salesforce custom object postfix to data keys
         foreach(k, v in data) {
-            if (k == "ts") {
-                v = formatTimestamp(v);
-            }
-
+            if (k == "ts") { v = formatTimestamp(v); }
             body[k + "__c"] <- v;
         }
-
-        server.log( http.jsonencode(body) )
 
         // don't send if we are not logged in
         if (!_force.isLoggedIn()) {
@@ -357,7 +385,14 @@ class Application {
         _force.request("POST", url, http.jsonencode(body), cb);
     }
 
-
+    /***************************************************************************************
+     * openCase
+     * Returns: null
+     * Parameters:
+     *      subject : string - type of alert, will be the subject of the case
+     *      description : string - description of event
+     *      cb(optional) : function - callback executed when http request completes
+     **************************************************************************************/
     function openCase(subject, description, cb = null) {
         local data = {
             "Subject": subject,
@@ -373,11 +408,23 @@ class Application {
         _force.request("POST", "sobjects/Case", http.jsonencode(data), cb);
     }
 
+    /***************************************************************************************
+     * streamReadingsHandler
+     * Returns: null
+     * Parameters:
+     *      reading : table - temperature, humidity and door status
+     **************************************************************************************/
     function streamReadingsHandler(reading) {
         server.log(http.jsonencode(reading));
         updateRecord(reading, updateRecordResHandler);
     }
 
+    /***************************************************************************************
+     * doorOpenHandler
+     * Returns: null
+     * Parameters:
+     *      event: table with event details
+     **************************************************************************************/
     function doorOpenHandler(event) {
         // { "description": "door has been open for 33 seconds", "type": "door alert", "ts": 1478110044 }
         local description = format("Refrigerator with id %s %s.", _deviceID, event.description);
@@ -385,18 +432,37 @@ class Application {
         openCase(DOOR_ALERT, description, caseResponseHandler);
     }
 
+    /***************************************************************************************
+     * tempAlertHandler
+     * Returns: null
+     * Parameters:
+     *      event: table with event details
+     **************************************************************************************/
     function tempAlertHandler(event) {
         local description = format("Refrigerator with id %s %s. Current temperature is %s°C.", _deviceID, event.description, event.latestReading.tostring());
         server.log(TEMP_ALERT + ": " + description);
         openCase(TEMP_ALERT, description, caseResponseHandler);
     }
 
+    /***************************************************************************************
+     * humidAlertHandler
+     * Returns: null
+     * Parameters:
+     *      event: table with event details
+     **************************************************************************************/
     function humidAlertHandler(event) {
         local description = format("Refrigerator with id %s %s. Current humidity is %s%s.", _deviceID, event.description, event.latestReading.tostring(), "%");
         server.log(HUMID_ALERT + ": " + description);
         openCase(HUMID_ALERT, description, caseResponseHandler);
     }
 
+    /***************************************************************************************
+     * caseResponseHandler
+     * Returns: null
+     * Parameters:
+     *      err : string/null - error message
+     *      data : table - response table
+     **************************************************************************************/
     function caseResponseHandler(err, data) {
         if (err) {
             server.error(http.jsonencode(err));
@@ -406,6 +472,13 @@ class Application {
         server.log("Created case with id: " + data.id);
     }
 
+    /***************************************************************************************
+     * updateRecordResHandler
+     * Returns: null
+     * Parameters:
+     *      err : string/null - error message
+     *      respData : table - response table
+     **************************************************************************************/
     function updateRecordResHandler(err, respData) {
         if (err) {
             server.error(http.jsonencode(err));
@@ -426,7 +499,6 @@ class Application {
      **************************************************************************************/
     function formatTimestamp(ts = null) {
         local d = ts ? date(ts) : date();
-        server.log("here")
         return format("%04d-%02d-%02dT%02d:%02d:%02dZ", d.year, d.month+1, d.day, d.hour, d.min, d.sec);
     }
 }
@@ -437,8 +509,9 @@ class Application {
 
 // SALESFORCE CONSTANTS
 // ----------------------------------------------------------
-const CONSUMER_KEY = "3MVG9KI2HHAq33RwrdNAca1E6Mc6ORiUak5o4e0_T8c3IrYFzidSUR33drcEWAvd57QPPvqI7e1QXd5.xOQ.P";
-const CONSUMER_SECRET = "589013026136925111";
+const CONSUMER_KEY = "<YOUR_CONSUMER_KEY_HERE>";
+const CONSUMER_SECRET = "<YOUR_CONSUMER_SECRET_HERE>";
 const OBJ_API_NAME = "SmartFridge__c";
 
+// Start Application
 Application(CONSUMER_KEY, CONSUMER_SECRET, OBJ_API_NAME);

@@ -4,7 +4,9 @@ The following examples will use a Salesforce Connected App for communication bet
 
 ## Hardware
 
-Both examples will use an Imp 001, an April breakout board, and an Environmental Sensor tail to collect data.  Developer kits with these parts can be purchased on [Amazon](http://www.amazon.com/WiFi-Environmental-Sensor-LED-kit/dp/B00ZQ4D1TM/ref=sr_1_1?ie=UTF8&qid=1459988822&sr=8-1&keywords=electric+imp+kit).  If you need guides to help you get started with Electric Imp visit the [Dev Center](https://electricimp.com/docs/gettingstarted/).
+For the Smart Refrigerator example select your hardware and follow the instructions found in the *SmartRefrigerator* folder.
+
+All other examples will use an Imp 001, an April breakout board, and an Environmental Sensor tail to collect data.  Developer kits with these parts can be purchased on [Amazon](http://www.amazon.com/WiFi-Environmental-Sensor-LED-kit/dp/B00ZQ4D1TM/ref=sr_1_1?ie=UTF8&qid=1459988822&sr=8-1&keywords=electric+imp+kit).  If you need guides to help you get started with Electric Imp visit the [Dev Center](https://electricimp.com/docs/gettingstarted/).
 
 
 ## Getting Started
