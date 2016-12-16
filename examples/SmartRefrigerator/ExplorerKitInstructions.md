@@ -217,7 +217,7 @@ Go to the Electric Imp IDE and select your device from the sidebar for the final
 
 ![IDE Screenshot](http://i.imgur.com/epCLa2O.png)
 
-Your App should now be up and running.  You can monitor the device logs in the IDE, or log into Salesforce web prortal to see updates there.
+Your App should now be up and running.  You can monitor the device logs in the IDE, or log into Salesforce web portal to see updates there.
 
 ### Step 8: Install Device in Refrigerator
 
