@@ -16,7 +16,7 @@ The following Trailhead project will use  the Electric Imp platform to connect a
   - A [Salesforce developer account](https://developer.salesforce.com/signup?d=70130000000td6N)
 
 ### Hardware
-  - An Electric Imp developer kit
+  - An Electric Imp [developer kit](https://www.amazon.com/dp/B01N47J61L/ref=cm_sw_r_cp_ep_dp_11Twyb8AMTVJ5)
     - Imp 001
     - Explorer Kit Sensor Board
 
@@ -28,7 +28,7 @@ And if you want to install the board into a fridge:
 
 ### Step 2: Setup the Electric Imp hardware
 
-First we will need to assemble the Electric Imp Developer Kit.  The kit comes with (1) the imp001 card, which has a WiFi radio and micorocontroller which drives all the logic for the board, (2) the Explorer Kit board into which the card is plugged.  The Explorer Kit board provides a set of sensors and peripherals which are ready to use. For this project will read temperature, humidity, accelerometer data and light to determine the current state of your fridge.
+First we will need to assemble the Electric Imp Developer Kit.  The kit comes with (1) the imp001 card, which has a WiFi radio and microcontroller which drives all the logic for the board and (2) the Explorer Kit board into which the card is plugged.  The Explorer Kit board provides a set of sensors and peripherals which are ready to use. This project will take readings from temperature, humidity, accelerometer, and light sensors to determine the current state of your fridge.
 
 #### Hardware Setup
  - Plug the imp001 card into the breakout board slot
@@ -47,7 +47,7 @@ Use the Electric Imp mobile app to BlinkUp your device
  - Enter your WIFI credentials
  - Follow the instructions in the app to [BlinkUp](https://electricimp.com/platform/blinkup/) your device
 
- If you have any issues getting started with your Electric Imp account or device, see [the full getting started guide](https://electricimp.com/docs/gettingstarted/quickstartguide/).
+ If you have any issues getting started with your Electric Imp account or device, see [the full getting started guide](https://electricimp.com/docs/gettingstarted/explorer/quickstartguide/).
 
 ### Step 3: Add Code for the Electric Imp
 
@@ -60,7 +60,7 @@ The Electric Imp IoT Connectivity Platform has two main components -- the impDev
 
 The Electric Imp IDE provides all the tools you need to write and deploy the software (to the device and agent) that will control your imp-enabled connected product. The IDE runs in a desktop web browser and communicates between the device and cloud solutions.
 
- If you'd like a quick overview of the IDE features please visit the Electric Imp [Dev Center](https://electricimp.com/docs/gettingstarted/ide/).
+ If you'd like a quick overview of the IDE features please visit the Electric Imp [Dev Center](https://electricimp.com/docs/ideuserguide/).
 
 #### Electric Imp IDE / Code
 
