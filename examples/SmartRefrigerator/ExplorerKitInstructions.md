@@ -1,4 +1,4 @@
-#Salesforce Smart Refrigerator
+# Salesforce Smart Refrigerator
 
 The following Trailhead project will use  the Electric Imp platform to connect and monitor a refrigerator and a Salesforce *Connected App* to track the current temperature and humidity in the fridge.  This example will also *open a case* in Salesforce if:  1) the refrigerator door is open for more than 30 seconds, or 2) the temperature remains over 11°C for more than 15 min, or 3) the relative humidity is over 70% for more than 15 min.  To track the current temperature and humidity we will create a Salesforce *custom object*, then update it with new readings every 15 seconds.
 
@@ -29,7 +29,7 @@ And if you want to install the board into a fridge:
 First we will need to assemble the impExplorer Kit.  The kit comes with (1) the imp001 card, which has a WiFi radio and microcontroller which drives all the logic for the board and (2) the impExplorer Kit into which the card is plugged.  The impExplorer Kit provides a set of sensors and peripherals which are ready to use. This project will take readings from temperature, humidity, accelerometer, and light sensors to determine the current state of your fridge.
 
 #### Hardware Setup
- - Plug the imp001 card into the breakout board slot
+ - Plug the imp001 card into the card slot on the impExplorer Kit
  - Power up your impExplorer Kit with the AA Batteries
  - The imp001 should now have power and be blinking amber/red
 
