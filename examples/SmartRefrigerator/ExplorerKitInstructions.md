@@ -137,36 +137,36 @@ You will need to create a custom object with fields that correspond to each key 
 7. At the bottom of the page under **Custom Fields & Relationships** click the **New** button
     - Step 1 *Data Type*
       - Select **Number** for temperature and humidity, **Text** for door, or **Date/Time** for ts
-      - then click **Next** button
+      - Then click **Next** button
     - Step 2 of 4
       - Enter **Field Label** - for example *temperature*, *humidity*, *door*, or *ts*
       - Enter **Length** - for temperature and humidity *4*, for door *10*
       - Enter **Decimal Places** - for temperature and humidity *2*
       - Enter **Field Name** - this must match the keys from the device code, *temperature*, *humidity*, *door*, or *ts*
       - Enter **Description** - for example *Temperature reading in °C*
-      - then click **Next** button
+      - Then click **Next** button
     - Step 3 of 4
-      - click **Next** button
+      - Click **Next** button
     - Step 4 of 4
-      - click **Save & New** <br>
+      - Click **Save & New** <br>
       **Repeat** Steps 1-4 for humidity,
 8. We need to create one more Field the *Device Id field*
     - Step 1 *Data Type*
       - Select **text**
-      - then click **Next** button
+      - Then click **Next** button
     - Step 2 of 4
       - Enter **Field Label** enter **deviceId**
       - Enter **Length** - for example *16*
       - Enter **Field Name** enter **deviceId**
-      - check **Required**
-      - check **Unique**
-      - check **Test "ABC" and "abc" as different values (case sensitive)**
-      - check **External ID**
-      - then click **Next** button
+      - Check **Required**
+      - Check **Unique**
+      - Check **Test "ABC" and "abc" as different values (case sensitive)**
+      - Check **External ID**
+      - Then click **Next** button
     - Step 3 of 4
-      - click **Next** button
+      - Click **Next** button
     - Step 4 of 4
-      - click **Save**
+      - Click **Save**
 9. You will be redirected to the *Custom Object - your object name* page
     - Make a note of your **API Name** (you will need to enter this into your agent code)
 ![Salesforce API Name](http://i.imgur.com/tL6ar7Z.png)
@@ -195,11 +195,11 @@ We want the cases opened to contain the Device ID for our refrigerator.  To do t
       - Enter **Field Label** enter **Related Fridge**
       - Enter **Field Name** enter **Related_Fridge**
       - Enter **Description** (optional) for example *Device Id of the associated refrigerator*
-      - then click **Next** button
+      - Then click **Next** button
     - Step 3 of 4
-      - click **Next** button
+      - Click **Next** button
     - Step 4 of 4
-      - click **Save**
+      - Click **Save**
 9. You will be redirected to the *Case Custom Field - your field name* page
     - Make a note of your **API Name** - this must be *Related_Fridge__c*
 ![Salesforce Case Custom Field](http://i.imgur.com/UuEJDnh.png)
@@ -211,7 +211,7 @@ Go to the Electric Imp IDE and select your device from the sidebar for the final
 
 - Hit **Build and Run** to save and launch the code
 - Click on the agent url to launch the log in page
-- Log into salesforce
+- Log into Salesforce
 
 ![IDE Screenshot](http://i.imgur.com/epCLa2O.png)
 
