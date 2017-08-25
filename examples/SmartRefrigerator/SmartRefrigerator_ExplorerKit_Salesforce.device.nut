@@ -276,6 +276,9 @@ class ExplorerKitSensors {
 class SmartFridgeApp {
     // Update the static variables to customize app for your refrigerator
 
+    // Note on power efficiency and battery life:
+    // Short intervals are useful for development and debugging
+    // For regular operation and longer battery life, intervals should be increased
     // Wake and connection time in seconds
     static READING_INTERVAL = 15;
     static REPORTING_INTERVAL = 60;
