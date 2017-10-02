@@ -85,9 +85,8 @@ The Electric Imp IDE provides all the tools you need to write and deploy the sof
 
  - Between the code and the logs windows in the IDE you can find agent url of your device. It will look similar to this ```"https://agent.electricimp.com/szPc0sLfAqlu"``` BlinkUp app showed the same url after successfull blink up.
  - Make a note of the agent url. You will need it when creating your connected app in Salesforce.
- - Do not close the page with the IDE.
-
-![IDE code windows](https://imgur.com/x5fGsNP.png)
+ ![IDE code windows](https://imgur.com/x5fGsNP.png)
+- Do not close IDE page.
 
 ### Step 4: Create a Salesforce Connected App
 
@@ -101,7 +100,7 @@ Step by step instructions to create a Connected App:
 ![Salesforce QuickFind App Manager](https://imgur.com/NQXBMdM.png)
 - Click **New Connected App**.
 - In the **New Connected App** form fill in:
-  - Basic Information
+  - Basic Information:
     - Connect App Name: **Electric Imp SmartFridge**
     - API Name should automatically becomes **Electric_Imp_SmartFridge**
     - Contact Email: enter your email address
@@ -118,12 +117,12 @@ Step by step instructions to create a Connected App:
   - Make a note of your **Consumer Key** (you will need to enter it into your agent code)
   - Click **Click to reveal** next to the Consumer Secret field
   - Make note of your **Consumer Secret** (you will need to enter it into your agent code)
-- Do not close the page with Salesforce.
 ![Salesforce Keys](https://imgur.com/XpJXq1I.png)
+- Do not close Salesforce page.
 
 #### Adding API keys to your Electric Imp Code
 
-Return back to the Electric Imp IDE. Find the *SALESFORCE CONSTANTS* section at the end of the agent code and enter your **Consumer Key** and **Consumer Secret** (copy them from the Salesforce Connected App's page).
+Return back to the Electric Imp IDE page. Find the *SALESFORCE CONSTANTS* section at the end of the agent code and enter your **Consumer Key** and **Consumer Secret** (copy them from the Salesforce Connected App's page).
 
 ![IDE with code](https://imgur.com/DKc0Kyr.png)
 
@@ -131,27 +130,27 @@ Return back to the Electric Imp IDE. Find the *SALESFORCE CONSTANTS* section at 
 
 #### Creating a Custom Object in Salesforce
 
-You will need to create a custom object with fields that correspond to each key in the reading table. Here are the step by step instructions for creating a Custom Object:
+You will need to create a custom object with fields that correspond to each key in the reading table (??? totally not clear). There is the step by step instruction for creating a Custom Object:
 
-1. Log into Salesforce, click **Setup** icon in the top right navigation menu and select **Setup**.
+- On the Salesforce page, click **Setup** icon in the top right navigation menu and select **Setup**.
 ![Salesforce Navbar](https://imgur.com/AJFyqgk.png)
-2. Click on **Object Manager** tab next to **Home**.
+- Click on **Object Manager** tab next to **Home**.
 ![Object Manager](https://imgur.com/bJhA9xk.png)
-3. Click on **Create** drop-down and then select **Custom Object**.
+- Click on **Create** drop-down and then select **Custom Object**.
 ![Custom Object Create](https://imgur.com/0uYtuPk.png)
-4. In the **New Custom Object** form fill in:
+- In the **New Custom Object** form fill in:
     - Custom Object Information
       - Label: **SmartFridge**
       - Plural Label: **SmartFridges**
       - Object Name: **SmartFridge**
     - Enter Record Name Label and Format
-      - Record Name: **Reading Id**
+      - Record Name: **Reading Id** (replace the default **SmartFridge Name**)
       - Data Type: **Auto Number**
       - Display Format: **R-{0000}**
       - Starting Number: **1**
-    - When above info is filled out click **Save**
 ![Custom Object Info](https://imgur.com/w4J67Jq.png)
-5. On the **SmartFridge** Custom Object page, confirm that **API Name** is **SmartFridge__c**
+    - Click **Save**
+- On the **SmartFridge** Custom Object page, confirm that **API Name** is **SmartFridge__c**
 ![Custom Object Api Name](https://imgur.com/y5spRHY.png)
 
 #### Creating SmartFridge Custom Fields
