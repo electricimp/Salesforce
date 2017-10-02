@@ -50,7 +50,7 @@ Use the Electric Imp mobile app to BlinkUp your device
  - Log into your Electric Imp account
  - Enter your WiFi credentials
  - Follow the instructions in the app to [BlinkUp](https://electricimp.com/platform/blinkup/) your device
- - make a note of the Device ID of your device (the app shows it after successfull blink up)
+ - Make a note of the Device ID of your device (the app shows it after successfull blink up). You will need it to assign the device in the Electric Imp IDE.
 
  If you have any issues getting started with your Electric Imp account or device, see [the full getting started guide](https://electricimp.com/docs/gettingstarted/explorer/quickstartguide/).
 
@@ -83,8 +83,9 @@ The Electric Imp IDE provides all the tools you need to write and deploy the sof
  - In the pop up choose your device and click **Assign**
 ![Assign device](https://imgur.com/8VjrXqB.png)
 
- - Near the bottom of the IDE is the logs window where you can find agent url of your device. It will look similar to this ```"https://agent.electricimp.com/szPc0sLfAqlu"``` BlinkUp app showed the same url after successfull blink up.
+ - Between the code and the logs windows in the IDE you can find agent url of your device. It will look similar to this ```"https://agent.electricimp.com/szPc0sLfAqlu"``` BlinkUp app showed the same url after successfull blink up.
  - Make a note of the agent url. You will need it when creating your connected app in Salesforce.
+ - Do not close the page with the IDE.
 
 ![IDE code windows](https://imgur.com/x5fGsNP.png)
 
@@ -94,34 +95,35 @@ The Electric Imp IDE provides all the tools you need to write and deploy the sof
 
 Step by step instructions to create a Connected App:
 
-1. Log into Salesforce, click **Setup** icon in the top right navigation menu and select **Setup**.
+- Log into [Salesforce](https://login.salesforce.com/), click **Setup** icon in the top right navigation menu and select **Setup**.
 ![Salesforce Navbar](https://imgur.com/AJFyqgk.png)
-2. Enter **App Manager** into the Quick Find box and then select **AppManager**.
+- Enter **App Manager** into the Quick Find box and then select **AppManager**.
 ![Salesforce QuickFind App Manager](https://imgur.com/NQXBMdM.png)
-3. Click **New Connected App**.
-4. In the **New Connected App** form fill in:
+- Click **New Connected App**.
+- In the **New Connected App** form fill in:
   - Basic Information
     - Connect App Name: **Electric Imp SmartFridge**
-    - API Name should fill out to be **Electric_Imp_SmartFridge**
+    - API Name should automatically becomes **Electric_Imp_SmartFridge**
     - Contact Email: enter your email address
   - API (Enable OAuth Settings):
     - Check the **Enable OAuth Settings** Box
-    - For **Callback URL**, enter your agent URL from the Electric Imp IDE (see last step)
-    - For **Selected OAuth Scopes**
+    - **Callback URL**: enter agent url of your device (copy it from the Electric Imp IDE - see the previous step)
+    - **Selected OAuth Scopes**:
       - Select **Access and manage your data (api)**
       - Click **Add**
 ![Salesforce Connected App](https://imgur.com/YcRqCXy.png)
   - Click **Save**
   - Click **Continue**
-5. You will be redirected to your Connected App's page
-  - Make a note of your **Consumer Key** (you need to enter this into your agent code)
+- You will be redirected to your Connected App's page
+  - Make a note of your **Consumer Key** (you will need to enter it into your agent code)
   - Click **Click to reveal** next to the Consumer Secret field
-  - Make note of your **Consumer Secret** (you need to enter this into your agent code)
+  - Make note of your **Consumer Secret** (you will need to enter it into your agent code)
+- Do not close the page with Salesforce.
 ![Salesforce Keys](https://imgur.com/XpJXq1I.png)
 
 #### Adding API keys to your Electric Imp Code
 
-Open the Electric Imp IDE & select your device.  Find the *SALESFORCE CONSTANTS* section at the bottom of the Agent code and enter your **Consumer Key** and **Consumer Secret**.
+Return back to the Electric Imp IDE. Find the *SALESFORCE CONSTANTS* section at the end of the agent code and enter your **Consumer Key** and **Consumer Secret** (copy them from the Salesforce Connected App's page).
 
 ![IDE with code](https://imgur.com/DKc0Kyr.png)
 
