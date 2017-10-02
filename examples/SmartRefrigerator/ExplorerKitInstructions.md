@@ -5,7 +5,7 @@ The following Trailhead project will use the Electric Imp platform to connect an
 To track the current temperature and humidity we will create a Salesforce *Custom Object* and put readings data to it every 15 seconds using Salesforce *Platform Events*.
 
 This example will also *open a Case* in Salesforce using *IoT Explorer Orchestration* if: 
-1. the refrigerator door is opened for more than 30 seconds, or 
+1. the refrigerator door is opened for more than 30 seconds (??? predefined threshold), or 
 2. the temperature is over predefined threshold, or 
 3. the relative humidity is over predefined threshold.
 
@@ -17,7 +17,7 @@ This example will also *open a Case* in Salesforce using *IoT Explorer Orchestra
  - A computer with a web browser
 
 ### Accounts
-  - An [Electric Imp developer account](https://ide.electricimp.com/login)
+  - An [Electric Imp developer account](https://preview-impcentral.electricimp.com/login)
   - The Electric Imp BlinkUp<sup>TM</sup> app ([iOS](https://itunes.apple.com/us/app/electric-imp/id547133856) or [Android](https://play.google.com/store/apps/details?id=com.electricimp.electricimp))
   - A [Salesforce developer account](https://developer.salesforce.com/signup)
 
@@ -32,11 +32,11 @@ And if you want to install the board into a fridge:
 
 ### Step 2: Setup the Electric Imp hardware
 
-First we will need to assemble the impExplorer Kit.  The kit comes with (1) the imp001 card, which has a WiFi radio and microcontroller which drives all the logic for the board and (2) the impExplorer Kit into which the card is plugged.  The impExplorer Kit provides a set of sensors and peripherals which are ready to use. This project will take readings from temperature, humidity, accelerometer, and light sensors to determine the current state of your fridge.
+First we will need to assemble the impExplorer Kit.  The kit comes with (1) the imp001 card, which has a WiFi radio and microcontroller which drives all the logic for the board and (2) the impExplorer Kit into which the card is plugged.  The impExplorer Kit provides a set of sensors and peripherals which are ready to use. This project will take readings from temperature, humidity and light sensors to determine the current state of your fridge.
 
 #### Hardware Setup
  - Plug the imp001 card into the card slot on the impExplorer Kit
- - Power up your impExplorer Kit with the AA Batteries
+ - Power up your impExplorer Kit with the provided mini-B USB cable or the AA Batteries
  - The imp001 should now have power and be blinking amber/red
 
 Assmbled it should look like this:
@@ -50,6 +50,7 @@ Use the Electric Imp mobile app to BlinkUp your device
  - Log into your Electric Imp account
  - Enter your WiFi credentials
  - Follow the instructions in the app to [BlinkUp](https://electricimp.com/platform/blinkup/) your device
+ - make a note of the Device ID of your device (the app shows it after successfull blink up)
 
  If you have any issues getting started with your Electric Imp account or device, see [the full getting started guide](https://electricimp.com/docs/gettingstarted/explorer/quickstartguide/).
 
@@ -58,7 +59,7 @@ Use the Electric Imp mobile app to BlinkUp your device
 #### How Electric Imp's connectivity platform works
 
 
-The Electric Imp IoT Connectivity Platform has two main components -- the impDevice<sup>TM</sup> and the impCloud<sup>TM</sup>.  The impDevice runs the device code, which in this use case consolidates the data gathered by the temperature/humidity/light sensors.  Each device is paired one-to-one with a "virtual twin" -- or, as we call it, an agent -- in the impCloud.  The device sends this data to its agent, which runs agent code. In this example the agent code executes the logic on the sensor data (e.g. light values show fridge is open) and communicates with the Salesforce cloud.  Here's a broad overview of this flow:
+The Electric Imp IoT Connectivity Platform has two main components -- the impDevice<sup>TM</sup> and the impCloud<sup>TM</sup>.  The impDevice runs the device code, which in this use case consolidates the data gathered by the temperature/humidity/light sensors.  Each device is paired one-to-one with a "virtual twin" -- or, as we call it, an agent -- in the impCloud.  The device sends this data to its agent, which runs agent code. In this example the agent code forwards the data from the device to the Salesforce cloud.  Here's a broad overview of this flow:
 
 <img src="http://i.imgur.com/VpZHzdS.jpg" width="600">
 
@@ -68,7 +69,7 @@ The Electric Imp IDE provides all the tools you need to write and deploy the sof
 
 #### Electric Imp IDE / Code
 
- - In your favorite web browser log into the [Electric Imp IDE](https://ide.electricimp.com/login)
+ - In your favorite web browser log into the [Electric Imp IDE](https://preview-impcentral.electricimp.com/login)
  - Click **Create a Product** button
 
 ![Empty IDE](https://imgur.com/I0oMuaX.png)
@@ -82,8 +83,8 @@ The Electric Imp IDE provides all the tools you need to write and deploy the sof
  - In the pop up choose your device and click **Assign**
 ![Assign device](https://imgur.com/8VjrXqB.png)
 
- - Near the bottom of the IDE is the logs window where you can find your agent url. It will look something like this ```"https://agent.electricimp.com/szPc0sLfAqlu"```
- - Make a note of your agent url. You will need the it when creating your connected app in Salesforce.
+ - Near the bottom of the IDE is the logs window where you can find agent url of your device. It will look similar to this ```"https://agent.electricimp.com/szPc0sLfAqlu"``` BlinkUp app showed the same url after successfull blink up.
+ - Make a note of the agent url. You will need it when creating your connected app in Salesforce.
 
 ![IDE code windows](https://imgur.com/x5fGsNP.png)
 
