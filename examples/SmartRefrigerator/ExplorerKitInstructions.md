@@ -462,12 +462,12 @@ You may setup other thresholds and/or another repeat period.
 ##### Adding Temperature Over Threshold Rule
 
 - Click **Add State**.
-- Enter **Temperature Over Threshold** in new state name.
+- Enter **Temperature Over Threshold** as the new state name.
 - In the **When** column of the **Temperature Over Threshold** state click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
-- In the **Condition** column enter `Smart_Fridge_Reading__e.temperature__c < TEMPERATURE_THRESHOLD`.
+- In the **Condition** column enter `Smart_Fridge_Reading__e.temperature__c < TEMPERATURE_THRESHOLD`
 - In the **Transition** column choose **Default**.
 ![Temperature State](https://imgur.com/EsgoFdZ.png)
-- Click **Add rule** in the **Temperature Over Threshold** State menu.
+- Click **Add rule** in the **Temperature Over Threshold** state menu.
 - In the **When** column of the new rule click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
 - Click to **Condition** column and click **Add limit repeating the rule (optional)**.
 - Enter **1 time(s) per 30 minutes** (???)
@@ -491,21 +491,21 @@ You may setup other thresholds and/or another repeat period.
 ![Temperature State Case fields](https://imgur.com/bRzaxmx.png)
 - In **Action Name** field enter **Create Temperature Case**
 - Click **Finish**
-- Click **Add rule** in the **Default** State menu.
+- Click **Add rule** in the **Default** state menu.
 - In the **When** column of the new rule click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
-- In the **Condition** column enter `Smart_Fridge_Reading__e.temperature__c >= TEMPERATURE_THRESHOLD`.
+- In the **Condition** column enter `Smart_Fridge_Reading__e.temperature__c >= TEMPERATURE_THRESHOLD`
 - In the **Transition** column choose **Temperature Over Threshold**.
 ![Default To Temperature transition](https://imgur.com/mNvN8Zm.png)
 
 ##### Adding Humidity Over Threshold Rule
 
 - Click **Add State**.
-- Enter **Humidity Over Threshold** in new state name.
+- Enter **Humidity Over Threshold** as the new state name.
 - In the **When** column of the **Humidity Over Threshold** state click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
-- In the **Condition** column enter `Smart_Fridge_Reading__e.humidity__c < HUMIDITY_THRESHOLD`.
+- In the **Condition** column enter `Smart_Fridge_Reading__e.humidity__c < HUMIDITY_THRESHOLD`
 - In the **Transition** column choose **Default**.
 ![Humidity State](https://imgur.com/7X14w3U.png)
-- Click **Add rule** in the **Humidity Over Threshold** State menu.
+- Click **Add rule** in the **Humidity Over Threshold** state menu.
 - In the **When** column of the new rule click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
 - Click to **Condition** column and click **Add limit repeating the rule (optional)**.
 - Enter **1 time(s) per 30 minutes**.
@@ -529,17 +529,17 @@ You may setup other thresholds and/or another repeat period.
 ![Humidity Case fields](https://imgur.com/ZGnHfcm.png)
 - In **Action Name** field enter **Create Humidity Case**
 - Click **Finish**
-- Click **Add rule** in the **Default** State menu.
+- Click **Add rule** in the **Default** state menu.
 - In the **When** column of the new rule click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
-- In the **Condition** column enter `Smart_Fridge_Reading__e.humidity__c >= HUMIDITY_THRESHOLD`.
+- In the **Condition** column enter `Smart_Fridge_Reading__e.humidity__c >= HUMIDITY_THRESHOLD`
 - In the **Transition** column choose **Humidity Over Threshold**.
 ![Default to Humidity transition](https://imgur.com/DpYCVwH.png)
 
 ##### Orchestration Activation
 
-1. Click on **STATES** tab. Confirm that your States diagram looks like this:
+- Click on **STATES** tab. Make sure that your States diagram looks like this:
 ![States](https://imgur.com/Noz1EXu.png)
-2. Click on **Activate** button. In the pop up click **Activate** again.
+- Click on **Activate** button. In the pop up click **Activate**
 ![Activate](https://imgur.com/H7zBYSy.png)
 
 ### Step 10: Build and Run the Electric Imp Application
