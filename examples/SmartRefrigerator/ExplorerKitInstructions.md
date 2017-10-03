@@ -220,16 +220,18 @@ After creating the **SmartFridge** custom object, let's add custom fields to tra
 - Select the **Fields & Relationships** section and click the **New** button.
 ![New Fields and Relationships](https://imgur.com/qCZzI3r.png)
 
-- In the **New Custom Field** form fill in:
-  - Data Type: **Text**
+- In the **New Custom Field** form:
+  - **Step 1. Choose the field type** - choose Data Type: **Text**
   - Click **Next**
-  - Field Label: **deviceId**
-  - Length: **16**
-  - Field Name: **deviceId**
-  - Check **External ID**
-  - Click **Next**, **Next** and then **Save**
+  - **Step 2. Enter the details**:  
+    - Field Label: **deviceId**
+    - Length: **16**
+    - Field Name: **deviceId**
+    - Check **Set this field as the unique record identifier from an external system**
 ![Related Fridge](https://imgur.com/ZN1ekyE.png)
-- Select the **Fields & Relationships** section and find your newly created **deviceId** custom field. Make sure the **Field Name** is **deviceId__c**.
+  - Click **Next**, **Next** and then **Save**
+- Select the **Fields & Relationships** section and find your newly created **deviceId** custom field.
+- Make sure the **Field Name** is **deviceId__c**.
 ![Case Fields](https://imgur.com/3i8uHjK.png)
 
 ### Step 7: Create Platform Events in Salesforce
