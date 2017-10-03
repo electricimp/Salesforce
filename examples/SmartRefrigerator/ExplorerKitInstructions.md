@@ -421,13 +421,13 @@ You may setup other thresholds and/or another repeat period.
 ![Add State](https://imgur.com/wh9fOxX.png)
 - Enter **Door Open** as the new state name.
 - In the **When** column of the **Door Open** state click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
-- In the **Condition** column enter `Smart_Fridge_Reading__e.door__c = "closed"`
-- In the **Actions** column click **Add an action** and choose **ORCHESTRATION ACTIONS > Reset Variable**. Then choose **door_open_counter**.
+- In the **Condition** column enter `Smart_Fridge_Reading__e.door__c = "closed"` (???)
+- In the **Actions** column click **Add an action** and choose **ORCHESTRATION ACTIONS > Reset Variable**. As a variable choose **door_open_counter**.
 - In the **Transition** column choose **Default**
 ![Door Open state](https://imgur.com/L2QnSK9.png)
 - Click **Add rule** in the **Door Open** State menu.
 ![Door Open add rule](https://imgur.com/ENZu8a5.png)
-- In the **When** column of the new state click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
+- In the **When** column of the new rule click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
 - Click to **Condition** column and click **Add limit repeating the rule (optional)**.
 ![Condition Add limit](https://imgur.com/E4cZCL9.png)
 - Enter **1 time(s) per 30 minutes**. (???)
@@ -447,15 +447,15 @@ You may setup other thresholds and/or another repeat period.
   - Enter **Subject** value: `"Refrigerator Door Open"`
   - Click **Add Field**
   - Choose **Description** in **Select field**
-  - Enter **Description** value: `"door has been opened for 30 seconds"`
+  - Enter **Description** value: `"door has been opened for 30 seconds"` ??? for too long
 - Make sure that **Assign values to record fields** table looks like this:
 ![Door Open Case fields](https://imgur.com/Bdq4IiU.png)
 - In **Action Name** field enter **Create Door Open Case**
 - Click **Finish**
 - Click **Add rule** in the **Default** State menu.
 ![Default State add rule](https://imgur.com/ATzWdwt.png)
-- In the **When** column of the new state click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
-- In the **Condition** column enter `door_open_counter >= DOOR_OPEN_LIMIT`.
+- In the **When** column of the new rule click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
+- In the **Condition** column enter `door_open_counter >= DOOR_OPEN_LIMIT` (???)
 - In the **Transition** column choose **Door Open**.
 ![Default To Door Open](https://imgur.com/wdl2GJl.png)
 
