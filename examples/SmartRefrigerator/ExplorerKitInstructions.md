@@ -461,23 +461,23 @@ You may setup other thresholds and/or another repeat period.
 
 ##### Adding Temperature Over Threshold Rule
 
-1. Click **Add State**.
-2. Enter **Temperature Over Threshold** in new state name.
-3. In the **Temperature Over Threshold** state **When** column click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
-4. In the **Condition** column enter `Smart_Fridge_Reading__e.temperature__c < TEMPERATURE_THRESHOLD`.
-5. In the **Transition** column choose **Default**.
+- Click **Add State**.
+- Enter **Temperature Over Threshold** in new state name.
+- In the **When** column of the **Temperature Over Threshold** state click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
+- In the **Condition** column enter `Smart_Fridge_Reading__e.temperature__c < TEMPERATURE_THRESHOLD`.
+- In the **Transition** column choose **Default**.
 ![Temperature State](https://imgur.com/EsgoFdZ.png)
-6. Click **Add rule** in the **Temperature Over Threshold** State menu.
-7. In the new state **When** column click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
-8. Click to **Condition** column and click **Add limit repeating the rule (optional)**.
-9. Enter **1 time(s) per 30 minutes**.
+- Click **Add rule** in the **Temperature Over Threshold** State menu.
+- In the **When** column of the new rule click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
+- Click to **Condition** column and click **Add limit repeating the rule (optional)**.
+- Enter **1 time(s) per 30 minutes** (???)
 ![Temperature State Condition](https://imgur.com/pyiAwOw.png)
-10. In the **Actions** column click **Add an action** and choose **OUTPUT ACTIONS > Salesforce Record**
-11. In the **New Salesforce Output Action** pop up choose: 
+- In the **Actions** column click **Add an action** and choose **OUTPUT ACTIONS > Salesforce Record**
+- In the **New Salesforce Output Action** pop up choose: 
   - Object: **Case**
   - Action Type: **Create**
   - Click **Next**
-12. In the **Assign values to record fields** table:
+- In the **Assign values to record fields** table:
   - Click **Add Field**
   - Choose **deviceId__c** in **Select field**
   - Enter value: `Smart_Fridge_Reading__e.deviceId__c`
@@ -487,35 +487,35 @@ You may setup other thresholds and/or another repeat period.
   - Click **Add Field**
   - Choose **Description** in **Select field**
   - Enter **Description** value: `"current temperature " + TEXT(Smart_Fridge_Reading__e.temperature__c) + " is over threshold"`
-13. Confirm that **Assign values to record fields** table looks like this:
+- Make sure that **Assign values to record fields** table looks like this:
 ![Temperature State Case fields](https://imgur.com/bRzaxmx.png)
-14. In **Action Name** field enter **Create Temperature Case**
-15. Click **Finish**
-16. Click **Add rule** in the **Default** State menu.
-17. In the new state **When** column click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
-18. In the **Condition** column enter `Smart_Fridge_Reading__e.temperature__c >= TEMPERATURE_THRESHOLD`.
-19. In the **Transition** column choose **Temperature Over Threshold**.
+- In **Action Name** field enter **Create Temperature Case**
+- Click **Finish**
+- Click **Add rule** in the **Default** State menu.
+- In the **When** column of the new rule click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
+- In the **Condition** column enter `Smart_Fridge_Reading__e.temperature__c >= TEMPERATURE_THRESHOLD`.
+- In the **Transition** column choose **Temperature Over Threshold**.
 ![Default To Temperature transition](https://imgur.com/mNvN8Zm.png)
 
 ##### Adding Humidity Over Threshold Rule
 
-1. Click **Add State**.
-2. Enter **Humidity Over Threshold** in new state name.
-3. In the **Humidity Over Threshold** state **When** column click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
-4. In the **Condition** column enter `Smart_Fridge_Reading__e.humidity__c < HUMIDITY_THRESHOLD`.
-5. In the **Transition** column choose **Default**.
+- Click **Add State**.
+- Enter **Humidity Over Threshold** in new state name.
+- In the **When** column of the **Humidity Over Threshold** state click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
+- In the **Condition** column enter `Smart_Fridge_Reading__e.humidity__c < HUMIDITY_THRESHOLD`.
+- In the **Transition** column choose **Default**.
 ![Humidity State](https://imgur.com/7X14w3U.png)
-6. Click **Add rule** in the **Humidity Over Threshold** State menu.
-7. In the new state **When** column click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
-8. Click to **Condition** column and click **Add limit repeating the rule (optional)**.
-9. Enter **1 time(s) per 30 minutes**.
+- Click **Add rule** in the **Humidity Over Threshold** State menu.
+- In the **When** column of the new rule click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
+- Click to **Condition** column and click **Add limit repeating the rule (optional)**.
+- Enter **1 time(s) per 30 minutes**.
 ![Humidity State Condition](https://imgur.com/pl7KBcT.png)
-10. In the **Actions** column click **Add an action** and choose **OUTPUT ACTIONS > Salesforce Record**
-11. In the **New Salesforce Output Action** pop up choose: 
+- In the **Actions** column click **Add an action** and choose **OUTPUT ACTIONS > Salesforce Record**
+- In the **New Salesforce Output Action** pop up choose: 
   - Object: **Case**
   - Action Type: **Create**
   - Click **Next**
-12. In the **Assign values to record fields** table:
+- In the **Assign values to record fields** table:
   - Click **Add Field**
   - Choose **deviceId__c** in **Select field**
   - Enter value: `Smart_Fridge_Reading__e.deviceId__c`
@@ -525,14 +525,14 @@ You may setup other thresholds and/or another repeat period.
   - Click **Add Field**
   - Choose **Description** in **Select field**
   - Enter **Description** value: `"current humidity " + TEXT(Smart_Fridge_Reading__e.humidity__c) + " is over threshold"`
-13. Confirm that **Assign values to record fields** table looks like this:
+- Make sure that **Assign values to record fields** table looks like this:
 ![Humidity Case fields](https://imgur.com/ZGnHfcm.png)
-14. In **Action Name** field enter **Create Humidity Case**
-15. Click **Finish**
-16. Click **Add rule** in the **Default** State menu.
-17. In the new state **When** column click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
-18. In the **Condition** column enter `Smart_Fridge_Reading__e.humidity__c >= HUMIDITY_THRESHOLD`.
-19. In the **Transition** column choose **Humidity Over Threshold**.
+- In **Action Name** field enter **Create Humidity Case**
+- Click **Finish**
+- Click **Add rule** in the **Default** State menu.
+- In the **When** column of the new rule click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
+- In the **Condition** column enter `Smart_Fridge_Reading__e.humidity__c >= HUMIDITY_THRESHOLD`.
+- In the **Transition** column choose **Humidity Over Threshold**.
 ![Default to Humidity transition](https://imgur.com/DpYCVwH.png)
 
 ##### Orchestration Activation
