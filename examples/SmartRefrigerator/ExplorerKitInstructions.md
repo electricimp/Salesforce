@@ -181,7 +181,7 @@ After creating the **SmartFridge** custom object, let's add custom fields to tra
   - Click **Next**
   - **Step 2. Enter the details**:  
     - Field Label: **door**
-    - Values: Select **Enter values for the picklist, with each value separated by a new line**
+    - Values: Select **Enter values, with each value separated by a new line**
     - Enter **Open** and **Closed** so that they are on separate lines.
     - Field Name: **door**
 ![Door Field](https://imgur.com/XqAEQ10.png)
@@ -200,8 +200,8 @@ After creating the **SmartFridge** custom object, let's add custom fields to tra
     - Field Label: **deviceId**
     - Length: **16**
     - Field Name: **deviceId**
-    - Check **Required**
-    - Check **External ID**
+    - Check **Always require a value in this field in order to save a record**
+    - Check **Set this field as the unique record identifier from an external system**
 ![DeviceId Field](https://imgur.com/WApbOvX.png)
   - Click **Next**, **Next**, and then **Save**.
 
