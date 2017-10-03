@@ -238,60 +238,65 @@ After creating the **SmartFridge** custom object, let's add custom fields to tra
 
 #### Creating Platform Events in Salesforce
 
-You will need to create Platform Event that correspond to ElectricImp SmartFridge data readings. Here are the step by step instructions for creating Platform Event:
+??? You need to create **Platform Even**t that correspond to ElectricImp SmartFridge data readings.
+??? Mandatory names here - these fields are used by the imp app?
 
-To create **Platform Event** for SmartFridge data readings:
-1. Log into Salesforce, click **Setup** icon in the top right navigation menu and select **Setup**.
+- On the Salesforce page, click **Setup** icon in the top right navigation menu and select **Setup**.
 ![Salesforce Navbar](https://imgur.com/AJFyqgk.png)
-2. Enter **Platform Events** into the Quick Find box and then select **Data > Platform Events**.
+- Enter **Platform Events** into the Quick Find box and then select **Data > Platform Events**.
 ![Salesforce QuickFind Platform Events](https://imgur.com/CXCuSr1.png)
-3. Click **New Platform Event**.
-4. In the **New Platform Event** form fill in:
+- Click **New Platform Event**.
+- In the **New Platform Event** form fill in:
   - Field Label: **Smart Fridge Reading**
   - Plural Label: **Smart Fridge Readings**
   - Object Name: **Smart_Fridge_Reading**
-  - Click **Save**
 ![New Smart Fridge Reading Event](https://imgur.com/4otU27s.png)
-5. You will be redirected to the **Smart Fridge Reading** Platform Event page. Now you need to create Platform Event fields that correspond to your fridge readings. In the **Custom Fields & Relationships** section click **New**.
+  - Click **Save**
+- You will be redirected to the **Smart Fridge Reading** Platform Event page. Now you need to create Platform Event fields that correspond to your fridge readings.
+- In the **Custom Fields & Relationships** section click **New**.
 ![Smart Fridge Reading Event New Field](https://imgur.com/gbmXQRK.png)
-6. Create a field for temperature with the following settings:
+- Create a field for the temperature:
   - Data Type: **Number**
   - Click **Next**
   - Field Label: **temperature**
   - Length: **4**
   - Decimal Places: **2**
   - Field Name: **temperature**
-7. Click **Save**. In the **Custom Fields & Relationships** section click **New**.
-8. Create a field for humidity with the following settings:
+- Click **Save**.
+- In the **Custom Fields & Relationships** section click **New**.
+- Create a field for the humidity:
   - Data Type: **Number**
   - Click **Next**
   - Field Label: **humidity**
   - Length: **4**
   - Decimal Places: **2**
   - Field Name: **humidity**
-9. Click **Save**. In the **Custom Fields & Relationships** section click **New**.
-10. Create a field for the door status with the following settings:
+- Click **Save**.
+- In the **Custom Fields & Relationships** section click **New**.
+- Create a field for the door status:
   - Data Type: **Text**
   - Click **Next**
   - Field Label: **door**
   - Length: **10**
   - Field Name: **door**
-11. Click **Save**. In the **Custom Fields & Relationships** section click **New**.
-12. Create a field for a timestamp with the following settings:
+- Click **Save**.
+- In the **Custom Fields & Relationships** section click **New**.
+- Create a field for the timestamp:
   - Data Type: **Date/Time**
   - Click **Next**
   - Field Label: **ts**
   - Field Name: **ts**
-13. Click **Save**. In the **Custom Fields & Relationships** section click **New**.
-14. Create a field for the device’s ID with the following settings:
+- Click **Save**
+- In the **Custom Fields & Relationships** section click **New**.
+- Create a field for the device’s ID:
   - Data Type: **Text**
   - Click **Next**
   - Field Label: **deviceId**
   - Length: **16**
   - Field Name: **deviceId**
   - Check **Required**
-15. Click **Save**.
-16. Confirm that **Smart Fridge Reading** **API Name** is **Smart_Fridge_Reading__e** and **Fields & Relationships** looks like this:
+- Click **Save**.
+- Make sure that **Smart Fridge Reading** **API Name** is **Smart_Fridge_Reading__e** and **Fields & Relationships** looks like this:
 ![Smart Fridge Reading Event Details](https://imgur.com/4BQA37p.png)
 
 ### Step 8: Create Context in Salesforce
