@@ -321,18 +321,18 @@ After creating the **SmartFridge** custom object, let's add custom fields to tra
 ![Context Add Platform Event](https://imgur.com/ySmNGqq.png)
 - In the **Add Platform Event** form fill in:
   - Context: **Smart Fridge Context**
-  - Platform Event: choose **Smart Fridge Reading** you created early
+  - Platform Event: choose **Smart Fridge Reading** Platform Event you created early
   - Key: choose **deviceId**
   - Click **Save**
 
 ### Step 9: Create Orchestration in Salesforce
 
-This example shows how to create an Orchestration that processes Platform Events and produces Cases when
-1. the refrigerator door is opened for more than 30 seconds (3 data readings in a row), or 
+This example shows how to create an **Orchestration** that processes **Platform Events** and produces **Cases** when
+1. the refrigerator door is opened for more than 30 seconds (3 data readings in a row ???), or 
 2. the temperature is over 11°C, or
 3. the relative humidity is over 70%.
 
-If the reason of a Case is not eliminated, the Case will be produced repeatedly every 30 minutes.
+If the reason of a **Case** is not eliminated, the **Case** will be produced repeatedly every 30 minutes.
 
 You may setup other thresholds and/or another repeat period.
 
@@ -345,12 +345,13 @@ You may setup other thresholds and/or another repeat period.
 - Enter **Orchestrations** into the Quick Find box and then select **Feature Settings > IoT Explorer > Orchestrations**.
 ![Orchestrations](https://imgur.com/8i2qDU9.png)
 - Click **New Orchestration**.
-- In the New Orchestration pop up fill in:
+- In the **New Orchestration** pop up fill in:
   - Name: **Smart Fridge Orchestration**
   - Context: choose **Smart Fridge Context** you created early
-  - Click **Create**
 ![New Orchestration](https://imgur.com/gWMgKur.png)
-
+  - Click **Create**
+  - You will be redirected to the **Smart Fridge Orchestration** page.
+  
 #### Creating Orchestration Variables
 
 - Click on **VARIABLES** tab. Now you need to create temperature, humidity and door open thresholds and additional variable to produce door open Cases. (??? explain more ?)
@@ -359,24 +360,24 @@ You may setup other thresholds and/or another repeat period.
 - Create a varable for the temperature threshold:
   - Name: **TEMPERATURE_THRESHOLD**
   - Data Type: **Number**
-  - Initial Value: **11**
+  - Initial Value: **11** (for 11°C)
 - Click **Add Variable**.
 - Create a varable for the humidity threshold:
   - Name: **HUMIDITY_THRESHOLD**
   - Data Type: **Number**
-  - Initial Value: **70**
+  - Initial Value: **70** (for 70%)
 - Click **Add Variable**.
 - Create a varable for the door open counter limit:
   - Name: **DOOR_OPEN_LIMIT**
   - Data Type: **Number**
-  - Initial Value: **3**
+  - Initial Value: **3** (???)
 - Click **Add Variable**.
 - Create a varable for the door open counter:
   - Name: **door_open_counter**
   - Data Type: **Number**
-  - Event Type: **Smart_Fridge_Reading__e**
-  - IF: `Smart_Fridge_Reading__e.door__c = "open"`
-  - Value: **Count 1 min**
+  - Event Type: **Smart_Fridge_Reading__e** (Platform Event you create early)
+  - IF: `Smart_Fridge_Reading__e.door__c = "open"` (???)
+  - Value: **Count 1 min** (???)
   - Initial Value: **0**
 - Make sure your Orchestration variables looks like this:
 ![Orchestration variables](https://imgur.com/FiSs6SB.png)
@@ -385,17 +386,17 @@ You may setup other thresholds and/or another repeat period.
 
 ##### Configuring Default Rule
 
-1. Click on **RULES** tab.
-2. In the **Default** state **When** column click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**
+- Click on **RULES** tab.
+- In the **Default** state **When** column click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**
 ![Default state](https://imgur.com/em5GdAG.png)
-3. In the **Actions** column click **Add an action** and choose **OUTPUT ACTIONS > Salesforce Record**
+- In the **Actions** column click **Add an action** and choose **OUTPUT ACTIONS > Salesforce Record**
 ![Default state action](https://imgur.com/VvSpbWv.png)
-4. In the **New Salesforce Output Action** pop up choose: 
+- In the **New Salesforce Output Action** pop up choose: 
   - Object: **SmartFridge**
   - Action Type: **Create**
-  - Click **Next**
 ![Create SmartFridge action](https://imgur.com/IDym7Zl.png)
-5. In the **Assign values to record fields** table:
+  - Click **Next**
+- In the **Assign values to record fields** table:
   - Enter **deviceId__c** value: `Smart_Fridge_Reading__e.deviceId__c`
   - Click **Add Field**
   - Choose **temperature__c** in **Select field**
@@ -412,10 +413,10 @@ You may setup other thresholds and/or another repeat period.
   - Click **Add Field**
   - Choose **ts__c** in **Select field**
   - Enter **ts__c** value: `Smart_Fridge_Reading__e.ts__c`
-6. Confirm that **Assign values to record fields** table looks like this:
+- Make sure that **Assign values to record fields** table looks like this:
 ![Create SmartFridge fields](https://imgur.com/We2WlA2.png)
-7. In **Action Name** field enter **Create SmartFridge Reading**
-8. Click **Finish**
+- In **Action Name** field enter **Create SmartFridge Reading**
+- Click **Finish**
 
 ##### Adding Door Open Rule
 
