@@ -569,61 +569,72 @@ Open your refrigerator and place the impExplorer Kit on a shelf in your refriger
 
 ??? If you don't have a fridge handy for this scenario, you can test the door being open by keeping the imp in a lit room.  A door open for thirty seconds should register a case.
 
-### Step 12: Monitor the data in Salesforce1
+### Step 12: Monitor the data
 
-Now that you have connected your imp to Salesforce, it might be handy to see that data on a mobile device.  Using Salesforce1, it is easy to keep track of your Smart Fridge on the go.
+You can see the data, which your device sends, using **Salesforce1** mobile application.
 
 #### Create a Custom Object Tab
 
-First, let's give the custom object a tab so that Salesforce1 can add it to the left navigation.
+First, you need to create **SmartFridge** custom tab, so it will be accessible in the mobile application.
 
-1. Log into Salesforce, click **Setup** icon in the top right navigation menu and select **Setup**.
+- On Salesforce page, click **Setup** icon in the top right navigation menu and select **Setup**.
 ![Salesforce Navbar](https://imgur.com/AJFyqgk.png)
-2. Enter **Tabs** into the Quick Find box and then select **User Interface > Tabs**.
-3. Under **Custom Object Tabs**, click **New**
-4. Choose **SmartFridge** from the Object dropdown
-5. Choose **Thermometer** as the Tab Style  
+- Enter **Tabs** into the Quick Find box and then select **User Interface > Tabs**.
+- Under **Custom Object Tabs**, click **New**
+- Choose **SmartFridge** from the Object dropdown
+- Choose **Thermometer** as the Tab Style  
 ![Custom Object](http://i.imgur.com/eXyOmd6.png)
-6. Click **Next**, **Next**, and then **Save**
+- Click **Next**, **Next**, and then **Save**
 
-#### Open Salesforce1 in Chrome
+#### Check Salesforce1 is Enabled
 
-You can access the Salesforce1 mobile app in three ways:
+Ensure that **Salesforce1** mobile application is available and enabled for you:
 
-- As a downloadable mobile app (Salesforce1) that you install on your phone from the Apple AppStore or Google Play
-- By navigating to `login.salesforce.com` using a mobile browser
-- By using the Chrome Developer Tools
-
-For this step, we'll use the last option. First ensure that Salesforce1 is available through a desktop browser and is enabled for your user:
-
-1. Log into Salesforce, click **Setup** icon in the top right navigation menu and select **Setup**.
+- On Salesforce page, click **Setup** icon in the top right navigation menu and select **Setup**.
 ![Salesforce Navbar](https://imgur.com/AJFyqgk.png)
-2. Enter **Salesforce1** into the Quick Find box and then select **Apps > Mobili Apps > Salesforce1 > Salesforce1 Settings**.
-3. Ensure the Enable the Salesforce1 mobile browser app is checked.  
+- Enter **Salesforce1** into the Quick Find box and then select **Apps > Mobili Apps > Salesforce1 > Salesforce1 Settings**.
+- Make sure the **Enable the Salesforce1 mobile browser app** is checked.  
 ![App settings checkbox](http://i.imgur.com/Tigi9eK.png)
-4. Enter **Users** into into the Quick Find box and select **Users > Users**.
-5. Click **Edit** next to your username.
-6. Ensure that Salesforce1 User is checked. If not, check it and click **Save**.  
+- Enter **Users** into the Quick Find box and select **Users > Users**.
+- Click **Edit** next to your username.
+- Make sure that **Salesforce1 User** is checked. If not, check it and click **Save**.  
 ![Salesforce1 User checkbox](http://i.imgur.com/svdRddT.png)
 
-Next we’ll emulate the Salesforce1 Mobile App in the Chrome web browser:
+#### Run Salesforce1 Application
 
-1. Open a new tab in your Chrome browser and open the Developer Tools by clicking *View* | *Developer* | *Developer Tools*
-2. Click the Toggle Device Mode button to simulate your browser as a mobile device.  
+You can access **Salesforce1** mobile app in three ways:
+
+- As a downloadable mobile app (Salesforce1) that you install and run on your phone from the Apple AppStore or Google Play (it's the most easy and recommended way)
+- By opening `login.salesforce.com` page in a browser on your phone
+- By using the Chrome Developer Tools (described below)
+
+#### Open Salesforce1 in Chrome Browser
+
+Use this way if you want/need to run **Salesforce1** application from your PC, not from mobile phobe.
+
+It is possible to emulate **Salesforce1** mobile application in the Chrome web browser:
+
+- On Salesforce page, click **Setup** icon in the top right navigation menu and select **Setup**
+- Copy the current opened URL into clipboard
+- Open a new tab in your Chrome browser
+- Open the Developer Tools by clicking *View* | *Developer* | *Developer Tools*
+- Click the Toggle Device Mode button to simulate your browser as a mobile device.  
 ![Chrome Tools Mobile Simulator](http://i.imgur.com/hzb2F0N.png)
-3. To simulate the Salesforce1 app in your browser, copy and paste in the URL from the previous tab. Remove the part of the URL immediately after `lightning.force.com`. For example:  
+- Paste from clipboard the URL you copied before. Do not press Enter.
+- Remove the part of the URL immediately after `lightning.force.com`. For example:  
 ![URL original](https://imgur.com/UZYqV21.png)
 ![URL removed](https://imgur.com/jPYa1t7.png)
-4. Append `/one/one.app` to the end of the URL after salesforce.com to start the Salesforce1 Application simulator. For example:  
+- Append `/one/one.app` to the end of the URL after salesforce.com. For example:  
 ![URL one/one.app](https://imgur.com/V0Deg1d.png)
-5. If the display is too small, change the size to 100%.  
+- Press Enter. **Salesforce1** application emulation will be started in the Chrome Browser.
+- If the display is too small, change the size to 100%.  
 ![URL one/one.app](http://i.imgur.com/BvmL50q.png)
-6. Click the three white bars in the upper left to open the left navigation
-7. Under the "Recent" section, scroll down and click *More*  
+- Click the three white bars in the upper left to open the navigation panel
+- Under the "Recent" section, scroll down and click *More*  
 ![Menu](http://i.imgur.com/xv2YL52.png)
-8. You will see "SmartFridges" somewhere on the list. Click *SmartFridges*  
+- You will see "SmartFridges" somewhere on the list. Click *SmartFridges*  
 ![Menu](http://i.imgur.com/GHcC0gG.png)
-9. Select a record to view the details of the reading.  
+- Select a record to view the details of the reading.  
 ![Reading record](https://imgur.com/d3N5N7F.png)
 
 ### Step 13: Monitor Orchestration States transitions and Cases
