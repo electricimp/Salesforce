@@ -156,8 +156,8 @@ You will need to create a custom object with fields that correspond to each key 
 After creating the **SmartFridge** custom object, let's add custom fields to track all the information you’ll collect from your fridge.
 
 - Select the **Fields & Relationships** section from the left navigation.
-- Click **New**.
-- Create a field for temperature:
+  - Click **New**.
+- Create a field for the temperature:
   - **Step 1. Choose the field type** - choose Data Type: **Number**
   - Click **Next**
   - **Step 2. Enter the details**:
@@ -166,42 +166,46 @@ After creating the **SmartFridge** custom object, let's add custom fields to tra
     - Decimal Places: **2**
     - Field Name: **temperature**
 ![Temperature Field](https://imgur.com/40XLV2B.png)
-- Click **Next**, **Next**, and then **Save & New**.
-- Create a field for humidity with the following settings:
-  - Data Type: **Number**
+  - Click **Next**, **Next**, and then **Save & New**.
+- Create a field for the humidity (similar as for the temperature):
+  - **Step 1. Choose the field type** - choose Data Type: **Number**
   - Click **Next**
-  - Field Label: **humidity**
-  - Length: **4**
-  - Decimal Places: **2**
-  - Field Name: **humidity**
-- Click **Next**, **Next**, and then **Save & New**.
-- Create a field for the door status with the following settings:
-  - Data Type: **Picklist**
+  - **Step 2. Enter the details**:
+    - Field Label: **humidity**
+    - Length: **4**
+    - Decimal Places: **2**
+    - Field Name: **humidity**
+  - Click **Next**, **Next**, and then **Save & New**.
+- Create a field for the door status:
+  - **Step 1. Choose the field type** - choose Data Type: **Picklist**
   - Click **Next**
-  - Field Label: **door**
-  - Values: Select **Enter values for the picklist, with each value separated by a new line**
-  - Enter **Open** and **Closed** so that they are on separate lines.
-  - Field Name: **door**
+  - **Step 2. Enter the details**:  
+    - Field Label: **door**
+    - Values: Select **Enter values for the picklist, with each value separated by a new line**
+    - Enter **Open** and **Closed** so that they are on separate lines.
+    - Field Name: **door**
 ![Door Field](https://imgur.com/XqAEQ10.png)
-- Click **Next**, **Next**, and then **Save & New**.
-- Create a field for a timestamp with the following settings:
-  - Data Type: **Date/Time**
+  - Click **Next**, **Next**, and then **Save & New**.
+- Create a field for the timestamp:
+  - **Step 1. Choose the field type** - choose Data Type: **Date/Time**
   - Click **Next**
-  - Field Label: **ts**
-  - Field Name: **ts**
-- Click **Next**, **Next**, and then **Save & New**.
-- Create a field for the device’s ID with the following settings:
-  - Data Type: **Text**
+  - **Step 2. Enter the details**:  
+    - Field Label: **ts**
+    - Field Name: **ts**
+  - Click **Next**, **Next**, and then **Save & New**.
+- Create a field for the device’s ID:
+  - **Step 1. Choose the field type** - choose Data Type: **Text**
   - Click **Next**
-  - Field Label: **deviceId**
-  - Length: **16**
-  - Field Name: **deviceId**
-  - Check **Required**
-  - Check **External ID**
+  - **Step 2. Enter the details**:  
+    - Field Label: **deviceId**
+    - Length: **16**
+    - Field Name: **deviceId**
+    - Check **Required**
+    - Check **External ID**
 ![DeviceId Field](https://imgur.com/WApbOvX.png)
-- Click **Next**, **Next**, and then **Save**.
+  - Click **Next**, **Next**, and then **Save**.
 
-Check that SmartFridge **Fields & Relationships** looks like this:
+- Check that SmartFridge **Fields & Relationships** looks like this:
 ![SmartFridge Fields](https://imgur.com/10aY29u.png)
 
 ### Step 6: Create a Custom Case Field in Salesforce
