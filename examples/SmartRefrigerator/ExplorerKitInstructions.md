@@ -306,7 +306,7 @@ After creating the **SmartFridge** custom object, let's add custom fields to tra
 - Enter **Contexts** into the Quick Find box and then select **Feature Settings > IoT Explorer > Contexts**.
 ![Contexts](https://imgur.com/9Sp7hpy.png)
 - Click **New Context**.
-- In the New Context form fill in:
+- In the **New Context** form fill in:
   - Context Name: **Smart Fridge Context**
   - Key Type: **String**
   - Click **Save**
@@ -315,8 +315,8 @@ After creating the **SmartFridge** custom object, let's add custom fields to tra
 ![Context Add Platform Event](https://imgur.com/ySmNGqq.png)
 - In the **Add Platform Event** form fill in:
   - Context: **Smart Fridge Context**
-  - Platform Event: **Smart Fridge Reading**
-  - Key: **deviceId**
+  - Platform Event: choose **Smart Fridge Reading** you created early
+  - Key: choose **deviceId**
   - Click **Save**
 
 ### Step 9: Create Orchestrations in Salesforce
