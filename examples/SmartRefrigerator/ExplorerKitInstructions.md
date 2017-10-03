@@ -602,15 +602,15 @@ Ensure that **Salesforce1** mobile application is available and enabled for you:
 
 #### Run Salesforce1 Application
 
-You can access **Salesforce1** mobile app in three ways:
+You can access and run **Salesforce1** mobile application in three ways:
 
-- As a downloadable mobile app (Salesforce1) that you install and run on your phone from the Apple AppStore or Google Play (it's the most easy and recommended way)
+- As a downloadable mobile application (Salesforce1) that you install and run on your phone from the Apple AppStore or Google Play (it's the most easy and recommended way)
 - By opening `login.salesforce.com` page in a browser on your phone
 - By using the Chrome Developer Tools (described below)
 
 #### Open Salesforce1 in Chrome Browser
 
-Use this way if you want/need to run **Salesforce1** application from your PC, not from mobile phobe.
+Use this way if you want/need to run **Salesforce1** application from your PC, not from a mobile phone.
 
 It is possible to emulate **Salesforce1** mobile application in the Chrome web browser:
 
@@ -637,25 +637,26 @@ It is possible to emulate **Salesforce1** mobile application in the Chrome web b
 - Select a record to view the details of the reading.  
 ![Reading record](https://imgur.com/d3N5N7F.png)
 
-### Step 13: Monitor Orchestration States transitions and Cases
+### Step 13: Monitor Orchestration State Transitions and Cases
 
-Let’s try out Orchestration States transitions and Cases.
+Also, you can see transitions between states which you defined in **IoT Explorer Orchestration** as well as registered **Cases**.
 
-1. Log into Salesforce, click **Setup** icon in the top right navigation menu and select **Setup**.
+- On Salesforce page, click **Setup** icon in the top right navigation menu and select **Setup**.
 ![Salesforce Navbar](https://imgur.com/AJFyqgk.png)
-2. Enter **Orchestrations** into the Quick Find box and then select **Feature Settings > IoT Explorer > Orchestrations**.
+- Enter **Orchestrations** into the Quick Find box and then select **Feature Settings > IoT Explorer > Orchestrations**.
 ![Orchestrations](https://imgur.com/8i2qDU9.png)
-3. Click on **Smart Fridge Orchestration**. Then click on **TRAFFIC** tab. If your ElectricImp are in a fridge, you can see that your device is in **Default** normal state.
+- Click on **Smart Fridge Orchestration**. Then click on **TRAFFIC** tab. 
+- If your ElectricImp device is in a fridge, you can see that your device is in **Default** normal state.
 ![Default state](https://imgur.com/XQ0DyYd.png)
-4. Keep the fridge door open for over 30 seconds (or just place the imp to a lit room).
-5. On the **TRAFFIC** tab check that your device got into **Door Open** state.
+- Keep the fridge door open for over 30 seconds (or just place the device to a lit room).
+- On the **TRAFFIC** tab check that your device moved into **Door Open** state.
 ![Door Open state](https://imgur.com/h2Hdeg5.png)
-6. Move the imp to a warm dark place.
-6. On the **TRAFFIC** tab check that your device got into **Temperature Over Threshold** state.
+- Move the imp to a warm dark place.
+- On the **TRAFFIC** tab check that your device moved into **Temperature Over Threshold** state.
 ![Temperature state](https://imgur.com/z7uB2CD.png)
-7. Open Salesforce1 mobile app as described in the previous Step.
-8. Click the three white bars in the upper left to open the left navigation.
-9. Under the "Recent" section, click **Cases**.  
+- Run **Salesforce1** mobile app as described in the previous Step.
+- Click the three white bars in the upper left to open the navigation panel.
+- Under the "Recent" section, click **Cases**.  
 ![Cases menu](https://imgur.com/fGVaet7.png)
-10. You will see the registered Cases.  
+- You will see the registered Cases.  
 ![Cases](https://imgur.com/WDGJrUp.png)
