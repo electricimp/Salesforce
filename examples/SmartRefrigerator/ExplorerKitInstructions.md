@@ -387,12 +387,12 @@ You may setup other thresholds and/or another repeat period.
 ##### Configuring Default Rule
 
 - Click on **RULES** tab.
-- In the **Default** state **When** column click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**
+- In the **When** column (of the **Default** state) click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**
 ![Default state](https://imgur.com/em5GdAG.png)
-- In the **Actions** column click **Add an action** and choose **OUTPUT ACTIONS > Salesforce Record**
+- In the **Actions** column (of the **Default** state) click **Add an action** and choose **OUTPUT ACTIONS > Salesforce Record**
 ![Default state action](https://imgur.com/VvSpbWv.png)
 - In the **New Salesforce Output Action** pop up choose: 
-  - Object: **SmartFridge**
+  - Object: Custom > **SmartFridge**
   - Action Type: **Create**
 ![Create SmartFridge action](https://imgur.com/IDym7Zl.png)
   - Click **Next**
@@ -401,9 +401,6 @@ You may setup other thresholds and/or another repeat period.
   - Click **Add Field**
   - Choose **temperature__c** in **Select field**
   - Enter **temperature__c** value: `Smart_Fridge_Reading__e.temperature__c`
-  - Click **Add Field**
-  - Choose **humidity__c** in **Select field**
-  - Enter **humidity__c** value: `Smart_Fridge_Reading__e.humidity__c`
   - Click **Add Field**
   - Choose **humidity__c** in **Select field**
   - Enter **humidity__c** value: `Smart_Fridge_Reading__e.humidity__c`
