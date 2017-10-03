@@ -50,7 +50,7 @@ Use the Electric Imp mobile app to BlinkUp your device
  - Log into your Electric Imp account
  - Enter your WiFi credentials
  - Follow the instructions in the app to [BlinkUp](https://electricimp.com/platform/blinkup/) your device
- - Make a note of the Device ID of your device (the app shows it after successfull blink up). You will need it to assign the device in the Electric Imp IDE.
+ - Make a note of the Device ID of your device (the app shows it after successful blink up). You will need it to assign the device in the Electric Imp IDE.
 
  If you have any issues getting started with your Electric Imp account or device, see [the full getting started guide](https://electricimp.com/docs/gettingstarted/explorer/quickstartguide/).
 
@@ -78,7 +78,7 @@ The Electric Imp IDE provides all the tools you need to write and deploy the sof
  - In the pop up choose your device and click **Assign**
 ![Assign device](https://imgur.com/8VjrXqB.png)
 
- - Between the code and the logs windows in the IDE you can find agent url of your device. It will look similar to this ```"https://agent.electricimp.com/szPc0sLfAqlu"``` BlinkUp app showed the same url after successfull blink up.
+ - Between the code and the logs windows in the IDE you can find agent url of your device. It will look similar to this ```"https://agent.electricimp.com/szPc0sLfAqlu"``` BlinkUp app showed the same url after successful blink up.
  - Make a note of the agent url. You will need it when creating your connected app in Salesforce.
  ![IDE code windows](https://imgur.com/x5fGsNP.png)
 - Do not close IDE page.
@@ -541,19 +541,25 @@ You may setup other thresholds and/or another repeat period.
 ![States](https://imgur.com/Noz1EXu.png)
 - Click on **Activate** button. In the pop up click **Activate**
 ![Activate](https://imgur.com/H7zBYSy.png)
+- Do not close Salesforce page
 
 ### Step 10: Build and Run the Electric Imp Application
 
-These examples use OAuth 2.0 for authentication, so the agent has been set up as a web server to handle the log in.
-Go to the Electric Imp IDE and select your device from the sidebar for the final setup steps.
-
-- Hit **Build and Run** to save and launch the code
-- Click on the agent url to launch the log in page
-- Log into Salesforce
-
+- Return back to the Electric Imp IDE page.
+- Make sure your device is Online (powered on, connected to your WiFi, IDE shows the device is in **Online** state).
+- Click **Build and Run** to build and launch the code.
+- Look at the log window of the IDE to see the logs from your running application.
+- If you see **\[Agent] 	ERROR: Not logged into Salesforce.** error logs, it means your application is not authorized to connect to Salesforce yet.
+  - This example uses OAuth 2.0 for authentication. The IMP agent has been set up as a web server to handle the authentication procedure.
+  - Click on the agent url in the IDE.
 ![IDE Screenshot](https://imgur.com/6rm6FBf.png)
-
-Your App should now be up and running.  You can monitor the device logs in the IDE, or log into Salesforce web portal to see updates there.
+  - You will be redirected to the login page.
+  - Log into Salesforce on that page.
+  - If login is successful the page should display **"Authentication complete - you may now close this window"**
+  - Close that page and return to the IDE page.
+- Make sure there are no more errors in the logs.
+- Make sure there are periodic logs like this **\[Agent] 	Readings sent successfully**
+- Your application is now up and running.
 
 ### Step 11: Install Device in Refrigerator
 
@@ -561,7 +567,7 @@ Open your refrigerator and place the impExplorer Kit on a shelf in your refriger
 
 ![Imp In Fridge](http://i.imgur.com/z5llZBg.png)
 
-If you don't have a fridge handy for this scenario, you can test the door being open by keeping the imp in a lit room.  A door open for thirty seconds should register a case.
+??? If you don't have a fridge handy for this scenario, you can test the door being open by keeping the imp in a lit room.  A door open for thirty seconds should register a case.
 
 ### Step 12: Monitor the data in Salesforce1
 
