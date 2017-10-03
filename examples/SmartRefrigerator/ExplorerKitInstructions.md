@@ -645,14 +645,15 @@ Also, you can see transitions between states which you defined in **IoT Explorer
 ![Salesforce Navbar](https://imgur.com/AJFyqgk.png)
 - Enter **Orchestrations** into the Quick Find box and then select **Feature Settings > IoT Explorer > Orchestrations**.
 ![Orchestrations](https://imgur.com/8i2qDU9.png)
-- Click on **Smart Fridge Orchestration**. Then click on **TRAFFIC** tab. 
+- Click on **Smart Fridge Orchestration**.
+- Click on **TRAFFIC** tab. 
 - If your ElectricImp device is in a fridge, you can see that your device is in **Default** normal state.
 ![Default state](https://imgur.com/XQ0DyYd.png)
-- Keep the fridge door open for over 30 seconds (or just place the device to a lit room).
-- On the **TRAFFIC** tab check that your device moved into **Door Open** state.
+- Keep the fridge door open for over 30 seconds ??? (or just place the device to a lit room).
+- On the **TRAFFIC** tab see that your device moved into **Door Open** state.
 ![Door Open state](https://imgur.com/h2Hdeg5.png)
 - Move the imp to a warm dark place.
-- On the **TRAFFIC** tab check that your device moved into **Temperature Over Threshold** state.
+- On the **TRAFFIC** tab see that your device moved into **Temperature Over Threshold** state.
 ![Temperature state](https://imgur.com/z7uB2CD.png)
 - Run **Salesforce1** mobile app as described in the previous Step.
 - Click the three white bars in the upper left to open the navigation panel.
