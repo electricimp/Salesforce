@@ -152,17 +152,19 @@ You will need to create a custom object with fields that correspond to each key 
 - On the **SmartFridge** Custom Object page, check that **API Name** is **SmartFridge__c**
 ![Custom Object Api Name](https://imgur.com/y5spRHY.png)
 
-#### Creating SmartFridge Object Custom Fields
+#### Adding Custom Fields to the SmartFridge Object
 After creating the **SmartFridge** custom object, let's add custom fields to track all the information you’ll collect from your fridge.
 
-- Select the **Fields & Relationships** section from the left navigation and click **New**.
-- Create a field for temperature with the following settings:
-  - Data Type: **Number**
+- Select the **Fields & Relationships** section from the left navigation.
+- Click **New**.
+- Create a field for temperature:
+  - **Step 1. Choose the field type** - choose Data Type: **Number**
   - Click **Next**
-  - Field Label: **temperature**
-  - Length: **4**
-  - Decimal Places: **2**
-  - Field Name: **temperature**
+  - **Step 2. Enter the details**:
+    - Field Label: **temperature**
+    - Length: **4**
+    - Decimal Places: **2**
+    - Field Name: **temperature**
 ![Temperature Field](https://imgur.com/40XLV2B.png)
 - Click **Next**, **Next**, and then **Save & New**.
 - Create a field for humidity with the following settings:
