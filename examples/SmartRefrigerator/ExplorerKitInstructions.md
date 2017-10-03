@@ -294,25 +294,26 @@ After creating the **SmartFridge** custom object, let's add custom fields to tra
   - Field Label: **deviceId**
   - Length: **16**
   - Field Name: **deviceId**
-  - Check **Required**
+  - Check **Always require a value in this field in order to save a record**
 - Click **Save**.
-- Make sure that **Smart Fridge Reading** **API Name** is **Smart_Fridge_Reading__e** and **Fields & Relationships** looks like this:
+- Make sure that **Smart Fridge Reading** **API Name** is **Smart_Fridge_Reading__e** and **Custom Fields & Relationships** looks like this:
 ![Smart Fridge Reading Event Details](https://imgur.com/4BQA37p.png)
 
 ### Step 8: Create Context in Salesforce
 
-1. Log into Salesforce, click **Setup** icon in the top right navigation menu and select **Setup**.
+- On the Salesforce page, click **Setup** icon in the top right navigation menu and select **Setup**.
 ![Salesforce Navbar](https://imgur.com/AJFyqgk.png)
-2. Enter **Contexts** into the Quick Find box and then select **Feature Settings > IoT Explorer > Contexts**.
+- Enter **Contexts** into the Quick Find box and then select **Feature Settings > IoT Explorer > Contexts**.
 ![Contexts](https://imgur.com/9Sp7hpy.png)
-3. Click **New Context**.
-4. In the New Context form fill in:
+- Click **New Context**.
+- In the New Context form fill in:
   - Context Name: **Smart Fridge Context**
   - Key Type: **String**
   - Click **Save**
-5. You will be redirected to the **Smart Fridge Context** page. In the **Platform Events** section click **Add**.
+- You will be redirected to the **Smart Fridge Context** page.
+- In the **Platform Events** section click **Add**.
 ![Context Add Platform Event](https://imgur.com/ySmNGqq.png)
-6. In the Add Platform Event form fill in:
+- In the **Add Platform Event** form fill in:
   - Context: **Smart Fridge Context**
   - Platform Event: **Smart Fridge Reading**
   - Key: **deviceId**
