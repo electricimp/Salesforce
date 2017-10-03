@@ -387,9 +387,9 @@ You may setup other thresholds and/or another repeat period.
 ##### Configuring Default Rule
 
 - Click on **RULES** tab.
-- In the **When** column (of the **Default** state) click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**
+- In the **When** column of the **Default** state click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**
 ![Default state](https://imgur.com/em5GdAG.png)
-- In the **Actions** column (of the **Default** state) click **Add an action** and choose **OUTPUT ACTIONS > Salesforce Record**
+- In the **Actions** column click **Add an action** and choose **OUTPUT ACTIONS > Salesforce Record**
 ![Default state action](https://imgur.com/VvSpbWv.png)
 - In the **New Salesforce Output Action** pop up choose: 
   - Object: Custom > **SmartFridge**
@@ -417,28 +417,28 @@ You may setup other thresholds and/or another repeat period.
 
 ##### Adding Door Open Rule
 
-1. Click **Add State**
+- Click **Add State**
 ![Add State](https://imgur.com/wh9fOxX.png)
-2. Enter **Door Open** in new state name.
-3. In the **Door Open** state **When** column click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
-4. In the **Condition** column enter `Smart_Fridge_Reading__e.door__c = "closed"`
-5. In the **Actions** column click **Add an action** and choose **ORCHESTRATION ACTIONS > Reset Variable**. Then choose **door_open_counter**.
-6. In the **Transition** column choose **Default**
+- Enter **Door Open** as the new state name.
+- In the **When** column of the **Door Open** state click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
+- In the **Condition** column enter `Smart_Fridge_Reading__e.door__c = "closed"`
+- In the **Actions** column click **Add an action** and choose **ORCHESTRATION ACTIONS > Reset Variable**. Then choose **door_open_counter**.
+- In the **Transition** column choose **Default**
 ![Door Open state](https://imgur.com/L2QnSK9.png)
-7. Click **Add rule** in the **Door Open** State menu.
+- Click **Add rule** in the **Door Open** State menu.
 ![Door Open add rule](https://imgur.com/ENZu8a5.png)
-8. In the new state **When** column click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
-9. Click to **Condition** column and click **Add limit repeating the rule (optional)**.
+- In the **When** column of the new state click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
+- Click to **Condition** column and click **Add limit repeating the rule (optional)**.
 ![Condition Add limit](https://imgur.com/E4cZCL9.png)
-10. Enter **1 time(s) per 30 minutes**.
+- Enter **1 time(s) per 30 minutes**. (???)
 ![Door Open Condition](https://imgur.com/mZszuib.png)
-11. In the **Actions** column click **Add an action** and choose **OUTPUT ACTIONS > Salesforce Record**
-12. In the **New Salesforce Output Action** pop up choose: 
+- In the **Actions** column click **Add an action** and choose **OUTPUT ACTIONS > Salesforce Record**
+- In the **New Salesforce Output Action** pop up choose: 
   - Object: **Case**
   - Action Type: **Create**
-  - Click **Next**
 ![Door Open Case create](https://imgur.com/tFjtEzE.png)
-13. In the **Assign values to record fields** table:
+  - Click **Next**
+- In the **Assign values to record fields** table:
   - Click **Add Field**
   - Choose **deviceId__c** in **Select field**
   - Enter value: `Smart_Fridge_Reading__e.deviceId__c`
@@ -448,15 +448,15 @@ You may setup other thresholds and/or another repeat period.
   - Click **Add Field**
   - Choose **Description** in **Select field**
   - Enter **Description** value: `"door has been opened for 30 seconds"`
-14. Confirm that **Assign values to record fields** table looks like this:
+- Make sure that **Assign values to record fields** table looks like this:
 ![Door Open Case fields](https://imgur.com/Bdq4IiU.png)
-15. In **Action Name** field enter **Create Door Open Case**
-16. Click **Finish**
-17. Click **Add rule** in the **Default** State menu.
+- In **Action Name** field enter **Create Door Open Case**
+- Click **Finish**
+- Click **Add rule** in the **Default** State menu.
 ![Default State add rule](https://imgur.com/ATzWdwt.png)
-18. In the new state **When** column click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
-19. In the **Condition** column enter `door_open_counter >= DOOR_OPEN_LIMIT`.
-20. In the **Transition** column choose **Door Open**.
+- In the **When** column of the new state click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
+- In the **Condition** column enter `door_open_counter >= DOOR_OPEN_LIMIT`.
+- In the **Transition** column choose **Door Open**.
 ![Default To Door Open](https://imgur.com/wdl2GJl.png)
 
 ##### Adding Temperature Over Threshold Rule
