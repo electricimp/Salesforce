@@ -9,26 +9,24 @@ This example will also *open a Case* in Salesforce using *IoT Explorer Orchestra
 2. the temperature is over predefined threshold, or 
 3. the relative humidity is over predefined threshold.
 
-## Step 1: Intro - What you need
+### Step 1: Intro - What you need
 
-### General
+#### General
  - Your WIFI *network name* and *password*
  - A smartphone (iOS or Android)
  - A computer with a web browser
 
-### Accounts
+#### Accounts
   - An [Electric Imp developer account](https://preview-impcentral.electricimp.com/login)
   - The Electric Imp BlinkUp<sup>TM</sup> app ([iOS](https://itunes.apple.com/us/app/electric-imp/id547133856) or [Android](https://play.google.com/store/apps/details?id=com.electricimp.electricimp))
   - A [Salesforce developer account](https://developer.salesforce.com/signup)
 
-### Hardware
+#### Hardware
   - An Electric Imp  [impExplorer<sup>TM</sup> kit](https://store.electricimp.com/collections/featured-products/products/impexplorer-developer-kit-for-salesforce-trailhead?variant=31720746706)
 
 And if you want to install the board into a fridge:
 
   - 3 AA Batteries
-
-## Getting Started
 
 ### Step 2: Setup the Electric Imp hardware
 
@@ -54,11 +52,9 @@ Use the Electric Imp mobile app to BlinkUp your device
 
  If you have any issues getting started with your Electric Imp account or device, see [the full getting started guide](https://electricimp.com/docs/gettingstarted/explorer/quickstartguide/).
 
-### Step 3: Add Code for the Electric Imp
+### Electric Imp's Connectivity Description
 
-#### How Electric Imp's connectivity platform works
-
-The Electric Imp IoT Connectivity Platform has two main components -- the impDevice<sup>TM</sup> and the impCloud<sup>TM</sup>.  The impDevice runs the device code, which in this use case consolidates the data gathered by the temperature/humidity/light sensors.  Each device is paired one-to-one with a "virtual twin" -- or, as we call it, an agent -- in the impCloud.  The device sends this data to its agent, which runs agent code. In this example the agent code forwards the data from the device to the Salesforce cloud.  Here's a broad overview of this flow:
+The Electric Imp IoT Connectivity Platform has two main components -- the impDevice<sup>TM</sup> and the impCloud<sup>TM</sup>.  The impDevice runs the device code, which in this use case consolidates the data gathered by the temperature/humidity/light sensors.  Each device is paired one-to-one with a "virtual twin" -- or, as we call it, an agent -- in the impCloud.  The device sends this data to its agent, which runs agent code. In this example the agent code forwards the data from the device to the Salesforce cloud as a Platform Event.  Here's a broad overview of this flow:
 
 <img src="http://i.imgur.com/VpZHzdS.jpg" width="600">
 
@@ -66,7 +62,7 @@ The Electric Imp IDE provides all the tools you need to write and deploy the sof
 
  If you'd like a quick overview of the IDE features please visit the Electric Imp [Dev Center](https://electricimp.com/docs/ideuserguide/).
 
-#### Electric Imp IDE / Code
+### Step 3: Add Code for the Electric Imp
 
  - In your favorite web browser log into the [Electric Imp IDE](https://preview-impcentral.electricimp.com/login)
  - Click **Create a Product** button
@@ -84,6 +80,10 @@ The Electric Imp IDE provides all the tools you need to write and deploy the sof
  - Make a note of the agent url. You will need it when creating your connected app in Salesforce.
  ![IDE code windows](https://imgur.com/x5fGsNP.png)
 - Do not close IDE page.
+
+### Salesforce IoT Explorer Description
+
+??? TODO - add some links + what we are going to creat below...
 
 ### Step 4: Create a Salesforce Connected App
 
@@ -128,7 +128,7 @@ The Electric Imp IDE provides all the tools you need to write and deploy the sof
 
 #### Creating a Custom Object in Salesforce
 
-You will need to create a custom object with fields that correspond to each key in the reading table (??? totally not clear). There is the step by step instruction for creating a Custom Object:
+??? You will need to create a custom object with fields that correspond to each key in the reading table.
 
 - Return back to the Salesforce page.
 - Click **Setup** icon in the top right navigation menu and select **Setup**.
@@ -149,7 +149,7 @@ You will need to create a custom object with fields that correspond to each key 
       - Starting Number: **1**
 ![Custom Object Info](https://imgur.com/w4J67Jq.png)
     - Click **Save**
-- On the **SmartFridge** Custom Object page, check that **API Name** is **SmartFridge__c**
+- On the **SmartFridge** Custom Object page, make sure that **API Name** is **SmartFridge__c**
 ![Custom Object Api Name](https://imgur.com/y5spRHY.png)
 
 #### Adding Custom Fields to the SmartFridge Object
@@ -205,22 +205,22 @@ After creating the **SmartFridge** custom object, let's add custom fields to tra
 ![DeviceId Field](https://imgur.com/WApbOvX.png)
   - Click **Next**, **Next**, and then **Save**.
 
-- Check that SmartFridge **Fields & Relationships** looks like this:
+- Make sure that SmartFridge **Fields & Relationships** looks like this:
 ![SmartFridge Fields](https://imgur.com/10aY29u.png)
 
 ### Step 6: Create a Custom Case Field in Salesforce
 
-We want the cases opened to contain the Device ID for our refrigerator.  To do this we need to create a custom field for our Salesforce case.  Here are the step by step instructions for creating a Custom Case Field:
+??? We want the cases opened to contain the Device ID for our refrigerator. To do this you need to create a custom field for your Salesforce case.
 
-1. Log into Salesforce, click **Setup** icon in the top right navigation menu and select **Setup**.
+- On the Salesforce page, click **Setup** icon in the top right navigation menu and select **Setup**.
 ![Salesforce Navbar](https://imgur.com/AJFyqgk.png)
-2. Click on **Object Manager** tab next to **Home**.
+- Click on **Object Manager** tab next to **Home**.
 ![Object Manager](https://imgur.com/bJhA9xk.png)
-3. Click the **Case** object.
-4. Select the **Fields & Relationships** section and click the **New** button.
+- Click the **Case** object.
+- Select the **Fields & Relationships** section and click the **New** button.
 ![New Fields and Relationships](https://imgur.com/qCZzI3r.png)
 
-5. In the **New Custom Field** form fill in:
+- In the **New Custom Field** form fill in:
   - Data Type: **Text**
   - Click **Next**
   - Field Label: **deviceId**
@@ -229,7 +229,7 @@ We want the cases opened to contain the Device ID for our refrigerator.  To do t
   - Check **External ID**
   - Click **Next**, **Next** and then **Save**
 ![Related Fridge](https://imgur.com/ZN1ekyE.png)
-6. Select the **Fields & Relationships** section and find your newly created **deviceId** custom field. Make sure the **Field Name** is **deviceId__c**.
+- Select the **Fields & Relationships** section and find your newly created **deviceId** custom field. Make sure the **Field Name** is **deviceId__c**.
 ![Case Fields](https://imgur.com/3i8uHjK.png)
 
 ### Step 7: Create Platform Events in Salesforce
