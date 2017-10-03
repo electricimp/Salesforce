@@ -5,9 +5,11 @@ The following Trailhead project will use the Electric Imp platform to connect an
 To track the current temperature and humidity we will create a Salesforce *Custom Object* and put readings data to it every 15 seconds using Salesforce *Platform Events*.
 
 This example will also *open a Case* in Salesforce using *IoT Explorer Orchestration* if: 
-1. the refrigerator door is opened for more than 30 seconds (??? predefined threshold), or 
-2. the temperature is over predefined threshold, or 
-3. the relative humidity is over predefined threshold.
+1. the refrigerator door is opened for more than a predefined threshold, or 
+2. the temperature is over a predefined threshold, or 
+3. the relative humidity is over a predefined threshold.
+
+All thresholds are defined later, at the step when you setup *IoT Explorer Orchestration*.
 
 ### Step 1: Intro - What you need
 
@@ -120,7 +122,7 @@ The Electric Imp IDE provides all the tools you need to write and deploy the sof
 #### Adding API keys to your Electric Imp Code
 
 - Return back to the Electric Imp IDE page.
-- Find the *SALESFORCE CONSTANTS* section at the end of the agent code and enter your **Consumer Key** and **Consumer Secret** (copy them from the Salesforce Connected App's page).
+- Find the *SALESFORCE CONSTANTS* section at the end of the agent code and initialize your **CONSUMER_KEY** and **CONSUMER_SECRET** constants (copy their values from the Salesforce Connected App's page).
 ![IDE with code](https://imgur.com/DKc0Kyr.png)
 - Do not close IDE page.
 
@@ -238,7 +240,7 @@ After creating the **SmartFridge** custom object, let's add custom fields to tra
 
 #### Creating Platform Events in Salesforce
 
-??? You need to create **Platform Even**t that correspond to ElectricImp SmartFridge data readings.
+??? You need to create **Platform Event** that correspond to ElectricImp SmartFridge data readings.
 ??? Mandatory names here - these fields are used by the imp app?
 
 - On the Salesforce page, click **Setup** icon in the top right navigation menu and select **Setup**.
@@ -298,6 +300,10 @@ After creating the **SmartFridge** custom object, let's add custom fields to tra
 - Click **Save**.
 - Make sure that **Smart Fridge Reading** **API Name** is **Smart_Fridge_Reading__e** and **Custom Fields & Relationships** looks like this:
 ![Smart Fridge Reading Event Details](https://imgur.com/4BQA37p.png)
+- Return back to the Electric Imp IDE page.
+- Find the *SALESFORCE CONSTANTS* section at the end of the agent code and make sure your **READING_EVENT_NAME** constant value is **Smart_Fridge_Reading__e** (i.e. the same as **Smart Fridge Reading** **API Name** value of the just created **Platform Event**).
+![IDE with code](https://imgur.com/DKc0Kyr.png)
+- Do not close IDE page.
 
 ### Step 8: Create Context in Salesforce
 
@@ -319,57 +325,60 @@ After creating the **SmartFridge** custom object, let's add custom fields to tra
   - Key: choose **deviceId**
   - Click **Save**
 
-### Step 9: Create Orchestrations in Salesforce
+### Step 9: Create Orchestration in Salesforce
 
-You will need to create an Orchestration that processes Platform Events and produces Cases when
+This example shows how to create an Orchestration that processes Platform Events and produces Cases when
 1. the refrigerator door is opened for more than 30 seconds (3 data readings in a row), or 
-2. the temperature is over 11°C, or 
+2. the temperature is over 11°C, or
 3. the relative humidity is over 70%.
 
-If the reason of a Case isn't eliminated, the Case will be produced repeatedly every 30 minutes.
+If the reason of a Case is not eliminated, the Case will be produced repeatedly every 30 minutes.
 
-Here are the step by step instructions for creating Orchestration:
+You may setup other thresholds and/or another repeat period.
+
+??? - maybe suggest by default smaller thresholds/period? - 20 sec, 8°C, 10 min ?
 
 #### Creating Orchestration
 
-1. Log into Salesforce, click **Setup** icon in the top right navigation menu and select **Setup**.
+- On the Salesforce page, click **Setup** icon in the top right navigation menu and select **Setup**.
 ![Salesforce Navbar](https://imgur.com/AJFyqgk.png)
-2. Enter **Orchestrations** into the Quick Find box and then select **Feature Settings > IoT Explorer > Orchestrations**.
+- Enter **Orchestrations** into the Quick Find box and then select **Feature Settings > IoT Explorer > Orchestrations**.
 ![Orchestrations](https://imgur.com/8i2qDU9.png)
-3. Click **New Orchestration**.
-4. In the New Orchestration pop up fill in:
+- Click **New Orchestration**.
+- In the New Orchestration pop up fill in:
   - Name: **Smart Fridge Orchestration**
-  - Context: **Smart Fridge Context**
+  - Context: choose **Smart Fridge Context** you created early
   - Click **Create**
 ![New Orchestration](https://imgur.com/gWMgKur.png)
 
 #### Creating Orchestration Variables
 
-1. Click on **VARIABLES** tab. Now you need to create temperature, humidity and door open thresholds and additional variable to produce door open Cases. Click **Add Variable**.
+- Click on **VARIABLES** tab. Now you need to create temperature, humidity and door open thresholds and additional variable to produce door open Cases. (??? explain more ?)
+- Click **Add Variable**.
 ![Variables](https://imgur.com/75kHG00.png)
-2. Create a varable for temperature threshold with the following settings:
+- Create a varable for the temperature threshold:
   - Name: **TEMPERATURE_THRESHOLD**
   - Data Type: **Number**
   - Initial Value: **11**
-3. Click **Add Variable**.
-4. Create a varable for humidity threshold with the following settings:
+- Click **Add Variable**.
+- Create a varable for the humidity threshold:
   - Name: **HUMIDITY_THRESHOLD**
   - Data Type: **Number**
   - Initial Value: **70**
-5. Click **Add Variable**.
-6. Create a varable for door open counter limit with the following settings:
+- Click **Add Variable**.
+- Create a varable for the door open counter limit:
   - Name: **DOOR_OPEN_LIMIT**
   - Data Type: **Number**
   - Initial Value: **3**
-7. Click **Add Variable**.
-8. Create a varable for door open counter with the following settings:
+- Click **Add Variable**.
+- Create a varable for the door open counter:
   - Name: **door_open_counter**
   - Data Type: **Number**
   - Event Type: **Smart_Fridge_Reading__e**
   - IF: `Smart_Fridge_Reading__e.door__c = "open"`
   - Value: **Count 1 min**
   - Initial Value: **0**
-9. Make sure your Orchestration variables looks like this:
+- Make sure your Orchestration variables looks like this:
 ![Orchestration variables](https://imgur.com/FiSs6SB.png)
 
 #### Creating Orchestration Rules
