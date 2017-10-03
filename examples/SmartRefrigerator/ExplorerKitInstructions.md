@@ -58,7 +58,6 @@ Use the Electric Imp mobile app to BlinkUp your device
 
 #### How Electric Imp's connectivity platform works
 
-
 The Electric Imp IoT Connectivity Platform has two main components -- the impDevice<sup>TM</sup> and the impCloud<sup>TM</sup>.  The impDevice runs the device code, which in this use case consolidates the data gathered by the temperature/humidity/light sensors.  Each device is paired one-to-one with a "virtual twin" -- or, as we call it, an agent -- in the impCloud.  The device sends this data to its agent, which runs agent code. In this example the agent code forwards the data from the device to the Salesforce cloud.  Here's a broad overview of this flow:
 
 <img src="http://i.imgur.com/VpZHzdS.jpg" width="600">
@@ -71,9 +70,7 @@ The Electric Imp IDE provides all the tools you need to write and deploy the sof
 
  - In your favorite web browser log into the [Electric Imp IDE](https://preview-impcentral.electricimp.com/login)
  - Click **Create a Product** button
-
 ![Empty IDE](https://imgur.com/I0oMuaX.png)
-
  - In the pop up enter Product name (e.g. **SmartFridge**) and Application Workspace name (e.g. **SmartFridge**) and click **Create** button
 ![Create Product](https://imgur.com/hFKYX4C.png)
  - Copy and Paste the [agent code](./SmartRefrigerator_ExplorerKit_Salesforce.agent.nut) from github into the left side agent window
@@ -90,11 +87,11 @@ The Electric Imp IDE provides all the tools you need to write and deploy the sof
 
 ### Step 4: Create a Salesforce Connected App
 
+- Log into [Salesforce](https://login.salesforce.com/)
+
 #### Creating a Connected App in Salesforce
 
-Step by step instructions to create a Connected App:
-
-- Log into [Salesforce](https://login.salesforce.com/), click **Setup** icon in the top right navigation menu and select **Setup**.
+- Click **Setup** icon in the top right navigation menu and select **Setup**.
 ![Salesforce Navbar](https://imgur.com/AJFyqgk.png)
 - Enter **App Manager** into the Quick Find box and then select **AppManager**.
 ![Salesforce QuickFind App Manager](https://imgur.com/NQXBMdM.png)
@@ -122,9 +119,10 @@ Step by step instructions to create a Connected App:
 
 #### Adding API keys to your Electric Imp Code
 
-Return back to the Electric Imp IDE page. Find the *SALESFORCE CONSTANTS* section at the end of the agent code and enter your **Consumer Key** and **Consumer Secret** (copy them from the Salesforce Connected App's page).
-
+- Return back to the Electric Imp IDE page.
+- Find the *SALESFORCE CONSTANTS* section at the end of the agent code and enter your **Consumer Key** and **Consumer Secret** (copy them from the Salesforce Connected App's page).
 ![IDE with code](https://imgur.com/DKc0Kyr.png)
+- Do not close IDE page.
 
 ### Step 5: Create a Custom Object in Salesforce
 
@@ -132,7 +130,8 @@ Return back to the Electric Imp IDE page. Find the *SALESFORCE CONSTANTS* sectio
 
 You will need to create a custom object with fields that correspond to each key in the reading table (??? totally not clear). There is the step by step instruction for creating a Custom Object:
 
-- On the Salesforce page, click **Setup** icon in the top right navigation menu and select **Setup**.
+- Return back to the Salesforce page.
+- Click **Setup** icon in the top right navigation menu and select **Setup**.
 ![Salesforce Navbar](https://imgur.com/AJFyqgk.png)
 - Click on **Object Manager** tab next to **Home**.
 ![Object Manager](https://imgur.com/bJhA9xk.png)
@@ -150,16 +149,14 @@ You will need to create a custom object with fields that correspond to each key 
       - Starting Number: **1**
 ![Custom Object Info](https://imgur.com/w4J67Jq.png)
     - Click **Save**
-- On the **SmartFridge** Custom Object page, confirm that **API Name** is **SmartFridge__c**
+- On the **SmartFridge** Custom Object page, check that **API Name** is **SmartFridge__c**
 ![Custom Object Api Name](https://imgur.com/y5spRHY.png)
 
-#### Creating SmartFridge Custom Fields
-Now that you’ve created the **SmartFridge** custom object, we’ll add some custom fields to track all the information you’ll collect from your fridge.
+#### Creating SmartFridge Object Custom Fields
+After creating the **SmartFridge** custom object, let's add custom fields to track all the information you’ll collect from your fridge.
 
-Add fields as follows:
-
-1. Select the **Fields & Relationships** section from the left navigation and click **New**.
-2. Create a field for temperature with the following settings:
+- Select the **Fields & Relationships** section from the left navigation and click **New**.
+- Create a field for temperature with the following settings:
   - Data Type: **Number**
   - Click **Next**
   - Field Label: **temperature**
@@ -167,16 +164,16 @@ Add fields as follows:
   - Decimal Places: **2**
   - Field Name: **temperature**
 ![Temperature Field](https://imgur.com/40XLV2B.png)
-3. Click **Next**, **Next**, and then **Save & New**.
-4. Create a field for humidity with the following settings:
+- Click **Next**, **Next**, and then **Save & New**.
+- Create a field for humidity with the following settings:
   - Data Type: **Number**
   - Click **Next**
   - Field Label: **humidity**
   - Length: **4**
   - Decimal Places: **2**
   - Field Name: **humidity**
-5. Click **Next**, **Next**, and then **Save & New**.
-6. Create a field for the door status with the following settings:
+- Click **Next**, **Next**, and then **Save & New**.
+- Create a field for the door status with the following settings:
   - Data Type: **Picklist**
   - Click **Next**
   - Field Label: **door**
@@ -184,14 +181,14 @@ Add fields as follows:
   - Enter **Open** and **Closed** so that they are on separate lines.
   - Field Name: **door**
 ![Door Field](https://imgur.com/XqAEQ10.png)
-7. Click **Next**, **Next**, and then **Save & New**.
-8. Create a field for a timestamp with the following settings:
+- Click **Next**, **Next**, and then **Save & New**.
+- Create a field for a timestamp with the following settings:
   - Data Type: **Date/Time**
   - Click **Next**
   - Field Label: **ts**
   - Field Name: **ts**
-9. Click **Next**, **Next**, and then **Save & New**.
-10. Create a field for the device’s ID with the following settings:
+- Click **Next**, **Next**, and then **Save & New**.
+- Create a field for the device’s ID with the following settings:
   - Data Type: **Text**
   - Click **Next**
   - Field Label: **deviceId**
@@ -200,9 +197,9 @@ Add fields as follows:
   - Check **Required**
   - Check **External ID**
 ![DeviceId Field](https://imgur.com/WApbOvX.png)
-11. Click **Next**, **Next**, and then **Save**.
+- Click **Next**, **Next**, and then **Save**.
 
-Confirm that SmartFridge **Fields & Relationships** looks like this:
+Check that SmartFridge **Fields & Relationships** looks like this:
 ![SmartFridge Fields](https://imgur.com/10aY29u.png)
 
 ### Step 6: Create a Custom Case Field in Salesforce
