@@ -412,6 +412,15 @@ You may setup other thresholds.
 - Make sure your Orchestration variables looks like this:
 ![Orchestration variables](https://imgur.com/foaGmIW.png)
 
+#### Creating Orchestration Global Rules
+
+- Click on **GLOBAL RULES** tab.
+- In the **When** column of **Global rules** choose **Smart_Fridge_Reading__e**.
+- In the **IF** column add `Smart_Fridge_Reading__e.door__c = "closed"`.
+- In the **Acttion** column choose **Reset Variable** and choose **door_open_counter**.
+- Make sure your **GLOBAL RULES** looks like this:
+![Global rules](https://imgur.com/JIuP8sO.png)
+
 #### Creating Orchestration Rules
 
 ##### Adding Door Open Rule
