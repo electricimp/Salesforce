@@ -362,15 +362,11 @@ This example opens customized **Cases** - standard Case object with an additiona
 ### Step 9: Create Orchestration in Salesforce
 
 This example demonstrates how to create an **Orchestration** that defines a fridge state machine, reacts on **Platform Events** and opens **Cases** when
-1. the refrigerator door is opened for more than 30 seconds (3 data readings in a row ???), or 
+1. the refrigerator door is opened during 3 consecutive data readings (the exact threshold is between 30 and 45 seconds), or 
 2. the temperature is over 11°C, or
 3. the relative humidity is over 70%.
 
-If the reason of a **Case** is not eliminated, the **Case** will be produced repeatedly every 30 minutes.
-
-You may setup other thresholds and/or another repeat period.
-
-??? - maybe suggest by default smaller thresholds/period? - 20 sec, 8°C, 10 min ?
+You may setup other thresholds.
 
 #### Creating Orchestration
 
@@ -388,7 +384,7 @@ You may setup other thresholds and/or another repeat period.
   
 #### Creating Orchestration Variables
 
-- Click on **VARIABLES** tab. Now you need to create temperature, humidity and door open thresholds and additional variable to produce door open Cases. (??? explain more ?)
+- Click on **VARIABLES** tab. Now you need to create temperature and humidity thresholds, door open counter and limit.
 - Click **Add Variable**.
 ![Variables](https://imgur.com/75kHG00.png)
 - Create a varable for the temperature threshold:
@@ -404,74 +400,36 @@ You may setup other thresholds and/or another repeat period.
 - Create a varable for the door open counter limit:
   - Name: **DOOR_OPEN_LIMIT**
   - Data Type: **Number**
-  - Initial Value: **3** (???)
+  - Initial Value: **3** (3 consecutive data readings with door open status)
 - Click **Add Variable**.
 - Create a varable for the door open counter:
   - Name: **door_open_counter**
   - Data Type: **Number**
   - Event Type: **Smart_Fridge_Reading__e** (Platform Event you create early)
-  - IF: `Smart_Fridge_Reading__e.door__c = "open"` (???)
-  - Value: **Count 1 min** (???)
+  - IF: `Smart_Fridge_Reading__e.door__c = "open"`
+  - Value: **Count 40 sec** (3 consecutive data readings fit in 40 seconds)
   - Initial Value: **0**
 - Make sure your Orchestration variables looks like this:
-![Orchestration variables](https://imgur.com/FiSs6SB.png)
+![Orchestration variables](https://imgur.com/foaGmIW.png)
 
 #### Creating Orchestration Rules
-
-##### Configuring Default Rule
-
-- Click on **RULES** tab.
-- In the **When** column of the **Default** state click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**
-![Default state](https://imgur.com/em5GdAG.png)
-- In the **Actions** column click **Add an action** and choose **OUTPUT ACTIONS > Salesforce Record**
-![Default state action](https://imgur.com/VvSpbWv.png)
-- In the **New Salesforce Output Action** pop up choose: 
-  - Object: Custom > **SmartFridge**
-  - Action Type: **Create**
-![Create SmartFridge action](https://imgur.com/IDym7Zl.png)
-  - Click **Next**
-- In the **Assign values to record fields** table:
-  - Enter **deviceId__c** value: `Smart_Fridge_Reading__e.deviceId__c`
-  - Click **Add Field**
-  - Choose **temperature__c** in **Select field**
-  - Enter **temperature__c** value: `Smart_Fridge_Reading__e.temperature__c`
-  - Click **Add Field**
-  - Choose **humidity__c** in **Select field**
-  - Enter **humidity__c** value: `Smart_Fridge_Reading__e.humidity__c`
-  - Click **Add Field**
-  - Choose **door__c** in **Select field**
-  - Enter **door__c** value: `Smart_Fridge_Reading__e.door__c`
-  - Click **Add Field**
-  - Choose **ts__c** in **Select field**
-  - Enter **ts__c** value: `Smart_Fridge_Reading__e.ts__c`
-- Make sure that **Assign values to record fields** table looks like this:
-![Create SmartFridge fields](https://imgur.com/We2WlA2.png)
-- In **Action Name** field enter **Create SmartFridge Reading**
-- Click **Finish**
 
 ##### Adding Door Open Rule
 
 - Click **Add State**
-![Add State](https://imgur.com/wh9fOxX.png)
+![Add State](https://imgur.com/Qo93sKR.png)
 - Enter **Door Open** as the new state name.
 - In the **When** column of the **Door Open** state click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
-- In the **Condition** column enter `Smart_Fridge_Reading__e.door__c = "closed"` (???)
-- In the **Actions** column click **Add an action** and choose **ORCHESTRATION ACTIONS > Reset Variable**. As a variable choose **door_open_counter**.
+- In the **Condition** column enter `Smart_Fridge_Reading__e.door__c = "closed"`
 - In the **Transition** column choose **Default**
-![Door Open state](https://imgur.com/L2QnSK9.png)
-- Click **Add rule** in the **Door Open** State menu.
-![Door Open add rule](https://imgur.com/ENZu8a5.png)
-- In the **When** column of the new rule click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
-- Click to **Condition** column and click **Add limit repeating the rule (optional)**.
-![Condition Add limit](https://imgur.com/E4cZCL9.png)
-- Enter **1 time(s) per 30 minutes**. (???)
-![Door Open Condition](https://imgur.com/mZszuib.png)
-- In the **Actions** column click **Add an action** and choose **OUTPUT ACTIONS > Salesforce Record**
+![Door Open State](https://imgur.com/dIqjY9S.png)
+- In the **When** column of the **Default** state click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
+- In the **Condition** column enter `door_open_counter >= DOOR_OPEN_LIMIT`
+- In the **Actions** column click **Add an action** and choose **OUTPUT ACTIONS > Salesforce Record**.
 - In the **New Salesforce Output Action** pop up choose: 
   - Object: **Case**
   - Action Type: **Create**
-![Door Open Case create](https://imgur.com/tFjtEzE.png)
-  - Click **Next**
+![Door Open Case create](https://imgur.com/PdcE9Zv.png)
 - In the **Assign values to record fields** table:
   - Click **Add Field**
   - Choose **deviceId__c** in **Select field**
@@ -481,17 +439,13 @@ You may setup other thresholds and/or another repeat period.
   - Enter **Subject** value: `"Refrigerator Door Open"`
   - Click **Add Field**
   - Choose **Description** in **Select field**
-  - Enter **Description** value: `"door has been opened for 30 seconds"` ??? for too long
-- Make sure that **Assign values to record fields** table looks like this:
-![Door Open Case fields](https://imgur.com/Bdq4IiU.png)
+  - Enter **Description** value: `"door has been opened for too long"`
 - In **Action Name** field enter **Create Door Open Case**
+- Make sure that **Assign values to record fields** table looks like this:
+![Door Open Case fields](https://imgur.com/3UvtEfs.png)
 - Click **Finish**
-- Click **Add rule** in the **Default** State menu.
-![Default State add rule](https://imgur.com/ATzWdwt.png)
-- In the **When** column of the new rule click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
-- In the **Condition** column enter `door_open_counter >= DOOR_OPEN_LIMIT` (???)
 - In the **Transition** column choose **Door Open**.
-![Default To Door Open](https://imgur.com/wdl2GJl.png)
+![Default To Door Open](https://imgur.com/rtTY6Om.png)
 
 ##### Adding Temperature Over Threshold Rule
 
@@ -500,36 +454,30 @@ You may setup other thresholds and/or another repeat period.
 - In the **When** column of the **Temperature Over Threshold** state click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
 - In the **Condition** column enter `Smart_Fridge_Reading__e.temperature__c < TEMPERATURE_THRESHOLD`
 - In the **Transition** column choose **Default**.
-![Temperature State](https://imgur.com/EsgoFdZ.png)
-- Click **Add rule** in the **Temperature Over Threshold** state menu.
-- In the **When** column of the new rule click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
-- Click to **Condition** column and click **Add limit repeating the rule (optional)**.
-- Enter **1 time(s) per 30 minutes** (???)
-![Temperature State Condition](https://imgur.com/pyiAwOw.png)
-- In the **Actions** column click **Add an action** and choose **OUTPUT ACTIONS > Salesforce Record**
+![Temperature State](https://imgur.com/7AOXeUL.png)
+- Click **Add rule** in the **Default** state menu.
+![Default Add rule](https://imgur.com/hhJG3NF.png)
+- In the **When** column the new rule click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
+- In the **Condition** column enter `Smart_Fridge_Reading__e.temperature__c >= TEMPERATURE_THRESHOLD`
+- In the **Actions** column click **Add an action** and choose **OUTPUT ACTIONS > Salesforce Record**.
 - In the **New Salesforce Output Action** pop up choose: 
   - Object: **Case**
   - Action Type: **Create**
-  - Click **Next**
 - In the **Assign values to record fields** table:
   - Click **Add Field**
   - Choose **deviceId__c** in **Select field**
   - Enter value: `Smart_Fridge_Reading__e.deviceId__c`
-  - Click **Add Field**
   - Choose **Subject** in **Select field**
   - Enter **Subject** value: `"Temperature Over Threshold"`
   - Click **Add Field**
   - Choose **Description** in **Select field**
   - Enter **Description** value: `"current temperature " + TEXT(Smart_Fridge_Reading__e.temperature__c) + " is over threshold"`
-- Make sure that **Assign values to record fields** table looks like this:
-![Temperature State Case fields](https://imgur.com/bRzaxmx.png)
 - In **Action Name** field enter **Create Temperature Case**
+- Make sure that **Assign values to record fields** table looks like this:
+![Temperature State Case fields](https://imgur.com/0PR5YdB.png)
 - Click **Finish**
-- Click **Add rule** in the **Default** state menu.
-- In the **When** column of the new rule click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
-- In the **Condition** column enter `Smart_Fridge_Reading__e.temperature__c >= TEMPERATURE_THRESHOLD`
 - In the **Transition** column choose **Temperature Over Threshold**.
-![Default To Temperature transition](https://imgur.com/mNvN8Zm.png)
+![Default To Temperature transition](https://imgur.com/M3T8ErX.png)
 
 ##### Adding Humidity Over Threshold Rule
 
@@ -538,36 +486,29 @@ You may setup other thresholds and/or another repeat period.
 - In the **When** column of the **Humidity Over Threshold** state click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
 - In the **Condition** column enter `Smart_Fridge_Reading__e.humidity__c < HUMIDITY_THRESHOLD`
 - In the **Transition** column choose **Default**.
-![Humidity State](https://imgur.com/7X14w3U.png)
-- Click **Add rule** in the **Humidity Over Threshold** state menu.
-- In the **When** column of the new rule click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
-- Click to **Condition** column and click **Add limit repeating the rule (optional)**.
-- Enter **1 time(s) per 30 minutes**.
-![Humidity State Condition](https://imgur.com/pl7KBcT.png)
-- In the **Actions** column click **Add an action** and choose **OUTPUT ACTIONS > Salesforce Record**
+![Humidity State](https://imgur.com/esSYDgq.png)
+- Click **Add rule** in the **Default** state menu.
+- In the **When** column the new rule click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
+- In the **Condition** column enter `Smart_Fridge_Reading__e.humidity__c >= HUMIDITY_THRESHOLD`
+- In the **Actions** column click **Add an action** and choose **OUTPUT ACTIONS > Salesforce Record**.
 - In the **New Salesforce Output Action** pop up choose: 
   - Object: **Case**
   - Action Type: **Create**
-  - Click **Next**
 - In the **Assign values to record fields** table:
   - Click **Add Field**
   - Choose **deviceId__c** in **Select field**
   - Enter value: `Smart_Fridge_Reading__e.deviceId__c`
-  - Click **Add Field**
   - Choose **Subject** in **Select field**
   - Enter **Subject** value: `"Humidity Over Threshold"`
   - Click **Add Field**
   - Choose **Description** in **Select field**
   - Enter **Description** value: `"current humidity " + TEXT(Smart_Fridge_Reading__e.humidity__c) + " is over threshold"`
-- Make sure that **Assign values to record fields** table looks like this:
-![Humidity Case fields](https://imgur.com/ZGnHfcm.png)
 - In **Action Name** field enter **Create Humidity Case**
+- Make sure that **Assign values to record fields** table looks like this:
+![Humidity State Case fields](https://imgur.com/9ao8KWL.png)
 - Click **Finish**
-- Click **Add rule** in the **Default** state menu.
-- In the **When** column of the new rule click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
-- In the **Condition** column enter `Smart_Fridge_Reading__e.humidity__c >= HUMIDITY_THRESHOLD`
 - In the **Transition** column choose **Humidity Over Threshold**.
-![Default to Humidity transition](https://imgur.com/DpYCVwH.png)
+![Default To Humidity transition](https://imgur.com/e0YnsY4.png)
 
 ##### Orchestration Activation
 
