@@ -5,7 +5,7 @@ The following Trailhead project will use the Electric Imp platform to connect an
 To track the current temperature and humidity we will create a Salesforce *Custom Object* and put readings data to it every 15 seconds using Salesforce *Platform Events*.
 
 This example will also *open a Case* in Salesforce using *IoT Explorer Orchestration* if: 
-1. the refrigerator door is opened for more than a predefined threshold, or 
+1. the refrigerator door is opened longer than a predefined threshold, or 
 2. the temperature is over a predefined threshold, or 
 3. the relative humidity is over a predefined threshold.
 
@@ -85,9 +85,27 @@ The Electric Imp IDE provides all the tools you need to write and deploy the sof
 
 ### Salesforce IoT Explorer Description
 
-??? TODO - add some links + what we are going to creat below...
+The data received from the device may be processed, stored, analyzed by Salesforce cloud.
+This example demonstrates just some of the Salesforce cloud capabilities. It may be modified/extended for your needs.
 
-### Step 4: Create a Salesforce Connected App
+Later on in this example the following Salesforce entities are created:
+
+- **Connected Application** (see Step 4). In this example it is needed to authenticate IMP application in Salesforce cloud. So, **Platform Events** which are sent by the IMP application are accepted by Salesforce.
+- **Custom Object** (see Step 5). In this example it is used to store the data received from the device. So, the historical data can be monitored, for example using **Salesforce1** mobile application.
+- **Platform Event** (see Step 6). It is used to transfer the data from the device to Salesforce cloud. Also, **Platform Event Trigger** inserts the received data into the **Custom Object**.
+- **IoT Explorer Context** (see Step 7). In this example it is required to create **IoT Explorer Orchestration**.
+- **Custom Case Field** (see Step 8). This example opens customized **Cases** - standard Case object with an additional field (device id).
+- **IoT Explorer Orchestration** (see Step 9). It defines a fridge state machine that reacts on incoming **Platform Events**. Also, it opens **Cases**.
+- **Custom Object Tab** (see Step 12). In this example it is needed to make the created **Custom Object** (with the stored data from the device) to be accessible by **Salesforce1** mobile application.
+
+From all the entities above only the **Platform Event** is an "interface" between the IMP application and Salesforce cloud. The Platform Event's fields must have the names and types mentioned in this example (see Step 6). If you change anything in the Platform Event definition you will need to update the IMP application (agent) source code. The name of the Platform Event is defined in the IMP application (agent code) as a constant - *READING_EVENT_NAME*.
+
+All other entities are fully independent from the IMP application.
+The steps below suggest the entities and fields names just as examples. You may change them, as well as change the logic of the example - set of entities, rules, Cases, etc.
+
+### Step 4: Create a Salesforce Connected Application
+
+In this example it is needed to authenticate IMP application in Salesforce cloud.
 
 - Log into [Salesforce](https://login.salesforce.com/)
 
@@ -128,9 +146,7 @@ The Electric Imp IDE provides all the tools you need to write and deploy the sof
 
 ### Step 5: Create a Custom Object in Salesforce
 
-#### Creating a Custom Object in Salesforce
-
-??? You will need to create a custom object with fields that correspond to each key in the reading table.
+In this example **Custom Object** is used to store the data received from the device.
 
 - Return back to the Salesforce page.
 - Click **Setup** icon in the top right navigation menu and select **Setup**.
@@ -153,9 +169,6 @@ The Electric Imp IDE provides all the tools you need to write and deploy the sof
     - Click **Save**
 - On the **SmartFridge** Custom Object page, make sure that **API Name** is **SmartFridge__c**
 ![Custom Object Api Name](https://imgur.com/y5spRHY.png)
-
-#### Adding Custom Fields to the SmartFridge Object
-After creating the **SmartFridge** custom object, let's add custom fields to track all the information you’ll collect from your fridge.
 
 - Select the **Fields & Relationships** section from the left navigation.
   - Click **New**.
@@ -210,38 +223,11 @@ After creating the **SmartFridge** custom object, let's add custom fields to tra
 - Make sure that SmartFridge **Fields & Relationships** looks like this:
 ![SmartFridge Fields](https://imgur.com/10aY29u.png)
 
-### Step 6: Create a Custom Case Field in Salesforce
+### Step 6: Create Platform Events in Salesforce
 
-??? We want the cases opened to contain the Device ID for our refrigerator. To do this you need to create a custom field for your Salesforce case.
+It is used to transfer the data from the device to Salesforce cloud. Also, **Platform Event Trigger** inserts the received data into the **Custom Object**.
 
-- On the Salesforce page, click **Setup** icon in the top right navigation menu and select **Setup**.
-![Salesforce Navbar](https://imgur.com/AJFyqgk.png)
-- Click on **Object Manager** tab next to **Home**.
-![Object Manager](https://imgur.com/bJhA9xk.png)
-- Click the **Case** object.
-- Select the **Fields & Relationships** section and click the **New** button.
-![New Fields and Relationships](https://imgur.com/qCZzI3r.png)
-
-- In the **New Custom Field** form:
-  - **Step 1. Choose the field type** - choose Data Type: **Text**
-  - Click **Next**
-  - **Step 2. Enter the details**:  
-    - Field Label: **deviceId**
-    - Length: **16**
-    - Field Name: **deviceId**
-    - Check **Set this field as the unique record identifier from an external system**
-![Related Fridge](https://imgur.com/ZN1ekyE.png)
-  - Click **Next**, **Next** and then **Save**
-- Select the **Fields & Relationships** section and find your newly created **deviceId** custom field.
-- Make sure the **Field Name** is **deviceId__c**.
-![Case Fields](https://imgur.com/3i8uHjK.png)
-
-### Step 7: Create Platform Events in Salesforce
-
-#### Creating Platform Events in Salesforce
-
-??? You need to create **Platform Event** that correspond to ElectricImp SmartFridge data readings.
-??? Mandatory names here - these fields are used by the imp app?
+The Platform Event's fields must have the names and types mentioned here. If you change anything in the Platform Event definition you will need to update the IMP application (agent) source code. The name of the Platform Event is defined in the IMP application (agent code) as a constant - *READING_EVENT_NAME*.
 
 - On the Salesforce page, click **Setup** icon in the top right navigation menu and select **Setup**.
 ![Salesforce Navbar](https://imgur.com/AJFyqgk.png)
@@ -305,7 +291,9 @@ After creating the **SmartFridge** custom object, let's add custom fields to tra
 ![IDE with code](https://imgur.com/DKc0Kyr.png)
 - Do not close IDE page.
 
-### Step 8: Create Context in Salesforce
+### Step 7: Create Context in Salesforce
+
+In this example it is required to create **IoT Explorer Orchestration**.
 
 - On the Salesforce page, click **Setup** icon in the top right navigation menu and select **Setup**.
 ![Salesforce Navbar](https://imgur.com/AJFyqgk.png)
@@ -325,9 +313,35 @@ After creating the **SmartFridge** custom object, let's add custom fields to tra
   - Key: choose **deviceId**
   - Click **Save**
 
+### Step 8: Create a Custom Case Field in Salesforce
+
+This example opens customized **Cases** - standard Case object with an additional field (device id).
+
+- On the Salesforce page, click **Setup** icon in the top right navigation menu and select **Setup**.
+![Salesforce Navbar](https://imgur.com/AJFyqgk.png)
+- Click on **Object Manager** tab next to **Home**.
+![Object Manager](https://imgur.com/bJhA9xk.png)
+- Click the **Case** object.
+- Select the **Fields & Relationships** section and click the **New** button.
+![New Fields and Relationships](https://imgur.com/qCZzI3r.png)
+
+- In the **New Custom Field** form:
+  - **Step 1. Choose the field type** - choose Data Type: **Text**
+  - Click **Next**
+  - **Step 2. Enter the details**:  
+    - Field Label: **deviceId**
+    - Length: **16**
+    - Field Name: **deviceId**
+    - Check **Set this field as the unique record identifier from an external system**
+![Related Fridge](https://imgur.com/ZN1ekyE.png)
+  - Click **Next**, **Next** and then **Save**
+- Select the **Fields & Relationships** section and find your newly created **deviceId** custom field.
+- Make sure the **Field Name** is **deviceId__c**.
+![Case Fields](https://imgur.com/3i8uHjK.png)
+
 ### Step 9: Create Orchestration in Salesforce
 
-This example shows how to create an **Orchestration** that processes **Platform Events** and produces **Cases** when
+This example demonstrates how to create an **Orchestration** that defines a fridge state machine, reacts on **Platform Events** and opens **Cases** when
 1. the refrigerator door is opened for more than 30 seconds (3 data readings in a row ???), or 
 2. the temperature is over 11°C, or
 3. the relative humidity is over 70%.
@@ -575,7 +589,7 @@ You can see the data, which your device sends, using **Salesforce1** mobile appl
 
 #### Create a Custom Object Tab
 
-First, you need to create **SmartFridge** custom tab, so it will be accessible in the mobile application.
+In this example it is needed to make the created **Custom Object** (with the stored data from the device) to be accessible by **Salesforce1** mobile application.
 
 - On Salesforce page, click **Setup** icon in the top right navigation menu and select **Setup**.
 ![Salesforce Navbar](https://imgur.com/AJFyqgk.png)
