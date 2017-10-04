@@ -1,36 +1,42 @@
 # Salesforce Smart Refrigerator
 
-The following Trailhead project will use  the Electric Imp platform to connect and monitor a refrigerator and a Salesforce *Connected App* to track the current temperature and humidity in the fridge.  This example will also *open a case* in Salesforce if:  1) the refrigerator door is open for more than 30 seconds, or 2) the temperature remains over 11°C for more than 15 min, or 3) the relative humidity is over 70% for more than 15 min.  To track the current temperature and humidity we will create a Salesforce *custom object*, then update it with new readings every 15 seconds.
+This demo example use the Electric Imp platform to connect and monitor a refrigerator and a Salesforce cloud to track the current temperature, humidity and the door status in the fridge.
 
+The IMP application reads data from sensors every 15 seconds - temperature, humidity and light (that transforms to the door status - open/closed) - and sends them to the cloud using Salesforce *Platform Events*.
 
-## 1 Intro - What you need
+Salesforce cloud stores the incoming data and *opens a Case* using *IoT Explorer Orchestration* if: 
+1. the refrigerator door is opened longer than a predefined threshold, or 
+2. the temperature is over a predefined threshold, or 
+3. the relative humidity is over a predefined threshold.
 
-### General
+All thresholds are defined later, at the step when you setup *IoT Explorer Orchestration*.
+
+### Step 1: Intro - What you need
+
+#### General
  - Your WIFI *network name* and *password*
  - A smartphone (iOS or Android)
  - A computer with a web browser
 
-### Accounts
-  - An [Electric Imp developer account](https://ide.electricimp.com/login)
+#### Accounts
+  - An [Electric Imp developer account](https://preview-impcentral.electricimp.com/login)
   - The Electric Imp BlinkUp<sup>TM</sup> app ([iOS](https://itunes.apple.com/us/app/electric-imp/id547133856) or [Android](https://play.google.com/store/apps/details?id=com.electricimp.electricimp))
-  - A [Salesforce developer account](https://developer.salesforce.com/signup?d=70130000000td6N)
+  - A [Salesforce developer account](https://developer.salesforce.com/signup)
 
-### Hardware
+#### Hardware
   - An Electric Imp  [impExplorer<sup>TM</sup> kit](https://store.electricimp.com/collections/featured-products/products/impexplorer-developer-kit-for-salesforce-trailhead?variant=31720746706)
 
 And if you want to install the board into a fridge:
 
   - 3 AA Batteries
 
-## Getting Started
-
 ### Step 2: Setup the Electric Imp hardware
 
-First we will need to assemble the impExplorer Kit.  The kit comes with (1) the imp001 card, which has a WiFi radio and microcontroller which drives all the logic for the board and (2) the impExplorer Kit into which the card is plugged.  The impExplorer Kit provides a set of sensors and peripherals which are ready to use. This project will take readings from temperature, humidity, accelerometer, and light sensors to determine the current state of your fridge.
+First we will need to assemble the impExplorer Kit.  The kit comes with (1) the imp001 card, which has a WiFi radio and microcontroller which drives all the logic for the board and (2) the impExplorer Kit into which the card is plugged.  The impExplorer Kit provides a set of sensors and peripherals which are ready to use. This project will take readings from temperature, humidity and light sensors to determine the current state of your fridge.
 
 #### Hardware Setup
  - Plug the imp001 card into the card slot on the impExplorer Kit
- - Power up your impExplorer Kit with the AA Batteries
+ - Power up your impExplorer Kit with the provided mini-B USB cable or the AA Batteries
  - The imp001 should now have power and be blinking amber/red
 
 Assmbled it should look like this:
@@ -44,15 +50,13 @@ Use the Electric Imp mobile app to BlinkUp your device
  - Log into your Electric Imp account
  - Enter your WiFi credentials
  - Follow the instructions in the app to [BlinkUp](https://electricimp.com/platform/blinkup/) your device
+ - Make a note of the Device ID of your device (the app shows it after successful blink up). You will need it to assign the device in the Electric Imp IDE.
 
  If you have any issues getting started with your Electric Imp account or device, see [the full getting started guide](https://electricimp.com/docs/gettingstarted/explorer/quickstartguide/).
 
-### Step 3: Add Code for the Electric Imp
+### Electric Imp's Connectivity Description
 
-#### How Electric Imp's connectivity platform works
-
-
-The Electric Imp IoT Connectivity Platform has two main components -- the impDevice<sup>TM</sup> and the impCloud<sup>TM</sup>.  The impDevice runs the device code, which in this use case consolidates the data gathered by the temperature/humidity/light sensors.  Each device is paired one-to-one with a "virtual twin" -- or, as we call it, an agent -- in the impCloud.  The device sends this data to its agent, which runs agent code. In this example the agent code executes the logic on the sensor data (e.g. light values show fridge is open) and communicates with the Salesforce cloud.  Here's a broad overview of this flow:
+The Electric Imp IoT Connectivity Platform has two main components -- the impDevice<sup>TM</sup> and the impCloud<sup>TM</sup>.  The impDevice runs the device code, which in this use case consolidates the data gathered by the temperature/humidity/light sensors.  Each device is paired one-to-one with a "virtual twin" -- or, as we call it, an agent -- in the impCloud.  The device sends this data to its agent, which runs agent code. In this example the agent code forwards the data from the device to the Salesforce cloud as a Platform Event.  Here's a broad overview of this flow:
 
 <img src="http://i.imgur.com/VpZHzdS.jpg" width="600">
 
@@ -60,303 +64,585 @@ The Electric Imp IDE provides all the tools you need to write and deploy the sof
 
  If you'd like a quick overview of the IDE features please visit the Electric Imp [Dev Center](https://electricimp.com/docs/ideuserguide/).
 
-#### Electric Imp IDE / Code
+### Step 3: Add Code for the Electric Imp
 
- - In your favorite web browser log into the [Electric Imp IDE](https://ide.electricimp.com/login)
- - Click the *+* button to create a new model
+ - In your favorite web browser log into the [Electric Imp IDE](https://preview-impcentral.electricimp.com/login)
+ - Click **Create a Product** button
+![Empty IDE](https://imgur.com/I0oMuaX.png)
+ - In the pop up enter Product name (e.g. **SmartFridge**) and Application Workspace name (e.g. **SmartFridge**) and click **Create** button
+![Create Product](https://imgur.com/hFKYX4C.png)
+ - Copy and Paste the [agent code](./SmartRefrigerator_ExplorerKit_Salesforce.agent.nut) from github into the left side agent window
+ - Copy and Paste the [device code](./SmartRefrigerator_ExplorerKit_Salesforce.device.nut) from github into the right side device window
+ - Click **Assign devices** link
+![Empty IDE code](https://imgur.com/Jjl4fKx.png)
+ - In the pop up choose your device and click **Assign**
+![Assign device](https://imgur.com/8VjrXqB.png)
 
-![Empty IDE](http://i.imgur.com/Ui7w8eG.png)
+ - Between the code and the logs windows in the IDE you can find agent url of your device. It will look similar to this ```"https://agent.electricimp.com/szPc0sLfAqlu"``` BlinkUp app showed the same url after successful blink up.
+ - Make a note of the agent url. You will need it when creating your connected app in Salesforce.
+ ![IDE code windows](https://imgur.com/x5fGsNP.png)
+- Do not close IDE page.
 
- - In the pop up name your code model, select your device and click *Create Model* button
- - Copy and Paste the [agent code](https://raw.githubusercontent.com/electricimp/Salesforce/master/examples/SmartRefrigerator/SmartRefrigerator_ExplorerKit_Salesforce.agent.nut) from github into the left side agent window
- - Copy and Paste the [device code](https://raw.githubusercontent.com/electricimp/Salesforce/master/examples/SmartRefrigerator/SmartRefrigerator_ExplorerKit_Salesforce.device.nut) from github into the right side device window
- - Near the bottom of the IDE is the logs window where you can find your agent url. It will look something like this ```"https://agent.electricimp.com/szPc0sLfAqlu"```
- - Make a note of your agent url. You will need the it when creating your connected app in Salesforce.
+### Salesforce IoT Explorer Description
 
- ![IDE code windows](http://i.imgur.com/IfVDZoq.png)
+The data received from the device may be processed, stored, analyzed by Salesforce cloud.
+This example demonstrates just some of the Salesforce cloud capabilities. It may be modified/extended for your needs.
 
-### Step 4: Create a Salesforce Connected App
+Later on in this example the following Salesforce entities are created:
+
+- **Connected Application** (see Step 4). In this example it is needed to authenticate IMP application in Salesforce cloud. So, **Platform Events** which are sent by the IMP application are accepted by Salesforce.
+- **Custom Object** (see Step 5). In this example it is used to store the data received from the device. So, the historical data can be monitored, for example using **Salesforce1** mobile application.
+- **Platform Event** (see Step 6). It is used to transfer the data from the device to Salesforce cloud. Also, **Platform Event Trigger** inserts the received data into the **Custom Object**.
+- **IoT Explorer Context** (see Step 7). In this example it is required to create **IoT Explorer Orchestration**.
+- **Custom Case Field** (see Step 8). This example opens customized **Cases** - standard Case object with an additional field (device id).
+- **IoT Explorer Orchestration** (see Step 9). It defines a fridge state machine that reacts on incoming **Platform Events**. Also, it opens **Cases**.
+- **Custom Object Tab** (see Step 12). In this example it is needed to make the created **Custom Object** (with the stored data from the device) to be accessible by **Salesforce1** mobile application.
+
+From all the entities above only the **Platform Event** is an "interface" between the IMP application and Salesforce cloud. The Platform Event's fields must have the names and types mentioned in this example (see Step 6). If you change anything in the Platform Event definition you will need to update the IMP application (agent) source code. The name of the Platform Event is defined in the IMP application (agent code) as a constant - *READING_EVENT_NAME*.
+
+All other entities are fully independent from the IMP application.
+The steps below suggest the entities and fields names just as examples. You may change them, as well as change the logic of the example - set of entities, rules, Cases, etc.
+
+### Step 4: Create a Salesforce Connected Application
+
+In this example it is needed to authenticate IMP application in Salesforce cloud.
+
+- Log into [Salesforce](https://login.salesforce.com/)
 
 #### Creating a Connected App in Salesforce
 
-Step by step instructions to create a Connected App:
-
-  1. Log into Salesforce and click on the **Setup** tab in the top right navigation menu
-  ![Salesforce Navbar](http://i.imgur.com/mhYIfBx.png)
-  2. In the sidebar under **Build** unfold the **Create** menu and select **Apps**
-  3. At the bottom of the page under **Connected apps** click the **New** button
-  ![Salesforce Apps](http://i.imgur.com/40aXTlL.png)
-  4. In the **New Connected App** form fill in:
-    - Basic Information
-      - Connect App Name: "Electric Imp SmartFridge"
-      - API Name should fill out to be "Electric_Imp_SmartFridge"
-      - Contact Email should be your email
-    - API (Enable OAuth Settings)
-      - Check the *Enable OAuth Settings* Box
-      - Callback URL - this should be your agent URL from the Electic Imp IDE (see last step)
-      - Selected OAuth Scopes
-        - Select *Access and manage your data (api)*
-        - then click *Add*
-    - When above info is filled out click **Save**
-  5. You will be redirected to the *Connected App Name - your app name* page
-    - Make a note of your Consumer Key (you will need to enter this into your agent code)
-    - Click on Consumer Secret *Click to reveal*
-    - Make note of your Consumer Secret (you will need to enter this into your agent code)
-  ![Salesforce Keys](http://i.imgur.com/uussyzV.png)
+- Click **Setup** icon in the top right navigation menu and select **Setup**.
+![Salesforce Navbar](https://imgur.com/AJFyqgk.png)
+- Enter **App Manager** into the Quick Find box and then select **AppManager**.
+![Salesforce QuickFind App Manager](https://imgur.com/NQXBMdM.png)
+- Click **New Connected App**.
+- In the **New Connected App** form fill in:
+  - Basic Information:
+    - Connect App Name: **Electric Imp SmartFridge**
+    - API Name should automatically becomes **Electric_Imp_SmartFridge**
+    - Contact Email: enter your email address
+  - API (Enable OAuth Settings):
+    - Check the **Enable OAuth Settings** Box
+    - **Callback URL**: enter agent url of your device (copy it from the Electric Imp IDE - see the previous step)
+    - **Selected OAuth Scopes**:
+      - Select **Access and manage your data (api)**
+      - Click **Add**
+![Salesforce Connected App](https://imgur.com/YcRqCXy.png)
+  - Click **Save**
+  - Click **Continue**
+- You will be redirected to your Connected App's page
+  - Make a note of your **Consumer Key** (you will need to enter it into your agent code)
+  - Click **Click to reveal** next to the Consumer Secret field
+  - Make note of your **Consumer Secret** (you will need to enter it into your agent code)
+![Salesforce Keys](https://imgur.com/XpJXq1I.png)
+- Do not close Salesforce page.
 
 #### Adding API keys to your Electric Imp Code
 
-Open the Electric Imp IDE & select your device.  Find the *SALESFORCE CONSTANTS* section at the bottom of the Agent code and enter your **Consumer Key** and **Consumer Secret**.
-
-![IDE with code](http://i.imgur.com/XaooQ9r.png)
-
+- Return back to the Electric Imp IDE page.
+- Find the *SALESFORCE CONSTANTS* section at the end of the agent code and initialize your **CONSUMER_KEY** and **CONSUMER_SECRET** constants (copy their values from the Salesforce Connected App's page).
+![IDE with code](https://imgur.com/DKc0Kyr.png)
+- Do not close IDE page.
 
 ### Step 5: Create a Custom Object in Salesforce
 
-#### Creating a Custom Object in Salesforce
+In this example **Custom Object** is used to store the data received from the device.
 
-You will need to create a custom object with fields that correspond to each key in the reading table.  Here are the step by step instructions for creating a Custom Object:
-
-1. Log into Salesforce and click on the **Setup** tab in the top right navigation menu
-![Salesforce Navbar](http://i.imgur.com/mhYIfBx.png)
-2. In the sidebar under **Build** unfold the **Create** menu and select **Objects**
-3. At the top of the page click the **New Custom Object** button
-![Salesforce Custom Object](http://i.imgur.com/FhF0J8w.png)
-4. In the **New Custom Object** form fill in:
+- Return back to the Salesforce page.
+- Click **Setup** icon in the top right navigation menu and select **Setup**.
+![Salesforce Navbar](https://imgur.com/AJFyqgk.png)
+- Click on **Object Manager** tab next to **Home**.
+![Object Manager](https://imgur.com/bJhA9xk.png)
+- Click on **Create** drop-down and then select **Custom Object**.
+![Custom Object Create](https://imgur.com/0uYtuPk.png)
+- In the **New Custom Object** form fill in:
     - Custom Object Information
-      - **Label** - for example *SmartFridge*
-      - **Plural Label** - for example *SmartFridges*
-      - **Object Name** - for example *SmartFridge*
+      - Label: **SmartFridge**
+      - Plural Label: **SmartFridges**
+      - Object Name: **SmartFridge**
     - Enter Record Name Label and Format
-      - **Record Name** - for example *Reading Id*
-      - **Data Type** select **Auto Number**
-      - **Display Format** - for example *R-{0000}*
-    - When above info is filled out click **Save**
-5. On the **Custom Objects Page** click on your object name
-6. You will be redirected to the *Custom Object - your object name* page <br> You will repeat step 7 four times to add fields for each sensor reading collected <br> The **Field Name** must match the data table from the device. The **Field Names** in the exmple code are: **temperature**, **humidity** , **door**, **ts**.
-7. At the bottom of the page under **Custom Fields & Relationships** click the **New** button
-    - Step 1 *Data Type*
-      - Select **Number** for temperature and humidity, **Text** for door, or **Date/Time** for ts
-      - Then click **Next** button
-    - Step 2 of 4
-      - Enter **Field Label** - for example *temperature*, *humidity*, *door*, or *ts*
-      - Enter **Length** - for temperature and humidity *4*, for door *10*
-      - Enter **Decimal Places** - for temperature and humidity *2*
-      - Enter **Field Name** - this must match the keys from the device code, *temperature*, *humidity*, *door*, or *ts*
-      - Enter **Description** - for example *Temperature reading in °C*
-      - Then click **Next** button
-    - Step 3 of 4
-      - Click **Next** button
-    - Step 4 of 4
-      - Click **Save & New** <br>
-      **Repeat** Steps 1-4 for humidity,
-8. We need to create one more Field the *Device Id field*
-    - Step 1 *Data Type*
-      - Select **text**
-      - Then click **Next** button
-    - Step 2 of 4
-      - Enter **Field Label** enter **deviceId**
-      - Enter **Length** - for example *16*
-      - Enter **Field Name** enter **deviceId**
-      - Check **Required**
-      - Check **Unique**
-      - Check **Test "ABC" and "abc" as different values (case sensitive)**
-      - Check **External ID**
-      - Then click **Next** button
-    - Step 3 of 4
-      - Click **Next** button
-    - Step 4 of 4
-      - Click **Save**
-9. You will be redirected to the *Custom Object - your object name* page
-    - Make a note of your **API Name** (you will need to enter this into your agent code)
-![Salesforce API Name](http://i.imgur.com/tL6ar7Z.png)
+      - Record Name: **Reading Id** (replace the default **SmartFridge Name**)
+      - Data Type: **Auto Number**
+      - Display Format: **R-{0000}**
+      - Starting Number: **1**
+![Custom Object Info](https://imgur.com/w4J67Jq.png)
+    - Click **Save**
+- On the **SmartFridge** Custom Object page, make sure that **API Name** is **SmartFridge__c**
+![Custom Object Api Name](https://imgur.com/y5spRHY.png)
 
-#### Adding Object Name to your Electric Imp Code
+- Select the **Fields & Relationships** section from the left navigation.
+  - Click **New**.
+- Create a field for the temperature:
+  - **Step 1. Choose the field type** - choose Data Type: **Number**
+  - Click **Next**
+  - **Step 2. Enter the details**:
+    - Field Label: **temperature**
+    - Length: **4**
+    - Decimal Places: **2**
+    - Field Name: **temperature**
+![Temperature Field](https://imgur.com/40XLV2B.png)
+  - Click **Next**, **Next**, and then **Save & New**.
+- Create a field for the humidity (similar as for the temperature):
+  - **Step 1. Choose the field type** - choose Data Type: **Number**
+  - Click **Next**
+  - **Step 2. Enter the details**:
+    - Field Label: **humidity**
+    - Length: **4**
+    - Decimal Places: **2**
+    - Field Name: **humidity**
+  - Click **Next**, **Next**, and then **Save & New**.
+- Create a field for the door status:
+  - **Step 1. Choose the field type** - choose Data Type: **Picklist**
+  - Click **Next**
+  - **Step 2. Enter the details**:  
+    - Field Label: **door**
+    - Values: Select **Enter values, with each value separated by a new line**
+    - Enter **Open** and **Closed** so that they are on separate lines.
+    - Field Name: **door**
+![Door Field](https://imgur.com/XqAEQ10.png)
+  - Click **Next**, **Next**, and then **Save & New**.
+- Create a field for the timestamp:
+  - **Step 1. Choose the field type** - choose Data Type: **Date/Time**
+  - Click **Next**
+  - **Step 2. Enter the details**:  
+    - Field Label: **ts**
+    - Field Name: **ts**
+  - Click **Next**, **Next**, and then **Save & New**.
+- Create a field for the device’s ID:
+  - **Step 1. Choose the field type** - choose Data Type: **Text**
+  - Click **Next**
+  - **Step 2. Enter the details**:  
+    - Field Label: **deviceId**
+    - Length: **16**
+    - Field Name: **deviceId**
+    - Check **Always require a value in this field in order to save a record**
+    - Check **Set this field as the unique record identifier from an external system**
+![DeviceId Field](https://imgur.com/WApbOvX.png)
+  - Click **Next**, **Next**, and then **Save**.
 
-Open the Electric Imp IDE & select your device.  Find the *SALESFORCE CONSTANTS* section at the bottom of the Agent code and enter your **OBJ_API_NAME**.
+- Make sure that SmartFridge **Fields & Relationships** looks like this:
+![SmartFridge Fields](https://imgur.com/10aY29u.png)
 
-![IDE with code](http://i.imgur.com/XaooQ9r.png)
+### Step 6: Create Platform Events in Salesforce
 
-### Step 6: Create a Custom Case Field in Salesforce
+It is used to transfer the data from the device to Salesforce cloud. Also, **Platform Event Trigger** inserts the received data into the **Custom Object**.
 
-We want the cases opened to contain the Device ID for our refrigerator.  To do this we need to create a custom field for our Salesforce case.  Here are the step by step instructions for creating a Custom Case Field:
+The Platform Event's fields must have the names and types mentioned here. If you change anything in the Platform Event definition you will need to update the IMP application (agent) source code. The name of the Platform Event is defined in the IMP application (agent code) as a constant - *READING_EVENT_NAME*.
 
-1. Log into Salesforce and click on the **Setup** tab in the top right navigation menu
-![Salesforce Navbar](http://i.imgur.com/mhYIfBx.png)
-2. In the sidebar under **Build** unfold the **Customize** menu then unfold **Cases** and select **Fields**
-3. Scroll to the bottom of the page and under **Case Custom Fileds & Relationships** click the **New** button
-![Salesforce Case Custom Field](http://i.imgur.com/XJf6KSg.png)
-4. In the **New Custom Field** form fill in:
-    - Step 1 *Data Type*
-      - Select **Lookup**
-      - then click **Next** button
-      - Select "SmartFridge" as the related object
-    - Step 2 of 4
-      - Enter **Field Label** enter **Related Fridge**
-      - Enter **Field Name** enter **Related_Fridge**
-      - Enter **Description** (optional) for example *Device Id of the associated refrigerator*
-      - Then click **Next** button
-    - Step 3 of 4
-      - Click **Next** button
-    - Step 4 of 4
-      - Click **Save**
-9. You will be redirected to the *Case Custom Field - your field name* page
-    - Make a note of your **API Name** - this must be *Related_Fridge__c*
-![Salesforce Case Custom Field](http://i.imgur.com/UuEJDnh.png)
+- On the Salesforce page, click **Setup** icon in the top right navigation menu and select **Setup**.
+![Salesforce Navbar](https://imgur.com/AJFyqgk.png)
+- Enter **Platform Events** into the Quick Find box and then select **Data > Platform Events**.
+![Salesforce QuickFind Platform Events](https://imgur.com/CXCuSr1.png)
+- Click **New Platform Event**.
+- In the **New Platform Event** form fill in:
+  - Field Label: **Smart Fridge Reading**
+  - Plural Label: **Smart Fridge Readings**
+  - Object Name: **Smart_Fridge_Reading**
+![New Smart Fridge Reading Event](https://imgur.com/4otU27s.png)
+  - Click **Save**
+- You will be redirected to the **Smart Fridge Reading** Platform Event page. Now you need to create Platform Event fields that correspond to your fridge readings.
+- In the **Custom Fields & Relationships** section click **New**.
+![Smart Fridge Reading Event New Field](https://imgur.com/gbmXQRK.png)
+- Create a field for the temperature:
+  - Data Type: **Number**
+  - Click **Next**
+  - Field Label: **temperature**
+  - Length: **4**
+  - Decimal Places: **2**
+  - Field Name: **temperature**
+- Click **Save**.
+- In the **Custom Fields & Relationships** section click **New**.
+- Create a field for the humidity:
+  - Data Type: **Number**
+  - Click **Next**
+  - Field Label: **humidity**
+  - Length: **4**
+  - Decimal Places: **2**
+  - Field Name: **humidity**
+- Click **Save**.
+- In the **Custom Fields & Relationships** section click **New**.
+- Create a field for the door status:
+  - Data Type: **Text**
+  - Click **Next**
+  - Field Label: **door**
+  - Length: **10**
+  - Field Name: **door**
+- Click **Save**.
+- In the **Custom Fields & Relationships** section click **New**.
+- Create a field for the timestamp:
+  - Data Type: **Date/Time**
+  - Click **Next**
+  - Field Label: **ts**
+  - Field Name: **ts**
+- Click **Save**
+- In the **Custom Fields & Relationships** section click **New**.
+- Create a field for the device’s ID:
+  - Data Type: **Text**
+  - Click **Next**
+  - Field Label: **deviceId**
+  - Length: **16**
+  - Field Name: **deviceId**
+  - Check **Always require a value in this field in order to save a record**
+- Click **Save**.
+- Make sure that **Smart Fridge Reading** **API Name** is **Smart_Fridge_Reading__e** and **Custom Fields & Relationships** looks like this:
+![Smart Fridge Reading Event Details](https://imgur.com/4BQA37p.png)
+- Click **New** in **Triggers** section.
+![Triggers](https://imgur.com/wEfZ0o8.png)
+- Insert the following code
+```
+trigger SmartFridgeReadingReceived on Smart_Fridge_Reading__e (after insert) {
+  List<SmartFridge__c> records = new List<SmartFridge__c>();
+  for (Smart_Fridge_Reading__e event : Trigger.New) {
+    SmartFridge__c record = new SmartFridge__c();
+    record.deviceId__c = event.deviceId__c;
+    record.temperature__c = event.temperature__c;
+    record.humidity__c = event.humidity__c;
+    record.door__c = event.door__c;
+    record.ts__c = event.ts__c;
+    records.add(record);
+  }
+  insert records;
+}
+```
+![Trigger Code](https://imgur.com/sZNPIt3.png)
+- Click **Save**
+- Return back to the Electric Imp IDE page.
+- Find the *SALESFORCE CONSTANTS* section at the end of the agent code and make sure your **READING_EVENT_NAME** constant value is **Smart_Fridge_Reading__e** (i.e. the same as **Smart Fridge Reading** **API Name** value of the just created **Platform Event**).
+![IDE with code](https://imgur.com/DKc0Kyr.png)
+- Do not close IDE page.
 
-### Step 7: Build and Run the Electric Imp Application
+### Step 7: Create Context in Salesforce
 
-These examples use OAuth 2.0 for authentication, so the agent has been set up as a web server to handle the log in.
-Go to the Electric Imp IDE and select your device from the sidebar for the final setup steps.
+In this example it is required to create **IoT Explorer Orchestration**.
 
-- Hit **Build and Run** to save and launch the code
-- Click on the agent url to launch the log in page
-- Log into Salesforce
+- On the Salesforce page, click **Setup** icon in the top right navigation menu and select **Setup**.
+![Salesforce Navbar](https://imgur.com/AJFyqgk.png)
+- Enter **Contexts** into the Quick Find box and then select **Feature Settings > IoT Explorer > Contexts**.
+![Contexts](https://imgur.com/9Sp7hpy.png)
+- Click **New Context**.
+- In the **New Context** form fill in:
+  - Context Name: **Smart Fridge Context**
+  - Key Type: **String**
+  - Click **Save**
+- You will be redirected to the **Smart Fridge Context** page.
+- In the **Platform Events** section click **Add**.
+![Context Add Platform Event](https://imgur.com/ySmNGqq.png)
+- In the **Add Platform Event** form fill in:
+  - Context: **Smart Fridge Context**
+  - Platform Event: choose **Smart Fridge Reading** Platform Event you created early
+  - Key: choose **deviceId**
+  - Click **Save**
 
-![IDE Screenshot](http://i.imgur.com/epCLa2O.png)
+### Step 8: Create a Custom Case Field in Salesforce
 
-Your App should now be up and running.  You can monitor the device logs in the IDE, or log into Salesforce web portal to see updates there.
+This example opens customized **Cases** - standard Case object with an additional field (device id).
 
-### Step 8: Install Device in Refrigerator
+- On the Salesforce page, click **Setup** icon in the top right navigation menu and select **Setup**.
+![Salesforce Navbar](https://imgur.com/AJFyqgk.png)
+- Click on **Object Manager** tab next to **Home**.
+![Object Manager](https://imgur.com/bJhA9xk.png)
+- Click the **Case** object.
+- Select the **Fields & Relationships** section and click the **New** button.
+![New Fields and Relationships](https://imgur.com/qCZzI3r.png)
+
+- In the **New Custom Field** form:
+  - **Step 1. Choose the field type** - choose Data Type: **Text**
+  - Click **Next**
+  - **Step 2. Enter the details**:  
+    - Field Label: **deviceId**
+    - Length: **16**
+    - Field Name: **deviceId**
+    - Check **Set this field as the unique record identifier from an external system**
+![Related Fridge](https://imgur.com/ZN1ekyE.png)
+  - Click **Next**, **Next** and then **Save**
+- Select the **Fields & Relationships** section and find your newly created **deviceId** custom field.
+- Make sure the **Field Name** is **deviceId__c**.
+![Case Fields](https://imgur.com/3i8uHjK.png)
+
+### Step 9: Create Orchestration in Salesforce
+
+This example demonstrates how to create an **Orchestration** that defines a fridge state machine, reacts on **Platform Events** and opens **Cases** when
+1. the refrigerator door is opened during 3 consecutive data readings (the exact threshold is between 30 and 45 seconds), or 
+2. the temperature is over 11°C, or
+3. the relative humidity is over 70%.
+
+You may setup other thresholds.
+
+#### Creating Orchestration
+
+- On the Salesforce page, click **Setup** icon in the top right navigation menu and select **Setup**.
+![Salesforce Navbar](https://imgur.com/AJFyqgk.png)
+- Enter **Orchestrations** into the Quick Find box and then select **Feature Settings > IoT Explorer > Orchestrations**.
+![Orchestrations](https://imgur.com/8i2qDU9.png)
+- Click **New Orchestration**.
+- In the **New Orchestration** pop up fill in:
+  - Name: **Smart Fridge Orchestration**
+  - Context: choose **Smart Fridge Context** you created early
+![New Orchestration](https://imgur.com/gWMgKur.png)
+  - Click **Create**
+  - You will be redirected to the **Smart Fridge Orchestration** page.
+  
+#### Creating Orchestration Variables
+
+- Click on **VARIABLES** tab. Now you need to create temperature and humidity thresholds, door open counter and limit.
+- Click **Add Variable**.
+![Variables](https://imgur.com/75kHG00.png)
+- Create a varable for the temperature threshold:
+  - Name: **TEMPERATURE_THRESHOLD**
+  - Data Type: **Number**
+  - Initial Value: **11** (for 11°C)
+- Click **Add Variable**.
+- Create a varable for the humidity threshold:
+  - Name: **HUMIDITY_THRESHOLD**
+  - Data Type: **Number**
+  - Initial Value: **70** (for 70%)
+- Click **Add Variable**.
+- Create a varable for the door open counter limit:
+  - Name: **DOOR_OPEN_LIMIT**
+  - Data Type: **Number**
+  - Initial Value: **3** (3 consecutive data readings with door open status)
+- Click **Add Variable**.
+- Create a varable for the door open counter:
+  - Name: **door_open_counter**
+  - Data Type: **Number**
+  - Event Type: **Smart_Fridge_Reading__e** (Platform Event you create early)
+  - IF: `Smart_Fridge_Reading__e.door__c = "open"`
+  - Value: **Count 40 sec** (3 consecutive data readings fit in 40 seconds)
+  - Initial Value: **0**
+- Make sure your Orchestration variables looks like this:
+![Orchestration variables](https://imgur.com/foaGmIW.png)
+
+#### Creating Orchestration Global Rules
+
+- Click on **GLOBAL RULES** tab.
+- In the **When** column of **Global rules** choose **Smart_Fridge_Reading__e**.
+- In the **IF** column add `Smart_Fridge_Reading__e.door__c = "closed"`.
+- In the **Acttion** column choose **Reset Variable** and choose **door_open_counter**.
+- Make sure your **GLOBAL RULES** looks like this:
+![Global rules](https://imgur.com/JIuP8sO.png)
+
+#### Creating Orchestration Rules
+
+##### Adding Door Open Rule
+
+- Click **Add State**
+![Add State](https://imgur.com/Qo93sKR.png)
+- Enter **Door Open** as the new state name.
+- In the **When** column of the **Door Open** state click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
+- In the **Condition** column enter `Smart_Fridge_Reading__e.door__c = "closed"`
+- In the **Transition** column choose **Default**
+![Door Open State](https://imgur.com/dIqjY9S.png)
+- In the **When** column of the **Default** state click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
+- In the **Condition** column enter `door_open_counter >= DOOR_OPEN_LIMIT`
+- In the **Actions** column click **Add an action** and choose **OUTPUT ACTIONS > Salesforce Record**.
+- In the **New Salesforce Output Action** pop up choose: 
+  - Object: **Case**
+  - Action Type: **Create**
+![Door Open Case create](https://imgur.com/PdcE9Zv.png)
+- In the **Assign values to record fields** table:
+  - Click **Add Field**
+  - Choose **deviceId__c** in **Select field**
+  - Enter value: `Smart_Fridge_Reading__e.deviceId__c`
+  - Click **Add Field**
+  - Choose **Subject** in **Select field**
+  - Enter **Subject** value: `"Refrigerator Door Open"`
+  - Click **Add Field**
+  - Choose **Description** in **Select field**
+  - Enter **Description** value: `"door has been opened for too long"`
+- In **Action Name** field enter **Create Door Open Case**
+- Make sure that **Assign values to record fields** table looks like this:
+![Door Open Case fields](https://imgur.com/3UvtEfs.png)
+- Click **Finish**
+- In the **Transition** column choose **Door Open**.
+![Default To Door Open](https://imgur.com/rtTY6Om.png)
+
+##### Adding Temperature Over Threshold Rule
+
+- Click **Add State**.
+- Enter **Temperature Over Threshold** as the new state name.
+- In the **When** column of the **Temperature Over Threshold** state click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
+- In the **Condition** column enter `Smart_Fridge_Reading__e.temperature__c < TEMPERATURE_THRESHOLD`
+- In the **Transition** column choose **Default**.
+![Temperature State](https://imgur.com/7AOXeUL.png)
+- Click **Add rule** in the **Default** state menu.
+![Default Add rule](https://imgur.com/hhJG3NF.png)
+- In the **When** column the new rule click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
+- In the **Condition** column enter `Smart_Fridge_Reading__e.temperature__c >= TEMPERATURE_THRESHOLD`
+- In the **Actions** column click **Add an action** and choose **OUTPUT ACTIONS > Salesforce Record**.
+- In the **New Salesforce Output Action** pop up choose: 
+  - Object: **Case**
+  - Action Type: **Create**
+- In the **Assign values to record fields** table:
+  - Click **Add Field**
+  - Choose **deviceId__c** in **Select field**
+  - Enter value: `Smart_Fridge_Reading__e.deviceId__c`
+  - Choose **Subject** in **Select field**
+  - Enter **Subject** value: `"Temperature Over Threshold"`
+  - Click **Add Field**
+  - Choose **Description** in **Select field**
+  - Enter **Description** value: `"current temperature " + TEXT(Smart_Fridge_Reading__e.temperature__c) + " is over threshold"`
+- In **Action Name** field enter **Create Temperature Case**
+- Make sure that **Assign values to record fields** table looks like this:
+![Temperature State Case fields](https://imgur.com/0PR5YdB.png)
+- Click **Finish**
+- In the **Transition** column choose **Temperature Over Threshold**.
+![Default To Temperature transition](https://imgur.com/M3T8ErX.png)
+
+##### Adding Humidity Over Threshold Rule
+
+- Click **Add State**.
+- Enter **Humidity Over Threshold** as the new state name.
+- In the **When** column of the **Humidity Over Threshold** state click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
+- In the **Condition** column enter `Smart_Fridge_Reading__e.humidity__c < HUMIDITY_THRESHOLD`
+- In the **Transition** column choose **Default**.
+![Humidity State](https://imgur.com/esSYDgq.png)
+- Click **Add rule** in the **Default** state menu.
+- In the **When** column the new rule click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**.
+- In the **Condition** column enter `Smart_Fridge_Reading__e.humidity__c >= HUMIDITY_THRESHOLD`
+- In the **Actions** column click **Add an action** and choose **OUTPUT ACTIONS > Salesforce Record**.
+- In the **New Salesforce Output Action** pop up choose: 
+  - Object: **Case**
+  - Action Type: **Create**
+- In the **Assign values to record fields** table:
+  - Click **Add Field**
+  - Choose **deviceId__c** in **Select field**
+  - Enter value: `Smart_Fridge_Reading__e.deviceId__c`
+  - Choose **Subject** in **Select field**
+  - Enter **Subject** value: `"Humidity Over Threshold"`
+  - Click **Add Field**
+  - Choose **Description** in **Select field**
+  - Enter **Description** value: `"current humidity " + TEXT(Smart_Fridge_Reading__e.humidity__c) + " is over threshold"`
+- In **Action Name** field enter **Create Humidity Case**
+- Make sure that **Assign values to record fields** table looks like this:
+![Humidity State Case fields](https://imgur.com/9ao8KWL.png)
+- Click **Finish**
+- In the **Transition** column choose **Humidity Over Threshold**.
+![Default To Humidity transition](https://imgur.com/e0YnsY4.png)
+
+##### Orchestration Activation
+
+- Click on **STATES** tab. Make sure that your States diagram looks like this:
+![States](https://imgur.com/Noz1EXu.png)
+- Click on **Activate** button. In the pop up click **Activate**
+![Activate](https://imgur.com/H7zBYSy.png)
+- Do not close Salesforce page
+
+### Step 10: Build and Run the Electric Imp Application
+
+- Return back to the Electric Imp IDE page.
+- Make sure your device is Online (powered on, connected to your WiFi, IDE shows the device is in **Online** state).
+- Click **Build and Run** to build and launch the code.
+- Look at the log window of the IDE to see the logs from your running application.
+- If you see **"\[Agent] 	ERROR: Not logged into Salesforce."** error logs, it means your application is not authorized to connect to Salesforce yet.
+  - This example uses OAuth 2.0 for authentication. The IMP agent has been set up as a web server to handle the authentication procedure.
+  - Click on the agent url in the IDE.
+![IDE Screenshot](https://imgur.com/6rm6FBf.png)
+  - You will be redirected to the login page.
+  - Log into Salesforce on that page.
+  - If login is successful the page should display **"Authentication complete - you may now close this window"**
+  - Close that page and return to the IDE page.
+- Make sure there are no more errors in the logs.
+- Make sure there are periodic logs like this **"\[Agent] 	Readings sent successfully"**
+- Your application is now up and running.
+
+### Step 11: Install Device in Refrigerator
 
 Open your refrigerator and place the impExplorer Kit on a shelf in your refrigerator door.
 
 ![Imp In Fridge](http://i.imgur.com/z5llZBg.png)
 
-If you don't have a fridge handy for this scenario, you can test the door being open by moving or tapping the kit, and keeping the imp in a lit room.  A door open for thirty seconds should register a case.
+If you don't have a fridge handy for this scenario, you can test the example behavior by emulating different conditions. For example, emulate a fridge door being open / closed by placing the imp device under a light / into a dark (it should be really dark). Emulate the high temperature case by moving the device from a cold place to a warmer one.
 
-### Step 9: Monitor the data in Salesforce1
+### Step 12: Monitor the data
 
-Now that you have connected your imp to Salesforce, it might be handy to see that data on a mobile device.  Using Salesforce1, it is easy to keep track of your Smart Fridge on the go.
+You can see the data, which your device sends, using **Salesforce1** mobile application.
 
 #### Create a Custom Object Tab
 
-First, let's give the custom object a tab so that Salesforce1 can add it to the left navigation.
+In this example it is needed to make the created **Custom Object** (with the stored data from the device) to be accessible by **Salesforce1** mobile application.
 
-1. Log in to your Developer Edition.
-2. In the top nav, click Setup.
-3. In Setup, enter Tab into the Quick Find box and select *Build* | *Create* | *Tabs*.
-4. Under Custom Object Tabs, click *New*
-5. Choose *SmartFridge* from the Object dropdown
-6. Choose Thermometer as the Tab Style
-
+- On Salesforce page, click **Setup** icon in the top right navigation menu and select **Setup**.
+![Salesforce Navbar](https://imgur.com/AJFyqgk.png)
+- Enter **Tabs** into the Quick Find box and then select **User Interface > Tabs**.
+- Under **Custom Object Tabs**, click **New**
+- Choose **SmartFridge** from the Object dropdown
+- Choose **Thermometer** as the Tab Style  
 ![Custom Object](http://i.imgur.com/eXyOmd6.png)
+- Click **Next**, **Next**, and then **Save**
 
-7. Click *Next*, *Next*, and then *Save*
+#### Check Salesforce1 is Enabled
 
-#### Open Salesforce1 in Chrome
+Ensure that **Salesforce1** mobile application is available and enabled for you:
 
-You can access the Salesforce1 mobile app in three ways:
-
-*As a downloadable mobile app (Salesforce1) that you install on your phone from the Apple AppStore or Google Play
-*By navigating to `login.salesforce.com` using a mobile browser
-*By using the Chrome Developer Tools
-
-For this step, we'll use the last option. First ensure that Salesforce1 is available through a desktop browser and is enabled for your user:
-
-1. Log in to your Developer Edition.
-2. In the top nav, click *Setup*.
-3. In Setup, enter Salesforce1 into the Quick Find box and select *Administer* | *Salesforce1* | *Salesforce1 Settings*.
-4. Ensure the Enable the Salesforce1 mobile browser app is checked.
-
+- On Salesforce page, click **Setup** icon in the top right navigation menu and select **Setup**.
+![Salesforce Navbar](https://imgur.com/AJFyqgk.png)
+- Enter **Salesforce1** into the Quick Find box and then select **Apps > Mobili Apps > Salesforce1 > Salesforce1 Settings**.
+- Make sure the **Enable the Salesforce1 mobile browser app** is checked.  
 ![App settings checkbox](http://i.imgur.com/Tigi9eK.png)
-
-5. In Setup, enter Users into the Quick Find box and select *Administer* | *Manage Users* | *Users*.
-6. Click *Edit* next to the name you used to create your developer edition.
-7. Ensure that Salesforce1 User is checked. (Update and save as needed.)
-
+- Enter **Users** into the Quick Find box and select **Users > Users**.
+- Click **Edit** next to your username.
+- Make sure that **Salesforce1 User** is checked. If not, check it and click **Save**.  
 ![Salesforce1 User checkbox](http://i.imgur.com/svdRddT.png)
 
-Next we’ll emulate the Salesforce1 Mobile App in the Chrome web browser:
+#### Run Salesforce1 Application
 
-1. Open a new tab in your Chrome browser and open the Developer Tools by clicking *View* | *Developer* | *Developer Tools*
-2. Click the Toggle Device Mode button to simulate your browser as a mobile device.
+You can access and run **Salesforce1** mobile application in three ways:
 
+- As a downloadable mobile application (Salesforce1) that you install and run on your phone from the Apple AppStore or Google Play (it's the most easy and recommended way)
+- By opening `login.salesforce.com` page in a browser on your phone
+- By using the Chrome Developer Tools (described below)
+
+#### Open Salesforce1 in Chrome Browser
+
+Use this way if you want/need to run **Salesforce1** application from your PC, not from a mobile phone.
+
+It is possible to emulate **Salesforce1** mobile application in the Chrome web browser:
+
+- On Salesforce page, click **Setup** icon in the top right navigation menu and select **Setup**
+![Salesforce Navbar](https://imgur.com/AJFyqgk.png)
+- Copy the current opened URL into clipboard
+- Open a new tab in your Chrome browser
+- Open the Developer Tools by clicking *View* | *Developer* | *Developer Tools*
+- Click the Toggle Device Mode button to simulate your browser as a mobile device.  
 ![Chrome Tools Mobile Simulator](http://i.imgur.com/hzb2F0N.png)
-
-3.To simulate the Salesforce1 app in your browser, copy and paste in the URL from the previous tab. Remove the part of the URL immediately after salesforce.com/. For example:
-
-![URL original](http://i.imgur.com/jGgVki5.jpg)
-![URL removed](http://i.imgur.com/t5GVzgS.jpg)
-
-4. Append `/one/one.app` to the end of the URL after salesforce.com to start the Salesforce1 Application simulator. For example:
-
-![URL one/one.app](http://i.imgur.com/0WKCcTx.jpg)
-
-5. If the display is too small, change the size to 100%.
-
+- Paste from clipboard the URL you copied before. Do not press Enter.
+- Remove the part of the URL immediately after `lightning.force.com`. For example:  
+![URL original](https://imgur.com/UZYqV21.png)
+![URL removed](https://imgur.com/jPYa1t7.png)
+- Append `/one/one.app` to the end of the URL after salesforce.com. For example:  
+![URL one/one.app](https://imgur.com/V0Deg1d.png)
+- Press Enter. **Salesforce1** application emulation will be started in the Chrome Browser.
+- If the display is too small, change the size to 100%.  
 ![URL one/one.app](http://i.imgur.com/BvmL50q.png)
-
-6. Click the three white bars in the upper left to open the left navigation
-
-7. Under the "Recent" section, scroll down and click *More*
-
+- Click the three white bars in the upper left to open the navigation panel
+- Under the "Recent" section, scroll down and click *More*  
 ![Menu](http://i.imgur.com/xv2YL52.png)
-
-8. You will see "SmartFridges" somewhere on the list. Click *SmartFridges*
-
+- You will see "SmartFridges" somewhere on the list. Click *SmartFridges*  
 ![Menu](http://i.imgur.com/GHcC0gG.png)
+- Select a record to view the details of the reading.  
+![Reading record](https://imgur.com/d3N5N7F.png)
 
-9. Select a record to view the details of the reading.
+### Step 13: Monitor Orchestration State Transitions and Cases
 
+You can see transitions between the states which you defined in **IoT Explorer Orchestration** as well as registered **Cases**.
 
-### Step 10: Use Process Builder to Chatter Fridge data
-
-Finally, let's add some finesse to our application by using Process Builder to drive a Chatter conversation based on the incoming readings, which create the case.
-
-
-#### Create a new Process Builder
-1. Log in to your Developer Edition.
-2. In the top nav, click *Setup*.
-3. In Setup, enter Process Builder into the Quick Find box and select *Create* | *Workflow & Approvals* | *Process Builder*.
-4. Click *New*.
-5. Name the new process *Post SmartFridge Case to Chatter*.
-6. Click *Save*.
-7. Click *Add Object*.
-8. In the Find an Object dropdown, select *Case*.
-9. Click *Save*.
-
-![Object](http://i.imgur.com/6yEeL2W.png)
-
-#### Setup the Process Criteria
-
-Next we’ll set up the criteria that will fire the process:
-
-1. Click *Add Criteria*.
-2. For Criteria Name, enter *Related to SmartFridge*.
-3. In set conditions, click *Find a Field*.
-4. Use field selector to find *Related_Fridge__c*.
-5. For Operator, select *Is null*.
-6. Keep the values of *Boolean* and *False*.
-7. Click *Save*.
-
-![Criteria](http://i.imgur.com/B3DeySV.png)
-
-#### Add an Action
-
-In the Immediate Actions box next to your new criteria, click *Add Action* and configure as follows:
-
-1. Action Type: *Post to Chatter*
-2. Action name: *Post SmartFridge Case Data*
-3. Post to: *User*
-4. User: *Select a user from a record*
-5. Click in the Find a user… box, select *OwnerID*, and then click *Choose*.
-6. Copy and paste the following text into the Add a message, mention a user or group… text box:
-
-```The case ({![Case].Id}) was opened regarding the Smart Fridge {![Case].Related_Fridge__r.DeviceId__c}. This fridge was recorded at a temperature of {![Case].Related_Fridge__r.Temperature__c}, humidity of {![Case].Related_Fridge__r.Humidity__c}, and a door status of {![Case].Related_Fridge__r.Door__c}.```
-
-![Action](http://i.imgur.com/vzEp8n7.png)
-
-1. Click Save. Your process should now look like this:
-
-![Process Builder](http://i.imgur.com/TIXIMnV.png)
-
-2. Click Activate.
-
-Now whenever a case is created that has a related Smart Fridge, the important data about that fridge will be accessible right from the case owners's chatter feed.
-
-#### Test Your Process
-
-Let’s try out the process by keeping the fridge door open for over 30 seconds. This should trigger Salesforce to create a case. Because the case is related to a fridge, the case will be posted to your Chatter feed.
-
-![Chatter](http://i.imgur.com/yT8bR09.png)
+- On Salesforce page, click **Setup** icon in the top right navigation menu and select **Setup**.
+![Salesforce Navbar](https://imgur.com/AJFyqgk.png)
+- Enter **Orchestrations** into the Quick Find box and then select **Feature Settings > IoT Explorer > Orchestrations**.
+![Orchestrations](https://imgur.com/8i2qDU9.png)
+- Click on **Smart Fridge Orchestration**.
+- Click on **TRAFFIC** tab. 
+- If your ElectricImp device is in a fridge, you can see that your device is in **Default** normal state.
+![Default state](https://imgur.com/XQ0DyYd.png)
+- Keep the fridge door open for over 45 seconds (or just place the device to a lit room).
+- On the **TRAFFIC** tab see that your device moved into **Door Open** state.
+![Door Open state](https://imgur.com/h2Hdeg5.png)
+- Move the imp device to a warm dark place.
+- On the **TRAFFIC** tab see that your device moved into **Temperature Over Threshold** state.
+![Temperature state](https://imgur.com/z7uB2CD.png)
+- Run **Salesforce1** mobile app as described in the previous Step.
+- Click the three white bars in the upper left to open the navigation panel.
+- Under the "Recent" section, click **Cases**.  
+![Cases menu](https://imgur.com/fGVaet7.png)
+- You will see the registered Cases.  
+![Cases](https://imgur.com/WDGJrUp.png)
