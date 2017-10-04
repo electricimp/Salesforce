@@ -1,10 +1,10 @@
 # Salesforce Smart Refrigerator
 
-The following Trailhead project will use the Electric Imp platform to connect and monitor a refrigerator and a Salesforce *Connected App* to track the current temperature and humidity in the fridge.
+This demo example use the Electric Imp platform to connect and monitor a refrigerator and a Salesforce cloud to track the current temperature, humidity and the door status in the fridge.
 
-To track the current temperature and humidity we will create a Salesforce *Custom Object* and put readings data to it every 15 seconds using Salesforce *Platform Events*.
+The IMP application reads data from sensors every 15 seconds - temperature, humidity and light (that transforms to the door status - open/closed) - and sends them to the cloud using Salesforce *Platform Events*.
 
-This example will also *open a Case* in Salesforce using *IoT Explorer Orchestration* if: 
+Salesforce cloud stores the incoming data and *opens a Case* using *IoT Explorer Orchestration* if: 
 1. the refrigerator door is opened longer than a predefined threshold, or 
 2. the temperature is over a predefined threshold, or 
 3. the relative humidity is over a predefined threshold.
