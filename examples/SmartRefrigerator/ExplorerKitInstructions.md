@@ -286,6 +286,26 @@ The Platform Event's fields must have the names and types mentioned here. If you
 - Click **Save**.
 - Make sure that **Smart Fridge Reading** **API Name** is **Smart_Fridge_Reading__e** and **Custom Fields & Relationships** looks like this:
 ![Smart Fridge Reading Event Details](https://imgur.com/4BQA37p.png)
+- Click **New** in **Triggers** section.
+![Triggers](https://imgur.com/wEfZ0o8.png)
+- Insert the following code
+```
+trigger SmartFridgeReadingReceived on Smart_Fridge_Reading__e (after insert) {
+  List<SmartFridge__c> records = new List<SmartFridge__c>();
+  for (Smart_Fridge_Reading__e event : Trigger.New) {
+    SmartFridge__c record = new SmartFridge__c();
+    record.deviceId__c = event.deviceId__c;
+    record.temperature__c = event.temperature__c;
+    record.humidity__c = event.humidity__c;
+    record.door__c = event.door__c;
+    record.ts__c = event.ts__c;
+    records.add(record);
+  }
+  insert records;
+}
+```
+![Trigger Code](https://imgur.com/sZNPIt3.png)
+- Click **Save**
 - Return back to the Electric Imp IDE page.
 - Find the *SALESFORCE CONSTANTS* section at the end of the agent code and make sure your **READING_EVENT_NAME** constant value is **Smart_Fridge_Reading__e** (i.e. the same as **Smart Fridge Reading** **API Name** value of the just created **Platform Event**).
 ![IDE with code](https://imgur.com/DKc0Kyr.png)
