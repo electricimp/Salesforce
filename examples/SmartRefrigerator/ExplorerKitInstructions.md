@@ -563,7 +563,7 @@ You may setup other thresholds and/or another repeat period.
 - Make sure your device is Online (powered on, connected to your WiFi, IDE shows the device is in **Online** state).
 - Click **Build and Run** to build and launch the code.
 - Look at the log window of the IDE to see the logs from your running application.
-- If you see **\[Agent] 	ERROR: Not logged into Salesforce.** error logs, it means your application is not authorized to connect to Salesforce yet.
+- If you see **"\[Agent] 	ERROR: Not logged into Salesforce."** error logs, it means your application is not authorized to connect to Salesforce yet.
   - This example uses OAuth 2.0 for authentication. The IMP agent has been set up as a web server to handle the authentication procedure.
   - Click on the agent url in the IDE.
 ![IDE Screenshot](https://imgur.com/6rm6FBf.png)
@@ -572,7 +572,7 @@ You may setup other thresholds and/or another repeat period.
   - If login is successful the page should display **"Authentication complete - you may now close this window"**
   - Close that page and return to the IDE page.
 - Make sure there are no more errors in the logs.
-- Make sure there are periodic logs like this **\[Agent] 	Readings sent successfully**
+- Make sure there are periodic logs like this **"\[Agent] 	Readings sent successfully"**
 - Your application is now up and running.
 
 ### Step 11: Install Device in Refrigerator
@@ -581,7 +581,7 @@ Open your refrigerator and place the impExplorer Kit on a shelf in your refriger
 
 ![Imp In Fridge](http://i.imgur.com/z5llZBg.png)
 
-??? If you don't have a fridge handy for this scenario, you can test the door being open by keeping the imp in a lit room.  A door open for thirty seconds should register a case.
+If you don't have a fridge handy for this scenario, you can test the example behavior by emulating different conditions. For example, emulate a fridge door being open / closed by placing the imp device under a light / into a dark (it should be really dark). Emulate the high temperature case by moving the device from a cold place to a warmer one.
 
 ### Step 12: Monitor the data
 
@@ -629,6 +629,7 @@ Use this way if you want/need to run **Salesforce1** application from your PC, n
 It is possible to emulate **Salesforce1** mobile application in the Chrome web browser:
 
 - On Salesforce page, click **Setup** icon in the top right navigation menu and select **Setup**
+![Salesforce Navbar](https://imgur.com/AJFyqgk.png)
 - Copy the current opened URL into clipboard
 - Open a new tab in your Chrome browser
 - Open the Developer Tools by clicking *View* | *Developer* | *Developer Tools*
@@ -653,7 +654,7 @@ It is possible to emulate **Salesforce1** mobile application in the Chrome web b
 
 ### Step 13: Monitor Orchestration State Transitions and Cases
 
-Also, you can see transitions between states which you defined in **IoT Explorer Orchestration** as well as registered **Cases**.
+You can see transitions between the states which you defined in **IoT Explorer Orchestration** as well as registered **Cases**.
 
 - On Salesforce page, click **Setup** icon in the top right navigation menu and select **Setup**.
 ![Salesforce Navbar](https://imgur.com/AJFyqgk.png)
@@ -663,10 +664,10 @@ Also, you can see transitions between states which you defined in **IoT Explorer
 - Click on **TRAFFIC** tab. 
 - If your ElectricImp device is in a fridge, you can see that your device is in **Default** normal state.
 ![Default state](https://imgur.com/XQ0DyYd.png)
-- Keep the fridge door open for over 30 seconds ??? (or just place the device to a lit room).
+- Keep the fridge door open for over 45 seconds (or just place the device to a lit room).
 - On the **TRAFFIC** tab see that your device moved into **Door Open** state.
 ![Door Open state](https://imgur.com/h2Hdeg5.png)
-- Move the imp to a warm dark place.
+- Move the imp device to a warm dark place.
 - On the **TRAFFIC** tab see that your device moved into **Temperature Over Threshold** state.
 ![Temperature state](https://imgur.com/z7uB2CD.png)
 - Run **Salesforce1** mobile app as described in the previous Step.
