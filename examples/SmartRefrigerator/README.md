@@ -166,72 +166,72 @@ The Custom Object will be used to store the data received from the device.
 ![In the Object Manager Setup view, click on Create then Custom Object](png/6_1.png "In the Object Manager Setup view, click on Create then Custom Object")
 1. In the **New Custom Object** form fill in:
     1. In the **Custom Object Information** section:
-      1. Label: **SmartFridge**
-      1. Plural Label: **SmartFridges**
-      1. Object Name: **SmartFridge**
+        1. Label: **SmartFridge**
+        1. Plural Label: **SmartFridges**
+        1. Object Name: **SmartFridge**
     1. In the **Enter the Record Name Label and Format** section:
-      1. Record Name: **Reading Id** (replace the default **SmartFridge Name**)
-      1. Data Type: **Auto Number**
-      1. Display Format: **R-{0000}**
-      1. Starting Number: **1**
+        1. Record Name: **Reading Id** (replace the default **SmartFridge Name**)
+        1. Data Type: **Auto Number**
+        1. Display Format: **R-{0000}**
+        1. Starting Number: **1**
 ![The Custom Object definition is ready to be saved](png/7.png "The Custom Object definition is ready to be saved")
-    1. Click **Save**
+        1. Click **Save**
 1. On the **SmartFridge** Custom Object page, make sure that the **API Name** is **SmartFridge__c**:
 ![On the SmartFridge Custom Object page, make sure that the API Name is correctly set](png/12_1.png "On the SmartFridge Custom Object page, make sure that the API Name is correctly set")
 1. Select the **Fields & Relationships** section from the left navigation
-  1. Click **New**
-  1. Create a field for the temperature:
-    1. In the **Step 1. Choose the field type** section:
-      1. Choose Data Type: **Number**
-      1. Click **Next**
-    1. In the **Step 2. Enter the field details** section:
-      1. Field Label: **temperature**
-      1. Length: **4**
-      1. Decimal Places: **2**
-      1. Field Name: **temperature**:
+    1. Click **New**
+    1. Create a field for the temperature:
+        1. In the **Step 1. Choose the field type** section:
+            1. Choose Data Type: **Number**
+            1. Click **Next**
+        1. In the **Step 2. Enter the field details** section:
+            1. Field Label: **temperature**
+            1. Length: **4**
+            1. Decimal Places: **2**
+            1. Field Name: **temperature**:
 ![Enter the details of the Custom Object's temperature field](png/8.png "Enter the details of the Custom Object's temperature field")
-    1. Click **Next**, **Next**, and then **Save & New**
-  1. Create a field for the humidity:
-    1. In the **Step 1. Choose the field type** section:
-      1. Choose Data Type: **Number**
-      1. Click **Next**
-    1. In the **Step 2. Enter the details** section:
-      1. Field Label: **humidity**
-      1. Length: **4**
-      1. Decimal Places: **2**
-      1. Field Name: **humidity**
-    1. Click **Next**, **Next**, and then **Save & New**
-  1. Create a field for the door status:
-    1. In the **Step 1. Choose the field type** section:
-      1. Choose Data Type: **Picklist**
-      1. Click **Next**
-    1. In the **Step 2. Enter the details** section:
-      1. Field Label: **door**
-      1. Values: Select **Enter values, with each value separated by a new line**
-      1. Enter **Open** and **Closed** so that they are on separate lines.
-      1. Field Name: **door**
+        1. Click **Next**, **Next**, and then **Save & New**
+    1. Create a field for the humidity:
+        1. In the **Step 1. Choose the field type** section:
+            1. Choose Data Type: **Number**
+            1. Click **Next**
+        1. In the **Step 2. Enter the details** section:
+            1. Field Label: **humidity**
+            1. Length: **4**
+            1. Decimal Places: **2**
+            1. Field Name: **humidity**
+        1. Click **Next**, **Next**, and then **Save & New**
+    1. Create a field for the door status:
+        1. In the **Step 1. Choose the field type** section:
+            1. Choose Data Type: **Picklist**
+            1. Click **Next**
+        1. In the **Step 2. Enter the details** section:
+            1. Field Label: **door**
+            1. Values: Select **Enter values, with each value separated by a new line**
+            1. Enter **Open** and **Closed** so that they are on separate lines.
+            1. Field Name: **door**
 ![Enter the details of the Custom Object's door field](png/9.png "Enter the details of the Custom Object's door field")
-    1. Click **Next**, **Next**, and then **Save & New**
-  1. Create a field for the timestamp:
-    1. In the **Step 1. Choose the field type** section:
-      1. Choose Data Type: **Date/Time**
-      1. Click **Next**
-    1. In the **Step 2. Enter the details** section:
-      1. Field Label: **ts**
-      1. Field Name: **ts**
-    1. Click **Next**, **Next**, and then **Save & New**
-  1. Create a field for the device’s ID:
-    1. In the **Step 1. Choose the field type** section:
-      1. Choose Data Type: **Text**
-      1. Click **Next**
-    1. In the **Step 2. Enter the details** section:
-      1. Field Label: **deviceId**
-      1. Length: **16**
-      1. Field Name: **deviceId**
-      1. Check **Always require a value in this field in order to save a record**
-      1. Check **Set this field as the unique record identifier from an external system**:
+        1. Click **Next**, **Next**, and then **Save & New**
+    1. Create a field for the timestamp:
+        1. In the **Step 1. Choose the field type** section:
+            1. Choose Data Type: **Date/Time**
+            1. Click **Next**
+        1. In the **Step 2. Enter the details** section:
+            1. Field Label: **ts**
+            1. Field Name: **ts**
+        1. Click **Next**, **Next**, and then **Save & New**
+    1. Create a field for the device’s ID:
+        1. In the **Step 1. Choose the field type** section:
+            1. Choose Data Type: **Text**
+            1. Click **Next**
+        1. In the **Step 2. Enter the details** section:
+            1. Field Label: **deviceId**
+            1. Length: **16**
+            1. Field Name: **deviceId**
+            1. Check **Always require a value in this field in order to save a record**
+            1. Check **Set this field as the unique record identifier from an external system**:
 ![Enter the details of the Custom Object's device ID field](png/10.png "Enter the details of the Custom Object's device ID field")
-    1. Click **Next**, **Next**, and then **Save**
+        1. Click **Next**, **Next**, and then **Save**
 1. Make sure that SmartFridge **Fields & Relationships** looks like this:
 ![Verify that all of the SmartFridge Custom Object's new fields have been set correctly before proceeding](png/11.png "Verify that all of the SmartFridge Custom Object's new fields have been set correctly before proceeding")
 
@@ -247,49 +247,49 @@ The Platform Event’s fields must have the names and types mentioned here. If y
 ![Key Platform Events into the Quick Find box and then click on Data and then Platform Events](png/16.png "Key Platform Events into the Quick Find box and then click on Data and then Platform Events")
 1. Click **New Platform Event**
 1. In the **New Platform Event** form, fill in:
-  1. Field Label: **Smart Fridge Reading**
-  1. Plural Label: **Smart Fridge Readings**
-  1. Object Name: **Smart_Fridge_Reading**
+    1. Field Label: **Smart Fridge Reading**
+    1. Plural Label: **Smart Fridge Readings**
+    1. Object Name: **Smart_Fridge_Reading**
 ![Set up a Platform Event to handle SmartFridge readings](png/17.png "Set up a Platform Event to handle SmartFridge readings")
-  1. Click **Save**
+    1. Click **Save**
 1. You will be redirected to the **Smart Fridge Reading** Platform Event page. Now you need to create Platform Event fields that correspond to your fridge readings. In the **Custom Fields & Relationships** section, click **New** to create a field for the temperature:
 ![Add new fields, each matching those in the Custom Object, to the new Platform Event](png/18.png "Add new fields, each matching those in the Custom Object, to the new Platform Event")
-  1. Data Type: **Number**
-  1. Click **Next**
-  1. Field Label: **temperature**
-  1. Length: **4**
-  1. Decimal Places: **2**
-  1. Field Name: **temperature**
+    1. Data Type: **Number**
+    1. Click **Next**
+    1. Field Label: **temperature**
+    1. Length: **4**
+    1. Decimal Places: **2**
+    1. Field Name: **temperature**
     1. Click **Save**
 1. In the **Custom Fields & Relationships** section, click **New** to create a field for the humidity:
-  1. Data Type: **Number**
-  1. Click **Next**
-  1. Field Label: **humidity**
-  1. Length: **4**
-  1. Decimal Places: **2**
-  1. Field Name: **humidity**
+    1. Data Type: **Number**
+    1. Click **Next**
+    1. Field Label: **humidity**
+    1. Length: **4**
+    1. Decimal Places: **2**
+    1. Field Name: **humidity**
     1. Click **Save**
 1. In the **Custom Fields & Relationships** section, click **New** to create a field for the door status:
-  1. Data Type: **Text**
-  1.  Click **Next**
-  1. Field Label: **door**
-  1. Length: **10**
-  1. Field Name: **door**
-  1. Click **Save**
+    1. Data Type: **Text**
+    1. Click **Next**
+    1. Field Label: **door**
+    1. Length: **10**
+    1. Field Name: **door**
+    1. Click **Save**
 1. In the **Custom Fields & Relationships** section, click **New** to create a field for the timestamp:
-  1. Data Type: **Date/Time**
-  1. Click **Next**
-  1. Field Label: **ts**
-  1. Field Name: **ts**
-  1. Click **Save**
+    1. Data Type: **Date/Time**
+    1. Click **Next**
+    1. Field Label: **ts**
+    1. Field Name: **ts**
+    1. Click **Save**
 1. In the **Custom Fields & Relationships** section, click **New** create a field for the device’s ID:
-  1. Data Type: **Text**
-  1. Click **Next**
-  1. Field Label: **deviceId**
-  1. Length: **16**
-  1. Field Name: **deviceId**
-  1. Check **Always require a value in this field in order to save a record**
-  1. Click **Save**.
+    1. Data Type: **Text**
+    1. Click **Next**
+    1. Field Label: **deviceId**
+    1. Length: **16**
+    1. Field Name: **deviceId**
+    1. Check **Always require a value in this field in order to save a record**
+    1. Click **Save**.
 1. Make sure that the **Smart Fridge Reading API Name** is **Smart_Fridge_Reading__e** and that **Custom Fields & Relationships** looks like this:
 ![Verify that the Platform Event's fields and settings are correct before proceeding](png/19.png "Verify that the Platform Event's fields and settings are correct before proceeding")
 1. Click **New** in the **Triggers** section:
@@ -332,16 +332,16 @@ This is needed to help set up the IoT Explorer Orchestration.
 ![Key Contexts into the Quick Find box and then click on Feature Settings, IoT Explorer and Contexts](png/22.png "Key Contexts into the Quick Find box and then click on Feature Settings, IoT Explorer and Contexts")
 1. Click **New Context**
 1. In the **New Context** form, fill in:
-  1. Context Name: **Smart Fridge Context**
-  1. Key Type: **String**
-  1. Click **Save**
+    1. Context Name: **Smart Fridge Context**
+    1. Key Type: **String**
+    1. Click **Save**
 1. You will be redirected to the **Smart Fridge Context** page. In the **Platform Events** section, click **Add**:
 ![In the Context's Platform Events section, click the Add button](png/23.png "In the Context's Platform Events section, click the Add button")
 1. In the **Add Platform Event** form, fill in:
-  1. Context: **Smart Fridge Context**
-  1. Platform Event: choose the **Smart Fridge Reading** Platform Event you created earlier
-  1. Key: choose **deviceId**
-  1. Click **Save**
+    1. Context: **Smart Fridge Context**
+    1. Platform Event: choose the **Smart Fridge Reading** Platform Event you created earlier
+    1. Key: choose **deviceId**
+    1. Click **Save**
 
 ## Step 8: Create a Custom Case Field in Salesforce
 
@@ -356,16 +356,16 @@ This example uses customized Cases which are standard Case objects with an addit
 1. Select the **Fields & Relationships** section and click the **New** button:
 ![In the Object Manager setup page, select the Fields and Relationships section then click the New button](png/13.png "In the Object Manager setup page, select the Fields and Relationships section then click the New button")
 1. In the **New Custom Field** form:
-  1. In the **Step 1. Choose the field type** section:
-    1. Choose Data Type: **Text**
-    1. Click **Next**
-  1. In the **Step 2. Enter the details** section:
-    1. Field Label: **deviceId**
-    1. Length: **16**
-    1. Field Name: **deviceId**
-    1. Check **Set this field as the unique record identifier from an external system**:
+    1. In the **Step 1. Choose the field type** section:
+        1. Choose Data Type: **Text**
+        1. Click **Next**
+    1. In the **Step 2. Enter the details** section:
+        1. Field Label: **deviceId**
+        1. Length: **16**
+        1. Field Name: **deviceId**
+        1. Check **Set this field as the unique record identifier from an external system**:
 ![Enter the details for the device ID custom field](png/14.png "Enter the details for the device ID custom field")
-  1. Click **Next**, **Next** and then **Save**
+    1. Click **Next**, **Next** and then **Save**
 1. Select the **Fields & Relationships** section and find your newly created **deviceId** custom field
 1. Make sure the **Field Name** is set to **deviceId__c**:
 ![Verify that the device ID field name is correct before processing](png/15.png "Verify that the device ID field name is correct before processing")
@@ -390,11 +390,11 @@ If you are wondering why there are no transitions between Open, Temperature Over
 ![Key Orchestrations into the Quick Find box and then click on Feature Settings, IoT Explorer and Orchestrations](png/24.png "Key Orchestrations into the Quick Find box and then click on Feature Settings, IoT Explorer and Orchestrations")
 1. Click **New Orchestration**
 1. In the **New Orchestration** pop up, fill in:
-  1. Name: **Smart Fridge Orchestration**
-  1. Context: choose the **Smart Fridge Context** you created earlier:
+    1. Name: **Smart Fridge Orchestration**
+    1. Context: choose the **Smart Fridge Context** you created earlier:
 ![Enter the name and context values into the New Orchestration pop up](png/25.png "Enter the name and context values into the New Orchestration pop up")
-  1. Click **Create**
-  1. You will be redirected to the **Smart Fridge Orchestration** page
+    1. Click **Create**
+    1. You will be redirected to the **Smart Fridge Orchestration** page
 
 ### Set up Orchestration Variables
 
@@ -402,27 +402,27 @@ If you are wondering why there are no transitions between Open, Temperature Over
 1. Click **Add Variable**:
 ![Click on the Variables tab and then on Add Variable](png/26.png "Click on the Variables tab and then on Add Variable")
 1. Create a variable for the temperature threshold:
-  1. Name: **TEMPERATURE_THRESHOLD**
-  1. Data Type: **Number**
-  1. Initial Value: **11** (for 11&deg;C)
-  1. Click **Add Variable**
+    1. Name: **TEMPERATURE_THRESHOLD**
+    1. Data Type: **Number**
+    1. Initial Value: **11** (for 11&deg;C)
+    1. Click **Add Variable**
 1. Create a variable for the humidity threshold:
-  1. Name: **HUMIDITY_THRESHOLD**
-  1. Data Type: **Number**
-  1. Initial Value: **70** (for 70%)
-  1. Click **Add Variable**
+    1. Name: **HUMIDITY_THRESHOLD**
+    1. Data Type: **Number**
+    1. Initial Value: **70** (for 70%)
+    1. Click **Add Variable**
 1. Create a variable for the door opening counter limit:
-  1. Name: **DOOR_OPEN_LIMIT**
-  1. Data Type: **Number**
-  1. Initial Value: **3** (for three consecutive data readings with door status)
-  1. Click **Add Variable**
+    1. Name: **DOOR_OPEN_LIMIT**
+    1. Data Type: **Number**
+    1. Initial Value: **3** (for three consecutive data readings with door status)
+    1. Click **Add Variable**
 1. Create a variable for the door opening counter:
-  1. Name: **door_open_counter**
-  1. Data Type: **Number**
-  1. Event Type: **Smart_Fridge_Reading__e** (the Platform Event you created earlier)
-  1. IF: `Smart_Fridge_Reading__e.door__c = "open"`
-  1. Value: **Count 40 sec** (for three consecutive data readings fit in 40 seconds)
-  1. Initial Value: **0**
+    1. Name: **door_open_counter**
+    1. Data Type: **Number**
+    1. Event Type: **Smart_Fridge_Reading__e** (the Platform Event you created earlier)
+    1. IF: `Smart_Fridge_Reading__e.door__c = "open"`
+    1. Value: **Count 40 sec** (for three consecutive data readings fit in 40 seconds)
+    1. Initial Value: **0**
 1. Make sure your Orchestration variables looks like this:
 ![Verify that your Orchestration variables are correctly set up before proceeding](png/60.png "Verify that your Orchestration variables are correctly set up before proceeding")
 
@@ -452,19 +452,19 @@ If you are wondering why there are no transitions between Open, Temperature Over
 1. In the **Condition** column, enter `door_open_counter >= DOOR_OPEN_LIMIT`
 1. In the **Actions** column, click **Add an action** and choose **OUTPUT ACTIONS > Salesforce Record**
 1. In the **New Salesforce Output Action** pop up, choose:
-  1. Object: **Case**
-  1. Action Type: **Create**
+    1. Object: **Case**
+    1. Action Type: **Create**
 ![In the New Salesforce Output Action pop up, choose the Case object](png/63.png "In the New Salesforce Output Action pop up, choose the Case object")
 1. In the **Assign values to record fields** table:
-  1. Click **Add Field**
-  1. Choose **deviceId__c** in **Select field**
-  1. Enter value: `Smart_Fridge_Reading__e.deviceId__c`
-  1. Click **Add Field**
-  1. Choose **Subject** in **Select field**
-  1. Enter **Subject** value: `"Refrigerator Door Open"`
-  1. Click **Add Field**
-  1. Choose **Description** in **Select field**
-  1. Enter **Description** value: `"door has been opened for too long"`
+    1. Click **Add Field**
+    1. Choose **deviceId__c** in **Select field**
+    1. Enter value: `Smart_Fridge_Reading__e.deviceId__c`
+    1. Click **Add Field**
+    1. Choose **Subject** in **Select field**
+    1. Enter **Subject** value: `"Refrigerator Door Open"`
+    1. Click **Add Field**
+    1. Choose **Description** in **Select field**
+    1. Enter **Description** value: `"door has been opened for too long"`
 1. In the **Action Name** field, enter **Create Door Open Case**
 1. Make sure that the **Assign values to record fields** table looks like this:
 ![Verify that the correct values have been assigned to the Output Action's fields before proceeding](png/64.png "Verify that the correct values have been assigned to the Output Action's fields before proceeding")
@@ -486,17 +486,17 @@ If you are wondering why there are no transitions between Open, Temperature Over
 1. In the **Condition** column, enter `Smart_Fridge_Reading__e.temperature__c >= TEMPERATURE_THRESHOLD`
 1. In the **Actions** column, click **Add an action** and then choose **OUTPUT ACTIONS > Salesforce Record**
 1. In the **New Salesforce Output Action** pop up choose:
-  1. Object: **Case**
-  1.  Action Type: **Create**
+    1. Object: **Case**
+    1.  Action Type: **Create**
 1. In the **Assign values to record fields** table:
-  1. Click **Add Field**
-  1. Choose **deviceId__c** in **Select field**
-  1. Enter value: `Smart_Fridge_Reading__e.deviceId__c`
-  1. Choose **Subject** in **Select field**
-  1. Enter **Subject** value: `"Temperature Over Threshold"`
-  1. Click **Add Field**
-  1. Choose **Description** in **Select field**
-  1. Enter **Description** value: `"current temperature " + TEXT(Smart_Fridge_Reading__e.temperature__c) + " is over threshold"`
+    1. Click **Add Field**
+    1. Choose **deviceId__c** in **Select field**
+    1. Enter value: `Smart_Fridge_Reading__e.deviceId__c`
+    1. Choose **Subject** in **Select field**
+    1. Enter **Subject** value: `"Temperature Over Threshold"`
+    1. Click **Add Field**
+    1. Choose **Description** in **Select field**
+    1. Enter **Description** value: `"current temperature " + TEXT(Smart_Fridge_Reading__e.temperature__c) + " is over threshold"`
 1. In **Action Name** field enter **Create Temperature Case**
 1. Make sure that the **Assign values to record fields** table looks like this:
 ![Verify that the correct values have been assigned to the Output Action's fields before proceeding](png/67.png "Verify that the correct values have been assigned to the Output Action's fields before proceeding")
@@ -517,17 +517,17 @@ If you are wondering why there are no transitions between Open, Temperature Over
 1. In the **Condition** column, enter `Smart_Fridge_Reading__e.humidity__c >= HUMIDITY_THRESHOLD`
 1. In the **Actions** column click **Add an action** and choose **OUTPUT ACTIONS > Salesforce Record**
 1. In the **New Salesforce Output Action** pop up choose:
-  1. Object: **Case**
-  1. Action Type: **Create**
+    1. Object: **Case**
+    1. Action Type: **Create**
 1. In the **Assign values to record fields** table:
-  1. Click **Add Field**
-  1. Choose **deviceId__c** in **Select field**
-  1. Enter value: `Smart_Fridge_Reading__e.deviceId__c`
-  1. Choose **Subject** in **Select field**
-  1. Enter **Subject** value: `"Humidity Over Threshold"`
-  1. Click **Add Field**
-  1. Choose **Description** in **Select field**
-  1. Enter **Description** value: `"current humidity " + TEXT(Smart_Fridge_Reading__e.humidity__c) + " is over threshold"`
+    1. Click **Add Field**
+    1. Choose **deviceId__c** in **Select field**
+    1. Enter value: `Smart_Fridge_Reading__e.deviceId__c`
+    1. Choose **Subject** in **Select field**
+    1. Enter **Subject** value: `"Humidity Over Threshold"`
+    1. Click **Add Field**
+    1. Choose **Description** in **Select field**
+    1. Enter **Description** value: `"current humidity " + TEXT(Smart_Fridge_Reading__e.humidity__c) + " is over threshold"`
 1. In **Action Name** field enter **Create Humidity Case**
 1. Make sure that the **Assign values to record fields** table looks like this:
 ![Verify that the correct values have been assigned to the Output Action's fields before proceeding](png/70.png "Verify that the correct values have been assigned to the Output Action's fields before proceeding")
@@ -550,12 +550,12 @@ If you are wondering why there are no transitions between Open, Temperature Over
 1. Make sure your device is powered on and connected to WiFi; impCentral should show the device is online
 1. Click the **Build & Run All** button to syntax-check, compile and deploy the code
 1. Look at the log pane to see messages from your running application. If you see `"\[Agent] ERROR: Not logged into Salesforce."`, it means your application is not authorized to connect to Salesforce. This example uses OAuth 2.0 for authentication, and the agent has been set up as a web server to handle the authentication procedure.
-  1. Click on the agent URL in impCentral:
+    1. Click on the agent URL in impCentral:
 ![In impCentral, click the Build and Run All button to compile and deploy the application and begin device and agent logging](png/207.png "In impCentral, click the Build and Run All button to compile and deploy the application and begin device and agent logging")
-  1. You will be redirected to the login page
-  1. Log into Salesforce *on that page*
-  1. If login is successful the page should display **"Authentication complete - you may now close this window"**
-  1. Close that page and return to impCentral
+    1. You will be redirected to the login page
+    1. Log into Salesforce *on that page*
+    1. If login is successful the page should display **"Authentication complete - you may now close this window"**
+    1. Close that page and return to impCentral
 1. Make sure there are no further errors in the logs
 1. Make sure there are periodic logs like this: `"\[Agent] Readings sent successfully"`
 1. Your application is now up and running
