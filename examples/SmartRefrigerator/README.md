@@ -125,23 +125,24 @@ This stage is used to authenticate the imp application in the Salesforce cloud.
 ![Key App Manager into the Quick Find box and then click on App Manager](png/2_1.png "Key App Manager into the Quick Find box and then click on App Manager")
 1. Click **New Connected App**
 1. In the **New Connected App** form, fill in:
-  1. **Basic Information** section:
-    1. Connect App Name: **Electric Imp SmartFridge**
-    1. API Name: this will automatically become **Electric_Imp_SmartFridge**
-    1. Contact Email: enter your email address
-  1. **API (Enable OAuth Settings)** section:
-    1. Check the **Enable OAuth Settings** box
-    1. Callback URL: enter the agent URL of your device (copy it from impCentral &mdash; see the previous step)
+    1. **Basic Information** section:
+        1. Connect App Name: **Electric Imp SmartFridge**
+        1. API Name: this will automatically become **Electric_Imp_SmartFridge**
+        1. Contact Email: enter your email address
+    1. **API (Enable OAuth Settings)** section:
+        1. Check the **Enable OAuth Settings** box
+        1. Callback URL: enter the agent URL of your device (copy it from impCentral &mdash; see the previous step)
     1. Under **Selected OAuth Scopes**:
-      1. Select **Access and manage your data (api)**
-      1. Click the **Add** button:
+        1. Select **Access and manage your data (api)**
+        1. Click the **Add** button:
 ![You need to enable OAuth for your agent URL in the App Manager](png/3.png "You need to enable OAuth for your agent URL in the App Manager")
-  1. Click **Save**
-  1. Click **Continue**
+
+    1. Click **Save**
+    1. Click **Continue**
 1. You will be redirected to your Connected App’s page:
-  1. Make a note of your **Consumer Key** (you will need to enter it into your agent code)
-  1. Click on **Click to reveal** next to the **Consumer Secret** field
-  1. Make a note of your **Consumer Secret** (you will need to enter it into your agent code):
+    1. Make a note of your **Consumer Key** (you will need to enter it into your agent code)
+    1. Click on **Click to reveal** next to the **Consumer Secret** field
+    1. Make a note of your **Consumer Secret** (you will need to enter it into your agent code):
 ![Make a note of your Salesforce connected app Consumer Secret and Consumer Key](png/4.png "Make a note of your Salesforce connected app Consumer Secret and Consumer Key")
 1. Do not close the Salesforce page
 
