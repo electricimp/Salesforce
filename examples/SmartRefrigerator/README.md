@@ -4,10 +4,10 @@ This example uses the Electric Imp Platform to connect and monitor a refrigerato
 
 The impExplorer&trade; Kit used in this example reads data from its sensors every 15 seconds. It reads the temperature and the humidity of the air around it, and sends those readings to the Salesforce cloud using Salesforce Platform Events. The impExplorer Kit also senses light and uses this to determine whether the fridge door is open (bright light) or closed (no light). Again the light-level reading is sent to the Salesforce cloud using Salesforce Platform Events.
 
-The Salesforce cloud stores the incoming data and opens a Case using IoT Explorer Orchestration if: 
+The Salesforce cloud stores the incoming data and opens a Case using IoT Explorer Orchestration if:
 
-1. The refrigerator door is opened longer than a predefined period, or 
-2. The temperature rises above a predefined threshold, or 
+1. The refrigerator door is opened longer than a predefined period, or
+2. The temperature rises above a predefined threshold, or
 3. The relative humidity rises above a predefined threshold.
 
 All thresholds are defined later, at the step when you set up IoT Explorer Orchestration.
@@ -40,13 +40,13 @@ First we will need to assemble the impExplorer Kit. The kit comes with:
 
 ### Hardware Setup
 
-- Plug the imp001 card into the card slot on the impExplorer 
+- Plug the imp001 card into the card slot on the impExplorer
 - Power up your impExplorer Kit with the provided mini-B USB cable or the AA Batteries
 - The imp001 should now have power and be blinking amber (or red if it has been used before)
 
 Assembled, it should look like this:
 
-![Assembled impExplorer Kit: the imp001 card in place (left) and the three AA batteries in the underside bay (right)](http://i.imgur.com/6JssX74.png "Assembled impExplorer Kit: the imp001 card in place (left) and the three AA batteries in the underside bay (right)")
+![Assembled impExplorer Kit: the imp001 card in place (left) and the three AA batteries in the underside bay (right)](/png/0_1.png "Assembled impExplorer Kit: the imp001 card in place (left) and the three AA batteries in the underside bay (right)")
 
 ### Electric Imp BlinkUp&trade;
 
@@ -68,7 +68,7 @@ If you have any issues getting started with your Electric Imp account or device,
 
 ### The Electric Imp Platform
 
-The Electric Imp IoT Connectivity Platform has two core elements: the device and the impCloud&trade;. The device runs software of its own (the imp application’s ‘device code’) and is assisted by software running in the impCloud. This assistant is called an ‘agent’, and each device has an agent all of its own. The agent (running the imp application’s ‘agent code’) operates as the device’s front end to the Internet. 
+The Electric Imp IoT Connectivity Platform has two core elements: the device and the impCloud&trade;. The device runs software of its own (the imp application’s ‘device code’) and is assisted by software running in the impCloud. This assistant is called an ‘agent’, and each device has an agent all of its own. The agent (running the imp application’s ‘agent code’) operates as the device’s front end to the Internet.
 
 In this example, the agent code receives data from the device and forwards it to the Salesforce cloud as a Platform Event:
 
@@ -192,7 +192,7 @@ The Custom Object will be used to store the data received from the device.
 ![Temperature Field](https://imgur.com/40XLV2B.png)
     - Click **Next**, **Next**, and then **Save & New**
   - Create a field for the humidity:
-    - **Step 1. Choose the field type** 
+    - **Step 1. Choose the field type**
       - Choose Data Type: **Number**
       - Click **Next**
     - **Step 2. Enter the details**:
@@ -205,7 +205,7 @@ The Custom Object will be used to store the data received from the device.
     - **Step 1. Choose the field type**
       - Choose Data Type: **Picklist**
       - Click **Next**
-    - **Step 2. Enter the details**:  
+    - **Step 2. Enter the details**:
       - Field Label: **door**
       - Values: Select **Enter values, with each value separated by a new line**
       - Enter **Open** and **Closed** so that they are on separate lines.
@@ -213,10 +213,10 @@ The Custom Object will be used to store the data received from the device.
 ![Door Field](https://imgur.com/XqAEQ10.png)
     - Click **Next**, **Next**, and then **Save & New**
   - Create a field for the timestamp:
-    - **Step 1. Choose the field type** 
+    - **Step 1. Choose the field type**
       - Choose Data Type: **Date/Time**
       - Click **Next**
-    - **Step 2. Enter the details**:  
+    - **Step 2. Enter the details**:
       - Field Label: **ts**
       - Field Name: **ts**
     - Click **Next**, **Next**, and then **Save & New**
@@ -224,7 +224,7 @@ The Custom Object will be used to store the data received from the device.
     - **Step 1. Choose the field type**
       - Choose Data Type: **Text**
       - Click **Next**
-    - **Step 2. Enter the details**:  
+    - **Step 2. Enter the details**:
       - Field Label: **deviceId**
       - Length: **16**
       - Field Name: **deviceId**
@@ -364,7 +364,7 @@ This example uses customized Cases which are standard Case objects with an addit
   - **Step 1. Choose the field type**:
     - Choose Data Type: **Text**
     - Click **Next**
-  - **Step 2. Enter the details**:  
+  - **Step 2. Enter the details**:
     - Field Label: **deviceId**
     - Length: **16**
     - Field Name: **deviceId**
@@ -379,7 +379,7 @@ This example uses customized Cases which are standard Case objects with an addit
 
 This example demonstrates how to create an Orchestration that defines a fridge state machine, reacts to Platform Events, and opens Cases when:
 
-1. The refrigerator door is opened during three consecutive data readings (the exact threshold is between 30 and 45 seconds), or 
+1. The refrigerator door is opened during three consecutive data readings (the exact threshold is between 30 and 45 seconds), or
 2. The temperature is over 11&deg;C, or
 3. The relative humidity is over 70%.
 
@@ -398,7 +398,7 @@ You may set up other thresholds.
 ![New Orchestration](https://imgur.com/gWMgKur.png)
   - Click **Create**
   - You will be redirected to the **Smart Fridge Orchestration** page
-  
+
 ### Set up Orchestration Variables
 
 - Click on the **VARIABLES** tab. Now you can to set up temperature and humidity thresholds, and a door opening counter and limit
@@ -452,7 +452,7 @@ You may set up other thresholds.
 - In the **When** column of the **Default** state click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**
 - In the **Condition** column enter `door_open_counter >= DOOR_OPEN_LIMIT`
 - In the **Actions** column click **Add an action** and choose **OUTPUT ACTIONS > Salesforce Record**
-- In the **New Salesforce Output Action** pop up choose: 
+- In the **New Salesforce Output Action** pop up choose:
   - Object: **Case**
   - Action Type: **Create**
 ![Door Open Case create](https://imgur.com/PdcE9Zv.png)
@@ -486,7 +486,7 @@ You may set up other thresholds.
 - In the **When** column the new rule click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**
 - In the **Condition** column enter `Smart_Fridge_Reading__e.temperature__c >= TEMPERATURE_THRESHOLD`
 - In the **Actions** column click **Add an action** and choose **OUTPUT ACTIONS > Salesforce Record**
-- In the **New Salesforce Output Action** pop up choose: 
+- In the **New Salesforce Output Action** pop up choose:
   - Object: **Case**
   - Action Type: **Create**
 - In the **Assign values to record fields** table:
@@ -517,7 +517,7 @@ You may set up other thresholds.
 - In the **When** column the new rule click **Select when to evaluate rule** and choose **Smart_Fridge_Reading__e**
 - In the **Condition** column enter `Smart_Fridge_Reading__e.humidity__c >= HUMIDITY_THRESHOLD`
 - In the **Actions** column click **Add an action** and choose **OUTPUT ACTIONS > Salesforce Record**
-- In the **New Salesforce Output Action** pop up choose: 
+- In the **New Salesforce Output Action** pop up choose:
   - Object: **Case**
   - Action Type: **Create**
 - In the **Assign values to record fields** table:
@@ -572,7 +572,7 @@ If you don’t have a fridge handy for this scenario, you can test the example b
 
 ## Step 12: Monitor the Transmitted Data
 
-You can use the Salesforce1 mobile app to see the data which your device sends. 
+You can use the Salesforce1 mobile app to see the data which your device sends.
 
 ### Create a Custom Object Tab
 
@@ -584,7 +584,7 @@ This is needed to make the Custom Object with the stored data from the device ac
 - Enter **Tabs** into the **Quick Find** box and then select **User Interface > Tabs**
 - Under **Custom Object Tabs**, click **New**
 - Choose **SmartFridge** from the Object dropdown
-- Choose **Thermometer** as the Tab Style:  
+- Choose **Thermometer** as the Tab Style:
 ![Custom Object](http://i.imgur.com/eXyOmd6.png)
 - Click **Next**, **Next**, and then **Save**
 
@@ -593,11 +593,11 @@ This is needed to make the Custom Object with the stored data from the device ac
 - Click the **Setup** icon in the top-right navigation menu and select **Setup**:
 ![Salesforce Navbar](https://imgur.com/AJFyqgk.png)
 - Enter **Salesforce1** into the **Quick Find** box and then select **Apps > Mobili Apps > Salesforce1 > Salesforce1 Settings**
-- Make sure the **Enable the Salesforce1 mobile browser app** is checked:  
+- Make sure the **Enable the Salesforce1 mobile browser app** is checked:
 ![App settings checkbox](http://i.imgur.com/Tigi9eK.png)
 - Enter **Users** into the **Quick Find** box and select **Users > Users**
 - Click **Edit** next to your username
-- Make sure that **Salesforce1 User** is checked. If not, check it and click **Save**: 
+- Make sure that **Salesforce1 User** is checked. If not, check it and click **Save**:
 ![Salesforce1 User checkbox](http://i.imgur.com/svdRddT.png)
 
 ### Run Salesforce1
@@ -617,20 +617,20 @@ Use this approach if you want or need to run Salesforce1 on your PC, not on a mo
 - Copy the current opened URL into clipboard
 - Open a new tab in your Chrome browser
 - Open the Developer Tools by clicking **View** > **Developer** > **Developer Tools**
-- Click the **Toggle Device Mode** button to simulate your browser as a mobile device: 
+- Click the **Toggle Device Mode** button to simulate your browser as a mobile device:
 ![Chrome Tools Mobile Simulator](http://i.imgur.com/hzb2F0N.png)
 - Paste the URL you copied before. **Do not press Enter**
-- Remove the part of the URL immediately after `lightning.force.com`. For example:  
+- Remove the part of the URL immediately after `lightning.force.com`. For example:
 ![URL original](https://imgur.com/UZYqV21.png)
 ![URL removed](https://imgur.com/jPYa1t7.png)
-- Append `/one/one.app` to the end of the URL after salesforce.com. For example:  
+- Append `/one/one.app` to the end of the URL after salesforce.com. For example:
 ![URL one/one.app](https://imgur.com/V0Deg1d.png)
 - Press Enter. Salesforce1 emulation will be started in the Chrome Browser
 - If the display is too small, change the size to 100%:<br>![URL one/one.app](http://i.imgur.com/BvmL50q.png)
 - Click the hamburger menu in the upper left to open the navigation panel
 - Under the **Recent** section, scroll down and click *More*:<br>![Menu](http://i.imgur.com/xv2YL52.png)
 - Find **SmartFridges** on the list and then click it:<br>![Menu](http://i.imgur.com/GHcC0gG.png)
-- Select a record to view the details of the reading:  
+- Select a record to view the details of the reading:
 ![Reading record](https://imgur.com/d3N5N7F.png)
 
 ## Step 13: Monitor Orchestration State Transitions and Cases
@@ -654,5 +654,5 @@ You can see transitions between the states which you defined in the IoT Explorer
 - Run Salesforce1 as described in Step 12
 - Click on the hamburger menu in the upper left to open the navigation panel
 - Under the "Recent" section, click **Cases**:<br>![Cases menu](https://imgur.com/fGVaet7.png)
-- You will see the registered Cases:  
+- You will see the registered Cases:
 ![Cases](https://imgur.com/WDGJrUp.png)
