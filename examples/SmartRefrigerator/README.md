@@ -46,7 +46,7 @@ First we will need to assemble the impExplorer Kit. The kit comes with:
 
 Assembled, it should look like this:
 
-![Assembled impExplorer Kit: the imp001 card in place (left) and the three AA batteries in the underside bay (right)](/png/0_1.png "Assembled impExplorer Kit: the imp001 card in place (left) and the three AA batteries in the underside bay (right)")
+![Assembled impExplorer Kit: the imp001 card in place (left) and the three AA batteries in the underside bay (right)](../png/0_1.png "Assembled impExplorer Kit: the imp001 card in place (left) and the three AA batteries in the underside bay (right)")
 
 ### Electric Imp BlinkUp&trade;
 
