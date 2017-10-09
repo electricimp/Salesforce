@@ -136,7 +136,6 @@ This stage is used to authenticate the imp application in the Salesforce cloud.
         1. Select **Access and manage your data (api)**
         1. Click the **Add** button:
 ![You need to enable OAuth for your agent URL in the App Manager](png/3.png "You need to enable OAuth for your agent URL in the App Manager")
-
     1. Click **Save**
     1. Click **Continue**
 1. You will be redirected to your Connected App’s page:
