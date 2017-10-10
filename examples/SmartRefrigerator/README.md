@@ -658,3 +658,5 @@ You can now see transitions between the states that you defined in the IoT Explo
 ![The list of recent cases](png/104.png "The list of recent cases")
 
 **Note** The Orchestration Traffic view is on a seven-second refresh but Platform Events are processed as they are received. This means you may see the Case created before the UI refreshes.
+
+**Version** 11:21 October 10, 2017
