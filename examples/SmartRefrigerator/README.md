@@ -16,8 +16,8 @@ All thresholds are defined later, at the step when you set up IoT Explorer Orche
 
 ### General
 
-- Your Wi-Fi network name (SSID) and password.
-- A smartphone (iOS or Android).
+- Your 2.4GHz 802.11n Wi-Fi network name (SSID) and password.
+- A smartphone or tablet (iOS or Android).
 - A computer with a web browser.
 
 ### Accounts
@@ -37,6 +37,8 @@ First we will need to assemble the impExplorer Kit. The kit comes with.
 
 - An imp001 card, which contains a Wi-Fi radio and the microcontroller that drives all the logic for the board.
 - The impExplorer board into which the card is plugged.
+
+The impExplorer’s imp001 connects to any **2.4GHz** WiFi network compatible with the **802.11n** standard or below. It cannot connect to a 5GHz 802.11n network. For more information on imp network requirements, please see [*Network Requirements for imp-enabled Devices*](https://electricimp.com/docs/troubleshooting/networks/).
 
 ### Hardware Setup
 
@@ -659,4 +661,4 @@ You can now see transitions between the states that you defined in the IoT Explo
 
 **Note** The Orchestration Traffic view is on a seven-second refresh but Platform Events are processed as they are received. This means you may see the Case created before the UI refreshes.
 
-**Version** 11:21 October 10, 2017
+**Version** 10:07 October 20, 2017
