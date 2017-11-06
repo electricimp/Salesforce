@@ -175,9 +175,6 @@ class SmartFridgeApplication {
 
     // Sends the data received from device, to Salesforce as Platform Event.
     function readingHandler(data) {
-        // Log the reading from the device
-        server.log(http.jsonencode(data));
-
         local body = { "deviceId__c" : _deviceID };
 
         // add Salesforce fields postfix to data keys and convert values if needed
@@ -197,6 +194,10 @@ class SmartFridgeApplication {
             server.error("Not logged into Salesforce.")
             return;
         }
+        
+        // Log the data being sent to the cloud
+        server.log(http.jsonencode(body));
+        
         // Send Salesforce platform event with device readings
         _force.request("POST", _sendReadingUrl, http.jsonencode(body), function (err, respData) {
             if (err) {
