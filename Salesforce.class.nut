@@ -158,9 +158,9 @@ class Salesforce {
                 }
             }.bindenv(this));
         } else {
-            local resp = request.sendsync();
+            local resp = req.sendsync();
             local data = http.jsondecode(resp.body);
-            if (resp.statuscode < 200 && resp.statuscode >= 300) {
+            if (resp.statuscode >= 200 && resp.statuscode < 300) {
                 return { err = null, data = data };
             } else {
                 return { err = data, data = null };
