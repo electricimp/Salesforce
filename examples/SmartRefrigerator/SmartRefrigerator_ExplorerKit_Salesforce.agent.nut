@@ -26,7 +26,7 @@
 #require "Rocky.class.nut:1.2.3"
 
 // Web Integration Library
-#require "Salesforce.class.nut:1.1.0"
+#require "Salesforce.agent.lib.nut:2.0.0"
 
 // Extends Salesforce Library to handle authorization
 class SalesforceOAuth2 extends Salesforce {

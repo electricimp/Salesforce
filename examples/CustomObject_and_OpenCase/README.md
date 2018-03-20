@@ -1,20 +1,24 @@
-#Salesforce Examples
+# Salesforce Examples
 
-The following examples will use a Salesforce Connected App for communication between the Imp and Salesforce.  These examples require you to have an [Electric Imp developer account](https://ide.electricimp.com/login), the Electric Imp BlinkUp app, a [Salesforce developer account](https://developer.salesforce.com/signup?d=70130000000td6N), and the hardware listed below.
+The following examples will use a Salesforce Connected App for communication between the Imp and Salesforce.  These examples require you to have an [Electric Imp developer account](https://impcentral.electricimp.com/login), the Electric Imp BlinkUp app, a [Salesforce developer account](https://developer.salesforce.com/signup?d=70130000000td6N), and the hardware listed below.
+
+Please note these instructions are not actively updated. If any errors are found please submit pull requests to help us maintain these examples. 
 
 ## Hardware
 
-For the Smart Refrigerator example select your hardware and follow the instructions found in the *SmartRefrigerator* folder.
+The harware used in these examples is no longer available to purchase. If you already have an April breakout board with tails you can follow the instructions below, otherwise please get started with the Smart Refrigerator example found in the *SmartRefrigerator* folder. 
 
-All other examples will use an Imp 001, an April breakout board, and an Environmental Sensor tail to collect data.  Developer kits with these parts can be purchased on [Amazon](http://www.amazon.com/WiFi-Environmental-Sensor-LED-kit/dp/B00ZQ4D1TM/ref=sr_1_1?ie=UTF8&qid=1459988822&sr=8-1&keywords=electric+imp+kit).  If you need guides to help you get started with Electric Imp visit the [Dev Center](https://electricimp.com/docs/gettingstarted/).
+These examples will use an Imp 001, an April breakout board, and an Environmental Sensor tail to collect data. 
+
+If you need guides to help you get started with Electric Imp visit the [Dev Center](https://developer.electricimp.com/gettingstarted).
 
 
 ## Getting Started
 
-Create a model in the Electric Imp IDE, and assign your device to that model.  Choose the example you wish to use, *Open a Case*, *Custom Object - Create a Record*, *Custom Object - Update a Record*.  Copy and paste the corresponding example code into the agent and device coding windows.  Select your device and make a note of your agent url, which can be found at the top of your model's agent code.  It will look something like this ```"https://agent.electricimp.com/szPc0sLfAqlu"```.  You will need the agent url when creating your connected app in Salesforce.
+Create a product and developer device group in impCentral, and assign your device to the device group. Choose the example you wish to use, *Open a Case*, *Custom Object - Create a Record*, *Custom Object - Update a Record*.  Copy and paste the corresponding example code into the agent and device coding windows.  Select your device and make a note of your agent url, which can be found at the top of your model's agent code.  It will look something like this ```"https://agent.electricimp.com/szPc0sLfAqlu"```.  You will need the agent url when creating your connected app in Salesforce.
 
 
-###Creating a Connected App in Salesforce
+### Creating a Connected App in Salesforce
 
 Step by step instructions to create a Connected App:
 
@@ -42,12 +46,12 @@ Open the Electric Imp IDE & select your device.  Find the *SALESFORCE CONSTANTS*
 
 **Note:** These instructions were written in March 2016 and may not be up to date with the latest Salesforce web portal.
 
-##Open a Case Example
+## Open a Case Example
 
 In this example the Imp will open a case in Salesforce if the agent determines readings to be outside given ranges.  The device takes a temperature, humidity, and ambient light reading every 3 seconds then passes the readings to the agent.  The agent runs some logic to determine if the temperature has gone above 29°C or below 20°C, or if the ambient light has gone below 20 lux.  If any of these conditions have been met a case will be opened in Salesforce with the details of the event that triggered the case.  No further setup is requires for this exmple.  Please skip to [launch your app](#launching-app) section.
 
 
-##Custom Object Examples
+## Custom Object Examples
 
 There are two examples using an Imp and a Salesforce custom object.  The **Create Custom Object** example creates a record everytime new data is available.  The **Update Custom Object** example a single record is created and then updated it everytime new data is available.   In both examples the device takes a temperature, humidity, air pressure, and ambient light reading every 5 minutes then passes those readings to the agent.  The agent then either *creates* or *updates* a record in Salesforce with the new readings.
 
@@ -112,13 +116,13 @@ Open the Electric Imp IDE & select your device.  Under the *APPLICATION CODE* fi
 **Note:** These instructions were written in March 2016 and may not be up to date with the latest Salesforce web portal.
 
 
-##Launching App
+## Launching App
 
 These examples use OAuth 2.0 for authentication, so the agent has been set up as a web server to handle the log in.
 Go to the Electric Imp IDE and select your device from the sidebar for the final setup steps.
 
-- Hit **Build and Run** to save and launch the code
+- Hit **Build and Force Restart** to save and launch the code
 - Click on the agent url (at the top of the agent coding window) to launch the log in page
 - Log into salesforce
 
-Your App should now be up and running.  You can monitor the device logs in the IDE, or log into Salesforce web prortal to see updates there.
+Your App should now be up and running.  You can monitor the device logs in impCentral, or log into Salesforce web prortal to see updates there.
