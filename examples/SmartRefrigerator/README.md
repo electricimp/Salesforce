@@ -22,7 +22,7 @@ All thresholds are defined later, at the step when you set up IoT Explorer Orche
 
 ### Accounts
 
-- An [Electric Imp developer account](https://preview-impcentral.electricimp.com/login).
+- An [Electric Imp developer account](https://impcentral.electricimp.com/login).
 - The Electric Imp mobile app ([iOS](https://itunes.apple.com/us/app/electric-imp/id547133856) or [Android](https://play.google.com/store/apps/details?id=com.electricimp.electricimp)).
 - A [Salesforce Developer Edition](https://developer.salesforce.com/signup) or [Trailhead Playground org](https://developer.salesforce.com/signup) account.
 
