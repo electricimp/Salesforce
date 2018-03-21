@@ -27,12 +27,12 @@ Please follow these step-by-step instructions to create a Connected App:
   3. At the bottom of the page under **Connected apps**, click the **New** button.
   4. In the **New Connected App** form, fill in:
     - Basic Information:
-      - Connected App Name
-      - API Name
-      - Contact Email
+      - Connected App Name.
+      - API Name.
+      - Contact Email.
     - API (Enable OAuth Settings):
-      - Check the *Enable OAuth Settings* Box
-      - Callback URL &mdash; this should be your agent URL
+      - Check the *Enable OAuth Settings* Box.
+      - Callback URL &mdash; this should be your agent URL.
       - Selected OAuth Scopes:
         - Select **Access and manage your data (api)**.
         - then click **Add**.
