@@ -92,7 +92,7 @@ This method will return the authentication’s [refresh token](https://help.sale
 
 ### getUser(*[callback]*) ###
 
-This method makes a request to Salesforce to retrieve information about the user who is currently logged in. If a successful call to the *login()* method has not yet occurred, an error will be thrown.
+This method makes a request to Salesforce to retrieve information about the user who is currently logged in. If a successful call to the *login()* method has not yet occurred, an error will be thrown. The method may also be called with an optional callback function *([see above](#callbacks))* that will be executed upon the completion of the request.
 
 ```squirrel
 force.login(USERNAME, PASSWORD, SECURITY_TOKEN, function(err, data) {
@@ -117,7 +117,7 @@ force.login(USERNAME, PASSWORD, SECURITY_TOKEN, function(err, data) {
 
 ### request(*verb, service[, body][, callback]*) ###
 
-This method is the most basic way of interacting with objects in your Salesforce database. It creates an HTTP request with properly formated authentication headers, etc. If a successful call to the *login()* method has not yet occurred, an error will be thrown.
+This method is the most basic way of interacting with objects in your Salesforce database. It creates an HTTP request with properly formated authentication headers, etc. If a successful call to the *login()* method has not yet occurred, an error will be thrown. The method may also be called with an optional callback function *([see above](#callbacks))* that will be executed upon the completion of the login request.
 
 The data from *request()* will be the parsed body of the request’s response. In the example below, we are fetching data on custom objects (campsites) from our Salesforce database:
 
