@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 
-// Copyright (c) 2015 Electric Imp
+// Copyright (c) 2015-18 Electric Imp
 
 // SPDX-License-Identifier: MIT
 
