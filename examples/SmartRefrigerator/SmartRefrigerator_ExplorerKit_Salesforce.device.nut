@@ -69,7 +69,24 @@ class SmartFridge {
 
     function initializeSensors() {
         // Configure i2c
-        local i2c = hardware.i2c89;
+        local impType = imp.info();
+        local i2c = null;
+        switch(impType.type) {
+            case "imp001":
+                i2c = hardware.i2c89;
+                server.log("imp001 detected, using i2c89");
+                break;
+            case "imp003":
+                i2c = hardware.i2cAB;
+                server.log("imp003 detected, using i2cAB");
+                break;
+            case "imp004m":
+                i2c = hardware.i2cQP;
+                server.log("imp004m detected, using i2cQP");
+                break;
+            default:
+                server.log("Unsupported imp: " + impType.type);
+        }
         i2c.configure(CLOCK_SPEED_400_KHZ);
 
         // Initialize sensor
