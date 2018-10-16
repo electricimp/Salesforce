@@ -71,6 +71,10 @@ class Salesforce {
         _token = token;
     }
 
+    function setRefreshToken(refreshToken) {
+        _refreshToken = refreshToken;
+    }
+
     function login(username, password, securityToken = null, cb = null) {
         // Add token if required
         if (securityToken != null) password = password+securityToken;
