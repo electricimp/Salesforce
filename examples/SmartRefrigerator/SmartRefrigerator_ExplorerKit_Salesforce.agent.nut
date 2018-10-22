@@ -222,7 +222,7 @@ class SmartFridgeApplication {
                                 return;
                             }
                             _force.storeAuthData(respData);
-                        }.binenv(this)
+                        }.bindenv(this)
                     );
                 }
                 server.error(http.jsonencode(err));
@@ -246,8 +246,8 @@ class SmartFridgeApplication {
 
 // SALESFORCE CONSTANTS
 // ----------------------------------------------------------
-const CONSUMER_KEY = "<YOUR_CONSUMER_KEY_HERE>";
-const CONSUMER_SECRET = "<YOUR_CONSUMER_SECRET_HERE>";
+const CONSUMER_KEY = "@{SALESFORCE_CONSUMER_KEY}";
+const CONSUMER_SECRET = "@{SALESFORCE_CONSUMER_SECRET}";
 const READING_EVENT_NAME = "Smart_Fridge_Reading__e";
 
 // Start Application
