@@ -26,7 +26,7 @@
 class Salesforce {
 
     // Library version
-    static VERSION = "2.0.0";
+    static VERSION = "2.0.1";
 
     // service URLs
     _loginServiceBase = "https://login.salesforce.com/";

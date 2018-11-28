@@ -2,7 +2,7 @@
 
 This library wraps the [Force.com REST API](https://www.salesforce.com/us/developer/docs/api_rest/). Force.com is a suite of point-and-click tools for creating custom employee-facing apps. The Electric Imp Salesforce library enables you to interact with your Force.com objects, allowing you to easily create products that can interact with a powerful CRM backend.
 
-**To add this library to your project, add** `#require "Salesforce.agent.lib.nut:2.0.0"` **to the top of your agent code.**
+**To add this library to your project, add** `#require "Salesforce.agent.lib.nut:2.0.1"` **to the top of your agent code.**
 
 ## Callbacks ##
 
@@ -19,7 +19,7 @@ If no callback is supplied (ie. a synchronous request was made), the method will
 To create a new Salesforce object you will need the Consumer Key and Consumer Secret of a Connected App. Information about creating a Connected App can be found [here](https://help.salesforce.com/apex/HTViewHelpDoc?id=connected_app_create.htm). The constructor also allows you to pass in two additional parameters to override defaults: *loginService* (default value is `"login.salesforce.com"`) and *version* (default value is `"v33.0"`). If you are working in a Salesforce sandbox environment, you should pass `"test.salesforce.com"` as *loginService*.
 
 ```squirrel
-#require "Salesforce.agent.lib.nut:2.0.0"
+#require "Salesforce.agent.lib.nut:2.0.1"
 
 force <- Salesforce("<-- CONSUMER_KEY -->", "<-- CONSUMER_SECRET -->");
 ```

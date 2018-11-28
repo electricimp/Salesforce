@@ -26,8 +26,7 @@
 #require "Rocky.class.nut:1.2.3"
 
 // Web Integration Library
-// #require "Salesforce.agent.lib.nut:2.0.0"
-@include __PATH__ + "/../../Salesforce.agent.lib.nut"
+#require "Salesforce.agent.lib.nut:2.0.1"
 
 // Extends Salesforce Library to handle authorization
 class SalesforceOAuth2 extends Salesforce {
@@ -245,7 +244,9 @@ class SmartFridgeApplication {
 // ---------------------------------------------------------------------------------
 
 // SALESFORCE CONSTANTS
-// ----------------------------------------------------------
+//
+// NOTE: Please replace values of these constants with real user credentials
+// ---------------------------------------------------------------------------------
 const CONSUMER_KEY = "@{SALESFORCE_CONSUMER_KEY}";
 const CONSUMER_SECRET = "@{SALESFORCE_CONSUMER_SECRET}";
 const READING_EVENT_NAME = "Smart_Fridge_Reading__e";
