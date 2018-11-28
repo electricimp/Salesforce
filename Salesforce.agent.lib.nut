@@ -118,10 +118,10 @@ class Salesforce {
                 return { err = err, data = null };
             }
             try {
-                    this._userUrl = data.id;
-                    this._instanceUrl = data.instance_url;
-                    this._token = data.access_token;
-                    if("refresh_token" in data) this._refreshToken = data.refresh_token;
+                this._userUrl = data.id;
+                this._instanceUrl = data.instance_url;
+                this._token = data.access_token;
+                if("refresh_token" in data) this._refreshToken = data.refresh_token;
             } catch (ex) {
                 return { err = [{"errorCode": "NO_AUTH", "message": "Could not find auth token with supplied login information"}], data = null };
             }

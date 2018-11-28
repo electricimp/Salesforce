@@ -54,6 +54,10 @@ force.login(USERNAME, PASSWORD, SECURITY_TOKEN, function(err, data) {
 
 This method immediately returns a boolean value indicating whether or not the Salesforce object has completed a login request and stored the authentication token.
 
+### setRefreshToken(*refreshToken*) ###
+
+This method can be used to set or change the refresh token for the Firebase account, when necessary. Application is not required to call the method. But it might be useful if refresh token is persisted and restored on the application side and no login operation is required when device is rebooted.
+
 ### setVersion(*versionString*) ###
 
 This method can be used to set or change the version of the Force.com REST API you are working with. For example:
