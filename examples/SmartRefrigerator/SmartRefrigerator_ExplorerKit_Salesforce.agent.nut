@@ -26,7 +26,7 @@
 #require "Rocky.class.nut:1.2.3"
 
 // Web Integration Library
-#require "Salesforce.agent.lib.nut:2.0.0"
+#require "Salesforce.agent.lib.nut:2.0.1"
 
 // Extends Salesforce Library to handle authorization
 class SalesforceOAuth2 extends Salesforce {
@@ -60,6 +60,9 @@ class SalesforceOAuth2 extends Salesforce {
             // Set the credentials in the Salesforce object
             setInstanceUrl(oAuth.instance_url);
             setToken(oAuth.access_token);
+            if ("refresh_token" in oAuth) {
+                setRefreshToken(oAuth.refresh_token);
+            }
 
             // Log a message
             server.log("Loaded OAuth Credentials!");
@@ -90,13 +93,7 @@ class SalesforceOAuth2 extends Salesforce {
                     return;
                 }
 
-                // If it was successful, save the data locally
-                local persist = { "oAuth" : respData };
-                server.save(persist);
-
-                // Set/update the credentials in the Salesforce object
-                setInstanceUrl(persist.oAuth.instance_url);
-                setToken(persist.oAuth.access_token);
+                storeAuthData(respData);
 
                 // Finally - inform the user we're done!
                 context.send(200, "Authentication complete - you may now close this window");
@@ -142,7 +139,9 @@ class SalesforceOAuth2 extends Salesforce {
             local err = null;
 
             // If there was an error, set the error code
-            if (resp.statuscode != 200) err = data.message;
+            if (resp.statuscode != 200) {
+                err = "message" in respData ? respData.message : "generic error: " + resp.body;
+            }
 
             // Invoke the callback
             if (cb) {
@@ -152,6 +151,18 @@ class SalesforceOAuth2 extends Salesforce {
             }
         });
     }
+
+    function storeAuthData(authData) {
+
+        // If it was successful, save the data locally
+        local persist = {"oAuth" : authData};
+        server.save(persist);
+
+        // Set/update the credentials in the Salesforce object
+        setInstanceUrl(persist.oAuth.instance_url);
+        setToken(persist.oAuth.access_token);
+    }
+
 }
 
 // Door status strings
@@ -194,19 +205,31 @@ class SmartFridgeApplication {
             server.error("Not logged into Salesforce.")
             return;
         }
-        
+
         // Log the data being sent to the cloud
         server.log(http.jsonencode(body));
-        
+
         // Send Salesforce platform event with device readings
         _force.request("POST", _sendReadingUrl, http.jsonencode(body), function (err, respData) {
             if (err) {
+                if (err[0].errorCode == "INVALID_SESSION_ID") {
+                    _force.getStoredCredentials();
+                    _force.refreshOAuthToken(_force.getRefreshToken(),
+                        function(e, resp, respData) {
+                            if (e) {
+                                server.error(e);
+                                return;
+                            }
+                            _force.storeAuthData(respData);
+                        }.bindenv(this)
+                    );
+                }
                 server.error(http.jsonencode(err));
             }
             else {
                 server.log("Readings sent successfully");
             }
-        });
+        }.bindenv(this));
     }
 
     // Converts timestamp to "2017-12-03T00:54:51Z" format
@@ -214,15 +237,18 @@ class SmartFridgeApplication {
         local d = ts ? date(ts) : date();
         return format("%04d-%02d-%02dT%02d:%02d:%02dZ", d.year, d.month + 1, d.day, d.hour, d.min, d.sec);
     }
+
 }
 
 // RUNTIME
 // ---------------------------------------------------------------------------------
 
 // SALESFORCE CONSTANTS
-// ----------------------------------------------------------
-const CONSUMER_KEY = "<YOUR_CONSUMER_KEY_HERE>";
-const CONSUMER_SECRET = "<YOUR_CONSUMER_SECRET_HERE>";
+//
+// NOTE: Please replace values of these constants with real user credentials
+// ---------------------------------------------------------------------------------
+const CONSUMER_KEY = "@{SALESFORCE_CONSUMER_KEY}";
+const CONSUMER_SECRET = "@{SALESFORCE_CONSUMER_SECRET}";
 const READING_EVENT_NAME = "Smart_Fridge_Reading__e";
 
 // Start Application

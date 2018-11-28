@@ -26,7 +26,7 @@
 class Salesforce {
 
     // Library version
-    static VERSION = "2.0.0";
+    static VERSION = "2.0.1";
 
     // service URLs
     _loginServiceBase = "https://login.salesforce.com/";
@@ -69,6 +69,10 @@ class Salesforce {
 
     function setToken(token) {
         _token = token;
+    }
+
+    function setRefreshToken(refreshToken) {
+        _refreshToken = refreshToken;
     }
 
     function login(username, password, securityToken = null, cb = null) {
@@ -114,10 +118,10 @@ class Salesforce {
                 return { err = err, data = null };
             }
             try {
-                    this._userUrl = data.id;
-                    this._instanceUrl = data.instance_url;
-                    this._token = data.access_token;
-                    if("refresh_token" in data) this._refreshToken = data.refresh_token;
+                this._userUrl = data.id;
+                this._instanceUrl = data.instance_url;
+                this._token = data.access_token;
+                if("refresh_token" in data) this._refreshToken = data.refresh_token;
             } catch (ex) {
                 return { err = [{"errorCode": "NO_AUTH", "message": "Could not find auth token with supplied login information"}], data = null };
             }
