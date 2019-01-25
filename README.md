@@ -4,6 +4,10 @@ This library wraps the [Force.com REST API](https://www.salesforce.com/us/develo
 
 **To add this library to your project, add** `#require "Salesforce.agent.lib.nut:2.0.1"` **to the top of your agent code.**
 
+## Examples ## 
+
+Complete, step-by-step recipes can be found in the [examples](./examples) folder.
+
 ## Callbacks ##
 
 All methods that make requests to the Force.com API can be called asynchronously (by providing the optional callback function) or synchronously (by not providing the callback). If a callback is supplied, it must take two parameters: *err* and *data*. If no errors were encountered, *err* will be `null` and *data* will contain the result of the request. If an error occurred during the request, *err* will contain the error information and *data* will be `null`.
