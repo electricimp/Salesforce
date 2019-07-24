@@ -22,45 +22,37 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+const SALESFORCE_DEFAULT_LOGIN_SERVICE = "https://login.salesforce.com/services/oauth2/token";
+const SALESFORCE_DEFAULT_BASE_API_PATH = "/services/data";
+const SALESFORCE_DEFAULT_API_VERSION   = "v46.0";
 
 class Salesforce {
 
     // Library version
-    static VERSION = "2.0.1";
+    static VERSION = "3.0.0";
 
-    // service URLs
-    _loginServiceBase = "https://login.salesforce.com/";
-    _loginService = "/services/oauth2/token"
+    // Used to create request URL
+    _instanceUrl      = null;   // returned by login service
+    _apiVer           = null;
 
-    // Instance URL returned by login service
-    _instanceUrl = null
-    _baseApi = "/services/data/";
-    _version = "v33.0";
+    // URL to get info about logged in user
+    _userUrl          = null;   // returned by login service (id)
 
     // Security
-    _clientId = null;       // Consumer Key
-    _clientSecret = null;   // Consumer Secret
-    _token = null;          // Password Token
+    _token            = null;   // Password Token
+    _refreshToken     = null;   // OAuth Refresh Token
 
-    _refreshToken = null;    // OAuth Refresh Token
-
-    _userUrl = null;        // URL to get info about logged in user
-
-    // Set OAuth tokens
-    constructor(consumerKey, consumerSecret, loginServiceBase = null, salesforceVersion = null) {
-        _clientId = consumerKey;
-        _clientSecret = consumerSecret;
-
-        if (loginServiceBase != null) _loginServiceBase = loginServiceBase;
-        if (salesforceVersion != null) _version = salesforceVersion;
+    // Configure API settings
+    constructor(verStr = SALESFORCE_DEFAULT_API_VERSION) {
+        _apiVer = verStr;
     }
 
-    function setLoginService(loginService) {
-        _loginServiceBase = loginService;
+    function setVersion(verStr) {
+        _apiVer = verStr;
     }
 
-    function setVersion(versionString) {
-        _version = versionString;
+    function setUserId(id) {
+        _userUrl = id;
     }
 
     function setInstanceUrl(url) {
@@ -75,70 +67,27 @@ class Salesforce {
         _refreshToken = refreshToken;
     }
 
-    function login(username, password, securityToken = null, cb = null) {
-        // Add token if required
-        if (securityToken != null) password = password+securityToken;
-
-        local url = format("%s%s", _loginServiceBase, _loginService);
-        local headers = { "Content-Type": "application/x-www-form-urlencoded" };
-        local data = {
-            "grant_type": "password",
-            "client_id": _clientId,
-            "client_secret": _clientSecret,
-            "username": username,
-            "password": password
-        }
-
-        local req = http.post(url, headers, http.urlencode(data));
-        if (cb != null) {
-            _processRequest(req, function(err, data) {
-                if (err != null) {
-                    cb(err, { result = false });
-                    return;
-                }
-                try {
-                    this._userUrl = data.id;
-                    this._instanceUrl = data.instance_url;
-                    this._token = data.access_token;
-                    if("refresh_token" in data) this._refreshToken = data.refresh_token;
-                } catch (ex) {
-                    cb([{"errorCode": "NO_AUTH", "message": "Could not find auth token with supplied login information"}], null);
-                    return;
-                }
-
-                cb(null, { result = true });
-                return;
-            }.bindenv(this));
-        } else {
-            local resp = _processRequest(req);
-            local err = resp.err;
-            local data = resp.data;
-
-            if (err != null) {
-                return { err = err, data = null };
-            }
-            try {
-                this._userUrl = data.id;
-                this._instanceUrl = data.instance_url;
-                this._token = data.access_token;
-                if("refresh_token" in data) this._refreshToken = data.refresh_token;
-            } catch (ex) {
-                return { err = [{"errorCode": "NO_AUTH", "message": "Could not find auth token with supplied login information"}], data = null };
-            }
-            return { err = null, data = {result = true } };
-        }
-    }
-
-    function isLoggedIn() {
-        return (_token != null);
-    }
-
     function getRefreshToken() {
         return _refreshToken;
     }
 
     function getUser(cb = null) {
-        if(!isLoggedIn()) throw "AUTH_ERR: No authentication information."
+        // Check that we have everything needed to make request
+        local errMsg = ""; 
+        if (!isLoggedIn()) errMsg += "No authentication information";            
+        if (_userUrl == null) {
+            errMsg += (errMsg.len() > 0) ? " and missing user id" : "Missing user id";
+        }
+        // Handle error if we found one
+        if (errMsg.len() > 0) {
+            local err = "[Salesforce] Error retrieving user information: " + errMsg;
+            if (cb) {
+                cb(err, null);
+                return;
+            } else {
+                return {"err" : err, "data" : null};
+            }
+        }
 
         local headers = {
             "Authorization": "Bearer " + _token,
@@ -150,13 +99,76 @@ class Salesforce {
         return _processRequest(req, cb);
     }
 
+    function login(creds, cb = null) {
+        // Make sure we have the credentials needed
+        if (!("username" in creds) || !("password" in creds) || !("clientId" in creds) || 
+            !("clientSecret" in creds)) {
+            // Cannot login without required credentials, return error
+            local err = "[Salesforce] Login failed. Missing one or more credentials: username, password, clientId and clientSecret";
+            if (cb == null) return {"err" : err, "data" : null};
+            cb(err, null);
+            return;
+        }
+
+        // Add token if required
+        local password = ("securityToken" in creds) ? creds.securityToken + creds.password : creds.password;
+        // Use default or user specified login URL
+        local url = ("authUrl" in creds) ? creds.authUrl : SALESFORCE_DEFAULT_LOGIN_SERVICE;
+        local headers = { "Content-Type": "application/x-www-form-urlencoded" };
+        local data = {
+            "grant_type"    : "password",
+            "client_id"     : creds.clientId,
+            "client_secret" : creds.clientSecret,
+            "username"      : creds.username,
+            "password"      : password
+        }
+
+        local req = http.post(url, headers, http.urlencode(data));
+        return _processRequest(req, processAuthResp, cb);
+    }
+
+    // Note callback parameter is only needed for use with library's 
+    // login method, public function should always return the table 
+    function processAuthResp(resp, cb = null) {
+        // Parse HTTP response body, returns table - err, data
+        local parsed = _parseResponse(resp);
+
+        // Only process reponse data if no error has occurred
+        if (parsed.err == null) {
+            try {
+                local body = parsed.data;
+                _instanceUrl = body.instance_url;
+                _token = body.access_token;
+                if ("id" in body) _userUrl = body.id;
+                if ("refresh_token" in body) _refreshToken = body.refresh_token;
+            } catch (e) {
+                parsed.err = "[Salesforce] Login failed. Could not find auth token or instanceUrl with supplied login information. Error:  " + e;
+            }
+        }
+
+        if (cb == null) return parsed;
+        cb(parsed.err, parsed.data); 
+    }
+
+    function isLoggedIn() {
+        return (_token != null);
+    }
+
     function request(verb, service, body = null, cb = null) {
-        if(!isLoggedIn()) throw "AUTH_ERR: No authentication information.";
+        if (!isLoggedIn()) {
+            local err = "[Salesforce] Error sending request: No authentication information";
+            if (cb) {
+                cb(err, null);
+                return;
+            } else {
+                return {"err" : err, "data" : null};
+            }
+        }
 
         // Make sure the body isn't null
         if (body == null) body = "";
 
-        local url = format("%s%s%s/%s", _instanceUrl, _baseApi, _version, service);
+        local url = format("%s%s/%s/%s", _instanceUrl, SALESFORCE_DEFAULT_BASE_API_PATH, _apiVer, service);
         local headers = {
             "Authorization": "Bearer " + _token,
             "content-type": "application/json",
@@ -164,32 +176,40 @@ class Salesforce {
         }
 
         local req = http.request(verb, url, headers, body);
-        return _processRequest(req, cb);
+        return _processRequest(req, _parseResponse, cb);
     }
 
     /******************** PRIVATE METHODS ********************/
-    function _processRequest(req, cb = null) {
+
+    function _processRequest(req, onResp, cb) {
         if (cb != null) {
             return req.sendasync(function(resp) {
-                local data = {};
-
-                try { data = http.jsondecode(resp.body); }
-                catch (ex) { data = { }; }
-
-                if (resp.statuscode >= 200 && resp.statuscode < 300) {
-                    cb(null, data);
-                } else {
-                    cb(data, null);
-                }
+                onResp(resp, cb);
             }.bindenv(this));
         } else {
             local resp = req.sendsync();
-            local data = http.jsondecode(resp.body);
-            if (resp.statuscode >= 200 && resp.statuscode < 300) {
-                return { err = null, data = data };
-            } else {
-                return { err = data, data = null };
-            }
+            return onResp(resp);
         }
     }
+
+    function _parseResponse(resp, cb = null) {
+        local err  = null;
+        local data = resp;
+        try { 
+            if (!(resp.statuscode >= 200 && resp.statuscode < 300)) {
+                err = "[Salesforce] Unexpected response from server, Status Code: " + resp.statuscode;
+            } else {
+                data = http.jsondecode(resp.body); 
+            }
+        } catch (e) { 
+            err = "[Salesforce] Error processing response from server, Error: " + e;
+        }
+
+        // Return parsed response/error
+        if (cb == null) return {"err" : err, "data" : data};
+
+        // Pass response to callback
+        cb(err, data);
+    }
+
 }
