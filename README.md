@@ -2,6 +2,8 @@
 
 This library wraps the [Force.com REST API](https://www.salesforce.com/us/developer/docs/api_rest/). Force.com is a suite of point-and-click tools for creating custom employee-facing apps. The Electric Imp Salesforce library enables you to interact with your Force.com objects, allowing you to easily create products that can interact with a powerful CRM backend.
 
+**Note** Release v3.0.0 contains breaking changes to support authentication using the Electric Imp's [OAuth2 Library](https://github.com/electricimp/OAuth-2.0). If you are not using OAuth2 library for authentication you can continue to use [v2.0.1](https://github.com/electricimp/Salesforce/releases/tag/v2.0.1-docs)
+
 **To add this library to your project, add** `#require "Salesforce.agent.lib.nut:3.0.0"` **to the top of your agent code.**
 
 ## Class Usage ##
