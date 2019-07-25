@@ -167,8 +167,10 @@ class Salesforce {
 
         // Make sure the body isn't null
         if (body == null) body = "";
+        // Make sure service path is formatted correctly
+        if (service.len() > 0 && service[0] != '/') service = ("/" + service);
 
-        local url = format("%s%s/%s/%s", _instanceUrl, SALESFORCE_DEFAULT_BASE_API_PATH, _apiVer, service);
+        local url = format("%s%s/%s%s", _instanceUrl, SALESFORCE_DEFAULT_BASE_API_PATH, _apiVer, service);
         local headers = {
             "Authorization": "Bearer " + _token,
             "content-type": "application/json",
