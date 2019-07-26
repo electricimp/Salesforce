@@ -25,10 +25,8 @@
 // INCLUDE LIBRARIES
 // ---------------------------------------------------------------------------------
 #require "Rocky.class.nut:1.2.3"
-// #require "OAuth2.agent.lib.nut:2.1.0"
-// #require "Salesforce.agent.lib.nut:3.0.0"
-@include "github:electricimp/Salesforce/Salesforce.agent.lib.nut@develop"
-@include "github:electricimp/OAuth-2.0/OAuth2.agent.lib.nut@develop"
+#require "OAuth2.agent.lib.nut:2.1.0"
+#require "Salesforce.agent.lib.nut:3.0.0"
 
 // SALESFORCE CONSTANTS
 //
@@ -115,7 +113,7 @@ class Persist {
 
     function setSFToken(token) {
         if (token != getSFToken()) {
-            ::debug("[Persist] Updating stored salesforce token.");
+            server.log("[Persist] Updating stored salesforce token.");
             _sfAuth.token <- token;
             _storeSFAuth();
         }
@@ -127,7 +125,7 @@ class Persist {
 
     function setSFInstanceURL(instURL) {
         if (instURL != getSFInstanceURL()) {
-            ::debug("[Persist] Updating stored salesforce instance URL.");
+            server.log("[Persist] Updating stored salesforce instance URL.");
             _sfAuth.instURL <- instURL;
             _storeSFAuth();
         }
@@ -139,7 +137,7 @@ class Persist {
 
     function setSFUserId(usrId) {
         if (usrId != getSFIUserId()) {
-            ::debug("[Persist] Updating stored salesforce User Id.");
+            server.log("[Persist] Updating stored salesforce User Id.");
             _sfAuth.usrId <- usrId;
             _storeSFAuth();
         }
@@ -151,7 +149,7 @@ class Persist {
 
     function setSFAuthType(auth) {
         if (auth != getSFAuthType()) {
-            ::debug("[Persist] Updating stored salesforce auth type.");
+            server.log("[Persist] Updating stored salesforce auth type.");
             _sfAuth.auth <- auth;
             _storeSFAuth();
         }
@@ -186,13 +184,13 @@ class Persist {
         }
         .grid {  
         display: grid;
-        grid-template-columns: 10% 80% 10%;
+        grid-template-columns: 10%% 80%% 10%%;
         height: 100vh;
         width: 100vw;
         }
         .container {
         text-align: center;
-        margin-top: 5%;
+        margin-top: 5%%;
         grid-column-start: 2;
         grid-column-end: 3;
         grid-row-start: 1;
@@ -221,11 +219,16 @@ class Persist {
     <div class='grid'>
         <div class='container'>
         <h1>Device Authentication</h1>
-        <input type='text' class='hidden' id='copy' value='%s' />
-        <a class='code copy-target' onClick='copy_me()'>%s</a>
-        <p class='info'>Click the code above to copy to your clipboard, then follow the link below</p>
-        <p>
-            <a href='%s' id='auth-link'>Enter Code Link</a>
+        <input type='text' class='hidden' id='copy' value='%s'/>
+        <p class='info'>
+            Click 
+                <a class='code copy-target' onClick='copy_me()'>%s</a> 
+            to copy the device code to your clipboard.
+        </p>
+        <p class='info'>
+            Then follow the 
+                <a href='%s' id='auth-link'>FORM LINK HERE</a> 
+            to authenticate.</h4>
         </p>
         </div>
     </div>
@@ -297,7 +300,7 @@ class SalesForceOAuth2Device {
                     server.log("[SalesForceOAuth2Device] Salesforce: Authorization is pending. Please grant access");
                     server.log("[SalesForceOAuth2Device] Auth URL: " + url);
                     server.log("[SalesForceOAuth2Device] Device Code: " + code);
-                    server.log("[SalesForceOAuth2Device] Agent URL: " + http.agenturl();
+                    server.log("[SalesForceOAuth2Device] Agent URL: " + http.agenturl());
                     server.log("-------------------------------------------------------------------------------------");
                 }.bindenv(this)
             );
@@ -440,13 +443,14 @@ class SmartFridgeApplication {
         server.log(http.jsonencode(body));
 
         // Send Salesforce platform event with device readings
-        _force.request("POST", _sendReadingUrl, http.jsonencode(body), onSFReadingSent.bindenv(this));
+        _force.request("POST", _sendReadingPath, http.jsonencode(body), onSFReadingSent.bindenv(this));
     }
 
     function onSFReadingSent(err, respData) {
         if (err) {
             server.log("[SmartFridegeApp] Salesforce reporting error occurred: ");
             server.error(err);
+            if (respData != null) server.log(respData.body);
         } else {
             server.log("[SmartFridegeApp] Salesforce readings sent successfully");
         }
@@ -461,7 +465,7 @@ class SmartFridgeApplication {
             // Ping Saleforce to see if token is valid
             // NOTE: Device as identified via imp device id must have already be  
             // configured in Salesforce or ping will fail
-            local pingData = { [SF_EVENT_DEV_ID] = _impDeviceId };
+            local pingData = { "deviceId__c" : _impDeviceId };
             _force.request("POST", _sendReadingPath, http.jsonencode(pingData), onAuthPing.bindenv(this));
         } else {
             triggerOAuthFlow();

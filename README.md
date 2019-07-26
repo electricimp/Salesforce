@@ -214,9 +214,11 @@ function onGetOAuthToken(token, err, resp) {
                 local usrId = body.id;
                 server.log("User Id: " + usrId);
                 force.setUserId(usrId);
+            } else {
+                server.error("Response did not include an id: " + resp.body);
             }
         } catch(e) {
-            server.error("Unable to parse Salesforce response");
+            server.error("Unable to parse Salesforce response: " + e);
         }
     }
 }
@@ -256,10 +258,10 @@ function onGetOAuthToken(token, err, resp) {
                     server.log("Instance URL: " + url);
                     force.setInstanceUrl(url);
                 } else {
-                    err += "instance url";
+                    server.error("Response did not include an instance url: " + resp.body");
                 }
         } catch(e) {
-            server.error("Unable to parse Salesforce response");
+            server.error("Unable to parse Salesforce response: " + e);
         }
     }
 }
@@ -298,7 +300,7 @@ function onGetOAuthToken(token, err, resp) {
                 force.setRefreshToken(body.refresh_token);
             }
         } catch(e) {
-            server.error("Unable to parse Salesforce response");
+            server.error("Unable to parse Salesforce response: " + e);
         }
     }
 }
