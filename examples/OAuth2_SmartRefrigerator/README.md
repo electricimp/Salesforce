@@ -120,7 +120,7 @@ The JWT bearer flow supports the RSA SHA256 algorithm, which uses an uploaded ce
 
 ### Create a Salesforce Connected Application ###
 
-The API (Enable OAuth Settings) setup is slightly different for each Flow. Please follow the directions in step 2.3 for your preferred OAuth flow. 
+The API (Enable OAuth Settings) setup is slightly different for each Flow. Please follow the directions in step 2.2 for your preferred OAuth flow. 
 
 1. Log into Salesforce by launching your Developer Edition or Trailhead Playground org.
 1. Click the **Setup** icon in the top-right navigation menu and select **Setup**.
@@ -178,46 +178,117 @@ Next we need to create a permission set and assign pre-authorized users for this
 1. Click on your new permission set label
 1. Click *Manage Assignments*
 1. Click *Add Assignments*
-    - Check the box to select the User that matches your username
+    - Check the box to select the User that matches your username (This will be the username you enter into the agent code)
     - Click *Assign* & *Done*
 1. Navigate back to your connected app
     - In the sidebar under *Platform Tools* -> *Apps* select *App Manager*
     - In the list of of apps find your app and under the dropdown arrow on the left select *Manage*
     - Scroll down to the *Permission Sets* section and click the *Manage Permission Sets* button
     - Select the permission set that matches your new permission set label
-    - Click *Save*
+    - Click *Save*  
 
 ### Adding Authentication to Agent Code ###
 
-TODO: find constants at the top of the agent code just after the library require statements - copy and paste consumer key and secret, for JWT paste in certificate and username
+Find the SHARED OAUTH CREDENTIALS section near the top of the agent code file. Enter the credentials from the previous steps into the constants in the code.
+
+```
+// ---------------------------------------------------------------------------------
+// SHARED OAUTH CREDENTIALS
+const CONSUMER_KEY       = "<YOUR CONNECTED APP CONSUMER KEY>";
+const READING_EVENT_NAME = "Smart_Fridge_Reading__e";
+
+// DEVICE FLOW OAUTH CREDENTIALS
+const CONSUMER_SECRET    = "<YOUR CONNECTED APP CONSUMER SECRET>";
+
+// JWT FLOW OAUTH CREDENTIALS
+// Note: Use multi-line string syntax for JWT_PRIVATE_KEY:
+//  @"my 
+//  multiline 
+//  string";
+const JWT_PRIVATE_KEY     = @"<YOUR JWT PRIVATE KEY>";
+const SF_USERNAME        = "<YOUR SALESFORCE USERNAME>";
+```
 
 ## Step 5: Create a Platform Event in Salesforce ##
 
-TODO: add instructions here to configure platform event and push data??
-add event name to code.
+To send data to Salesforce we will use a Platform event. 
 
-See [platform event trailhead](https://trailhead.salesforce.com/en/content/learn/modules/platform_events_basics/platform_events_define_publish) for how to create a platform event. This code uses the REST API to publish events.  
+### Create a Platform Event ###
+
+1. Select *Setup* then in the sidebar under *Platform Tools* -> *Integrations* select *Platform Events*
+1. On the **Platform Events page**, click *New Platform Event*
+1. In the **New Platform Events** form, fill in:
+    1. Label: **Smart_Fridge_Reading**
+    1. Plural Label: **Smart_Fridge_Readings**
+    1. Object Name: this will automatically become **Smart_Fridge_Reading**
+1. Click **Save**
+
+**Note** If you change the name of your platform event you will need to update the READING_EVENT_NAME constant in the agent code.
+
+```
+const READING_EVENT_NAME = "Smart_Fridge_Reading__e";
+```
+
+### Add Fields to Platform Event ###
+
+Once you have created your platform event you will need to add fields that match the data we are sending to Salesforce. The code is currently configured to send the following data to Salesforce: 
+
+```
+{ 
+    "deviceId__c"    : "234b7bdcf5b64eee",
+    "ts__c"          : "2019-07-26T23:59:59Z", 
+    "door__c"        : "open", 
+    "humidity__c"    : 56.114651, 
+    "temperature__c" : 24.780001
+}
+```
+
+You can start adding fields on the **Smart_Fridge_Reading** page under the *Custom Fields & Relationships* section.
+
+1. In the *Custom Fields & Relationships* section, and click **New**
+1. Select data type for the field you are adding: 
+    - Text for deviceId and door
+    - Date/Time for ts
+    - Number for temperature and humidity
+1. Click Next
+1. In the form enter both the Field Label and Field Name. These should match the data we are sending: deviceId, door, ts, temperature, humidity
+1. Check Required when creating deviceId and ts fields
+1. Enter the expected length for each data type
+1. Click Save
 
 ## Step 6: Deploying Application ##
 
-TODO: add instructions for deploying code and authenticating device via device flow
-
-For Device Flow OAuth these steps will need to be followed once your device starts to run the Squirrel application code. Please skim through them so you are familiar with what you need to look out for. 
-
-Once your device is running, you will see logs similar to the following:  
+As a final step make sure the agent code is configured for your OAuth flow. At the bottom of the agent code pass `SF_AUTH_TYPE.DEVICE` for device flow or `SF_AUTH_TYPE.JWT` for JWT flow into SmartFridgeApplication.
 
 ```
-2019-06-21 14:23:14-0700 [Agent]  [INFO]: -----------------------------------------------------------------
-2019-06-21 14:23:14-0700 [Agent]  [INFO]: [SalesForceOAuth2Device] Salesforce: Authorization is pending. Please grant access
-2019-06-21 14:23:14-0700 [Agent]  [INFO]: [SalesForceOAuth2Device] URL: https://login.salesforce.com/setup/connect
-2019-06-21 14:23:14-0700 [Agent]  [INFO]: [SalesForceOAuth2Device] Code: 6VL44ZGC
-2019-06-21 14:23:14-0700 [Agent]  [INFO]: -----------------------------------------------------------------
-2019-06-21 14:23:20-0700 [Agent]  [OAuth2DeviceFlow] Polling: authorization_pending
+// RUNTIME
+// ---------------------------------------------------------------------------------
+
+// Start Application
+// Select Auth type SF_AUTH_TYPE.DEVICE or SF_AUTH_TYPE.JWT
+SmartFridgeApplication(SF_AUTH_TYPE.DEVICE);
 ```
 
-use the agent url to launch a web page for easy copy paste of code and link to launch form or 
+To upload code to the device, click *Build and Force Restart*. You device will restart and you should start to see logs. 
 
-Copy and paste the URL in a web browser, then copy and paste the alpha numeric code (ie 6VL44ZGC) into the form on that webpage. You will be re-directed to a salesforce log-in page (if you are not currently logged into Salesforce). Once you log in you will see the following logs from your imp device:
+If you selected Device OAuth flow you will need to authenticate your device by entering a code in a form on a another webpage. There will be logs that show the URL for the form and the Device code that needs to be entered. The logs should look similar to the following:  
+
+```
+2019-07-26T23:50:05.559 +00:00	[Status]	Agent restarted: reload.
+2019-07-26T23:50:05.569 +00:00	[Agent]	[SmartFridegeApp] OAuth type: DEVICE
+2019-07-26T23:50:05.570 +00:00	[Agent]	[OAuth2DeviceFlow] Change status of session 1 from idle to requesting code
+2019-07-26T23:50:05.647 +00:00	[Agent]	[OAuth2DeviceFlow] Change status of session 1 from requesting code to waiting for user
+2019-07-26T23:50:05.648 +00:00	[Agent]	-------------------------------------------------------------------------------------
+2019-07-26T23:50:05.648 +00:00	[Agent]	[SalesForceOAuth2Device] Salesforce: Authorization is pending. Please grant access
+2019-07-26T23:50:05.648 +00:00	[Agent]	[SalesForceOAuth2Device] Auth URL: https://login.salesforce.com/setup/connect
+2019-07-26T23:50:05.648 +00:00	[Agent]	[SalesForceOAuth2Device] Device Code: 0F2S28GX
+2019-07-26T23:50:05.648 +00:00	[Agent]	[SalesForceOAuth2Device] Agent URL: https://agent.electricimp.com/dr6l8pJicqAQ
+2019-07-26T23:50:05.648 +00:00	[Agent]	-------------------------------------------------------------------------------------
+2019-07-26T23:50:10.723 +00:00	[Agent]	[OAuth2DeviceFlow] Polling: authorization_pending
+2019-07-26T23:50:15.798 +00:00	[Agent]	[OAuth2DeviceFlow] Polling: authorization_pending
+```
+
+This application has a helper webpage that eases the copy & paste operations needed to authenticate the device. In the IDE there is a link to the Agent URL at the top of the logging window. Click the agent URL to launch the helper webpage and follow the instructions on each link to authenticate the device.  Once you log into Salesforce you will see the following logs from your imp device:
 
 ```
 2019-07-23 12:20:04-0700 [Agent]  [OAuth2DeviceFlow] Polling: authorization_pending

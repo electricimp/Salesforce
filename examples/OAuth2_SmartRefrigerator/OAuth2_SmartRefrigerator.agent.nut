@@ -40,7 +40,11 @@ const READING_EVENT_NAME = "Smart_Fridge_Reading__e";
 const CONSUMER_SECRET    = "<YOUR CONNECTED APP CONSUMER SECRET>";
 
 // JWT FLOW OAUTH CREDENTIALS
-const JWT_PIVATE_KEY     = "<YOUR JWT PRIVATE KEY>";
+// Note: Use multi-line string syntax for JWT_PRIVATE_KEY:
+//  @"my 
+//  multiline 
+//  string";
+const JWT_PRIVATE_KEY    = @"<YOUR JWT PRIVATE KEY>";
 const SF_USERNAME        = "<YOUR SALESFORCE USERNAME>";
 
 // ---------------------------------------------------------------------------------
@@ -331,7 +335,7 @@ class SalesForceOAuth2JWT {
         // NOTE: 365 day cert created on 6/18/19
         local userSettings = { 
             "iss"        : CONSUMER_KEY,
-            "jwtSignKey" : JWT_PIVATE_KEY, 
+            "jwtSignKey" : JWT_PRIVATE_KEY, 
             "sub"        : SF_USERNAME
         };
 
@@ -438,6 +442,8 @@ class SmartFridgeApplication {
             }
             body[key + "__c"] <- value;
         }
+
+        // { ts : "", tempertature : "", humidity : "", door : "", diviceId : ""}
 
         // Log the data being sent to the cloud
         server.log(http.jsonencode(body));
