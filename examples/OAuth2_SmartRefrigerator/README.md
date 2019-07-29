@@ -258,18 +258,22 @@ You can start adding fields on the **Smart_Fridge_Reading** page under the *Cust
 
 ## Step 6: Deploying Application ##
 
-As a final step make sure the agent code is configured for your OAuth flow. At the bottom of the agent code pass `SF_AUTH_TYPE.DEVICE` for device flow or `SF_AUTH_TYPE.JWT` for JWT flow into SmartFridgeApplication.
+1. Configure the agent code for your OAuth flow. At the bottom of the agent code pass `SF_AUTH_TYPE.DEVICE` for device flow or `SF_AUTH_TYPE.JWT` for JWT flow into SmartFridgeApplication.
 
-```
-// RUNTIME
-// ---------------------------------------------------------------------------------
+    ```
+    // RUNTIME
+    // ---------------------------------------------------------------------------------
 
-// Start Application
-// Select Auth type SF_AUTH_TYPE.DEVICE or SF_AUTH_TYPE.JWT
-SmartFridgeApplication(SF_AUTH_TYPE.DEVICE);
-```
+    // Start Application
+    // Select Auth type SF_AUTH_TYPE.DEVICE or SF_AUTH_TYPE.JWT
+    SmartFridgeApplication(SF_AUTH_TYPE.DEVICE);
+    ```
 
-To upload code to the device, click *Build and Force Restart*. You device will restart and you should start to see logs. 
+1. Upload code to the device by clicking *Build and Force Restart*. Your device will restart and you should start to see logs. 
+
+If you selected JTW OAuth Flow, your device will authenticate and store a token automatically and will begin sending data to Salesforce.
+
+### Device OAuth Flow - Authenticating Device ###
 
 If you selected Device OAuth flow you will need to authenticate your device by entering a code in a form on a another webpage. There will be logs that show the URL for the form and the Device code that needs to be entered. The logs should look similar to the following:  
 
@@ -288,7 +292,13 @@ If you selected Device OAuth flow you will need to authenticate your device by e
 2019-07-26T23:50:15.798 +00:00	[Agent]	[OAuth2DeviceFlow] Polling: authorization_pending
 ```
 
-This application has a helper webpage that eases the copy & paste operations needed to authenticate the device. In the IDE there is a link to the Agent URL at the top of the logging window. Click the agent URL to launch the helper webpage and follow the instructions on each link to authenticate the device.  Once you log into Salesforce you will see the following logs from your imp device:
+This application has a helper webpage that eases the copy & paste operations needed to authenticate the device. 
+
+1. In the IDE there is a link to the Agent URL at the top of the logging window. 
+1. Click the agent URL to launch the helper webpage.
+1. Follow the instructions on each linked page to authenticate the device.  
+
+Once you log into Salesforce you will see the following logs from your imp device:
 
 ```
 2019-07-23 12:20:04-0700 [Agent]  [OAuth2DeviceFlow] Polling: authorization_pending
