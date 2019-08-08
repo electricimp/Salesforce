@@ -425,7 +425,7 @@ class SmartFridgeApplication {
     function onDeviceReading(data) {
         // Don't send if we are not logged in
         if (!_force.isLoggedIn()) {
-            server.log("[SmartFridegeApp] Not logged into Salesforce. Not sending data: " + http.jsonencode(data));
+            server.log("[SmartFridgeApp] Not logged into Salesforce. Not sending data: " + http.jsonencode(data));
             return;
         }
 
@@ -454,11 +454,11 @@ class SmartFridgeApplication {
 
     function onSFReadingSent(err, respData) {
         if (err) {
-            server.log("[SmartFridegeApp] Salesforce reporting error occurred: ");
+            server.log("[SmartFridgeApp] Salesforce reporting error occurred: ");
             server.error(err);
             if (respData != null) server.log(respData.body);
         } else {
-            server.log("[SmartFridegeApp] Salesforce readings sent successfully");
+            server.log("[SmartFridgeApp] Salesforce readings sent successfully");
         }
     }
 
@@ -480,50 +480,50 @@ class SmartFridgeApplication {
 
     function onAuthPing(err, resp) {
         if (err != null) { 
-            server.log("[SmartFridegeApp] " + err);
+            server.log("[SmartFridgeApp] " + err);
 
             try {
                 local errCode = getErrorCode(resp);
-                server.log("[SmartFridegeApp] ping error code: " + errCode);
+                server.log("[SmartFridgeApp] ping error code: " + errCode);
 
                 switch (errCode) {
                     case SF_ERROR_CODES.MISSING_FIELD:
-                        server.log("[SmartFridegeApp] Used stored token to authorize device with Salesforce");
+                        server.log("[SmartFridgeApp] Used stored token to authorize device with Salesforce");
                         return;
                     case SF_ERROR_CODES.INVALID_SESSION_ID:
-                        server.log("[SmartFridegeApp] Stored token expired");
+                        server.log("[SmartFridgeApp] Stored token expired");
                         break;
                     default: 
-                        server.log("[SmartFridegeApp] Salesforce send ping unexpected error occurred: ");
+                        server.log("[SmartFridgeApp] Salesforce send ping unexpected error occurred: ");
                         ::error(resp.body);
                 }
             } catch(e) {
-                server.log("[SmartFridegeApp] ping error unable to parse response: " + e);
+                server.log("[SmartFridgeApp] ping error unable to parse response: " + e);
             }
 
             // Our stored token is bad, erase it from storage and SF instance
-            server.log("[SmartFridegeApp] Erasing stored token. Starting new authentication with Salesforce.");
+            server.log("[SmartFridgeApp] Erasing stored token. Starting new authentication with Salesforce.");
             _persist.setSFToken(null);
             _force.setToken(null);
             // Try to re-authorize
             triggerOAuthFlow();
         } else {
-            server.log("[SmartFridegeApp] Used stored token to authorize device with Salesforce, statuscode: " + resp.statuscode);
+            server.log("[SmartFridgeApp] Used stored token to authorize device with Salesforce, statuscode: " + resp.statuscode);
         }
     }
 
     function triggerOAuthFlow() {
         switch (_authType) {
             case SF_AUTH_TYPE.JWT:
-                server.log("[SmartFridegeApp] OAuth type: JWT");
+                server.log("[SmartFridgeApp] OAuth type: JWT");
                 _oauth = SalesForceOAuth2JWT();
                 break;
             case SF_AUTH_TYPE.DEVICE:
-            server.log("[SmartFridegeApp] OAuth type: DEVICE");
+            server.log("[SmartFridgeApp] OAuth type: DEVICE");
                 _oauth = SalesForceOAuth2Device();
                 break;
             default: 
-                server.error("[SmartFridegeApp] Unexpected authorization type. Not logging into Salesforce");
+                server.error("[SmartFridgeApp] Unexpected authorization type. Not logging into Salesforce");
         }
 
         // Authorize device/get token
@@ -536,7 +536,7 @@ class SmartFridgeApplication {
         if (_authType == SF_AUTH_TYPE.DEVICE) _oauth.clearCode();
 
         if (err) {
-            server.error("[SmartFridegeApp] Unable to log into Salesforce: " + err);
+            server.error("[SmartFridgeApp] Unable to log into Salesforce: " + err);
             return;
         }
 
@@ -548,10 +548,10 @@ class SmartFridgeApplication {
                 _persist.setSFInstanceURL(body.instance_url);
                 if ("id" in body) _persist.setSFUserId(body.id);
             } else {
-                server.error("[SmartFridegeApp] Unable parse Salesforce auth response: " + parsed.err);
+                server.error("[SmartFridgeApp] Unable parse Salesforce auth response: " + parsed.err);
             }
         } else {
-            server.log("[SmartFridegeApp] Token handler did not contain HTTP response");
+            server.log("[SmartFridgeApp] Token handler did not contain HTTP response");
         }
 
     }
@@ -565,7 +565,7 @@ class SmartFridgeApplication {
 
             return (errIsTable && "errorCode" in e) ? e.errorCode : null;
         } catch(e) {
-            server.error("[SmartFridegeApp] Error parsing response: " + e);
+            server.error("[SmartFridgeApp] Error parsing response: " + e);
             return null;
         }
     }
