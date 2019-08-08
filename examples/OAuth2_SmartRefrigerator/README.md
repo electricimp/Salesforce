@@ -79,9 +79,9 @@ To authenticate your device with Salesforce you will need to create a Salesforce
 
 ### JWT Flow Generate Certificates ###
 
-The JWT bearer flow supports the RSA SHA256 algorithm, which uses an uploaded certificate as the signing secret. In these next steps we will use the command line and `openssl` to generate a certificate. 
+The JWT bearer flow supports the RSA SHA256 algorithm, which uses an uploaded certificate as the signing secret. In these next steps we will use the command line and `openssl` to generate a certificate.
 
-1. On the command line, navigate to somewhere outside of your project directory, so that we can create a folder that will not be shared. This folder will store your certificates for this application. It is important to keep track of these files since they contain sensitive information that others can use to compromise your system. Use this command to create a folder:  
+1. On the command line, navigate to somewhere outside of your project directory, so that we can create a folder that will not be shared. This folder will store your certificates for this application. It is important to keep track of these files since they contain sensitive information that others can use to compromise your system. Use this command to create a folder:
 
     `mkdir salesforce_cell_tracker_certificates`
 
@@ -105,7 +105,7 @@ The JWT bearer flow supports the RSA SHA256 algorithm, which uses an uploaded ce
 
     `openssl req -new -key server.key -out server.csr`
 
-1. You will be asked to enter information to create a certificate. You should enter everything except: 
+1. You will be asked to enter information to create a certificate. You should enter everything except:
     - Enter a period (.) to skip entering an optional company name
     - You will not need a challenge password, so just press `Enter`. The Certificate Authorities use this password to authenticate the certificate owner when they want to revoke their certificate. Because it’s a self-signed certificate, there’s no way to revoke it via CRL (Certificate Revocation List).
 
@@ -113,14 +113,14 @@ The JWT bearer flow supports the RSA SHA256 algorithm, which uses an uploaded ce
 
     `openssl x509 -req -sha256 -days 365 -in server.csr -signkey server.key -out server.crt`
 
-1. You should now have 3 files in this folder 
+1. You should now have 3 files in this folder
     - `server.crt` - your site certificate, this will be uploaded to your connected app in the next step
-    - `server.csr` 
+    - `server.csr`
     - `server.key` - this is the key that will be used in your code to authenticate your device, you will enter this into your agent code
 
 ### Create a Salesforce Connected Application ###
 
-The API (Enable OAuth Settings) setup is slightly different for each Flow. Please follow the directions in step 2.2 for your preferred OAuth flow. 
+The API (Enable OAuth Settings) setup is slightly different for each Flow. Please follow the directions in step 2.2 for your preferred OAuth flow.
 
 1. Log into Salesforce by launching your Developer Edition or Trailhead Playground org.
 1. Click the **Setup** icon in the top-right navigation menu and select **Setup**.
@@ -136,7 +136,7 @@ The API (Enable OAuth Settings) setup is slightly different for each Flow. Pleas
     1. In the **API (Enable OAuth Settings)** section:
         1. Check **Enable OAuth Settings**.
         1. Callback URL: this is a required field, however our application will not use this url, so you may enter `http://localhost:1717/OauthRedirect`.
-        1. Configure Authentication 
+        1. Configure Authentication
             - For OAUTH 2.0 Device Flow
                 - Check **Enable for Device Flow**
             - For OAUTH 2.0 JWT Flow
@@ -163,7 +163,7 @@ Next you will need to edit the policies to enable the connected app to circumven
 
 1. Select or Click *Manage*
 1. Click *Edit Policies*
-    - Under *OAuth policies* 
+    - Under *OAuth policies*
         - Select *Admin approved users are pre-authorized* from *Permitted Users* dropdown
     - Click *Save*
 
@@ -173,8 +173,8 @@ Next we need to create a permission set and assign pre-authorized users for this
 
 1. Select *Setup* then in the sidebar under *Administration* -> *Users* select *Permission Sets*
 1. Click *New*
-    - Enter a *Label* 
-    - Click *Save* 
+    - Enter a *Label*
+    - Click *Save*
 1. Click on your new permission set label
 1. Click *Manage Assignments*
 1. Click *Add Assignments*
@@ -185,7 +185,7 @@ Next we need to create a permission set and assign pre-authorized users for this
     - In the list of of apps find your app and under the dropdown arrow on the left select *Manage*
     - Scroll down to the *Permission Sets* section and click the *Manage Permission Sets* button
     - Select the permission set that matches your new permission set label
-    - Click *Save*  
+    - Click *Save*
 
 ### Adding Authentication to Agent Code ###
 
@@ -202,8 +202,8 @@ const CONSUMER_SECRET    = "<YOUR CONNECTED APP CONSUMER SECRET>";
 
 // JWT FLOW OAUTH CREDENTIALS
 // Note: Use multi-line string syntax for JWT_PRIVATE_KEY:
-//  @"my 
-//  multiline 
+//  @"my
+//  multiline
 //  string";
 const JWT_PRIVATE_KEY     = @"<YOUR JWT PRIVATE KEY>";
 const SF_USERNAME        = "<YOUR SALESFORCE USERNAME>";
@@ -211,7 +211,7 @@ const SF_USERNAME        = "<YOUR SALESFORCE USERNAME>";
 
 ## Step 5: Create a Platform Event in Salesforce ##
 
-To send data to Salesforce we will use a Platform event. 
+To send data to Salesforce we will use a Platform event.
 
 ### Create a Platform Event ###
 
@@ -231,14 +231,14 @@ const READING_EVENT_NAME = "Smart_Fridge_Reading__e";
 
 ### Add Fields to Platform Event ###
 
-Once you have created your platform event you will need to add fields that match the data we are sending to Salesforce. The code is currently configured to send the following data to Salesforce: 
+Once you have created your platform event you will need to add fields that match the data we are sending to Salesforce. The code is currently configured to send the following data to Salesforce:
 
 ```
-{ 
+{
     "deviceId__c"    : "234b7bdcf5b64eee",
-    "ts__c"          : "2019-07-26T23:59:59Z", 
-    "door__c"        : "open", 
-    "humidity__c"    : 56.114651, 
+    "ts__c"          : "2019-07-26T23:59:59Z",
+    "door__c"        : "open",
+    "humidity__c"    : 56.114651,
     "temperature__c" : 24.780001
 }
 ```
@@ -246,7 +246,7 @@ Once you have created your platform event you will need to add fields that match
 You can start adding fields on the **Smart_Fridge_Reading** page under the *Custom Fields & Relationships* section.
 
 1. In the *Custom Fields & Relationships* section, and click **New**
-1. Select data type for the field you are adding: 
+1. Select data type for the field you are adding:
     - Text for deviceId and door
     - Date/Time for ts
     - Number for temperature and humidity
@@ -269,17 +269,17 @@ You can start adding fields on the **Smart_Fridge_Reading** page under the *Cust
     SmartFridgeApplication(SF_AUTH_TYPE.DEVICE);
     ```
 
-1. Upload code to the device by clicking *Build and Force Restart*. Your device will restart and you should start to see logs. 
+1. Upload code to the device by clicking *Build and Force Restart*. Your device will restart and you should start to see logs.
 
 If you selected JTW OAuth Flow, your device will authenticate and store a token automatically and will begin sending data to Salesforce.
 
 ### Device OAuth Flow - Authenticating Device ###
 
-If you selected Device OAuth flow you will need to authenticate your device by entering a code in a form on a another webpage. There will be logs that show the URL for the form and the Device code that needs to be entered. The logs should look similar to the following:  
+If you selected Device OAuth flow you will need to authenticate your device by entering a code in a form on a another webpage. There will be logs that show the URL for the form and the Device code that needs to be entered. The logs should look similar to the following:
 
 ```
 2019-07-26T23:50:05.559 +00:00	[Status]	Agent restarted: reload.
-2019-07-26T23:50:05.569 +00:00	[Agent]	[SmartFridegeApp] OAuth type: DEVICE
+2019-07-26T23:50:05.569 +00:00	[Agent]	[SmartFridgeApp] OAuth type: DEVICE
 2019-07-26T23:50:05.570 +00:00	[Agent]	[OAuth2DeviceFlow] Change status of session 1 from idle to requesting code
 2019-07-26T23:50:05.647 +00:00	[Agent]	[OAuth2DeviceFlow] Change status of session 1 from requesting code to waiting for user
 2019-07-26T23:50:05.648 +00:00	[Agent]	-------------------------------------------------------------------------------------
@@ -292,11 +292,11 @@ If you selected Device OAuth flow you will need to authenticate your device by e
 2019-07-26T23:50:15.798 +00:00	[Agent]	[OAuth2DeviceFlow] Polling: authorization_pending
 ```
 
-This application has a helper webpage that eases the copy & paste operations needed to authenticate the device. 
+This application has a helper webpage that eases the copy & paste operations needed to authenticate the device.
 
-1. In the IDE there is a link to the Agent URL at the top of the logging window. 
+1. In the IDE there is a link to the Agent URL at the top of the logging window.
 1. Click the agent URL to launch the helper webpage.
-1. Follow the instructions on each linked page to authenticate the device.  
+1. Follow the instructions on each linked page to authenticate the device.
 
 Once you log into Salesforce you will see the following logs from your imp device:
 
