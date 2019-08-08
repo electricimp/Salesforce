@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 
-// Copyright (c) 2015-18 Electric Imp
+// Copyright (c) 2015-19 Electric Imp
 
 // SPDX-License-Identifier: MIT
 
@@ -73,8 +73,8 @@ class Salesforce {
 
     function getUser(cb = null) {
         // Check that we have everything needed to make request
-        local errMsg = ""; 
-        if (!isLoggedIn()) errMsg += "No authentication information";            
+        local errMsg = "";
+        if (!isLoggedIn()) errMsg += "No authentication information";
         if (_userUrl == null) {
             errMsg += (errMsg.len() > 0) ? " and missing user id" : "Missing user id";
         }
@@ -101,7 +101,7 @@ class Salesforce {
 
     function login(creds, cb = null) {
         // Make sure we have the credentials needed
-        if (!("username" in creds) || !("password" in creds) || !("clientId" in creds) || 
+        if (!("username" in creds) || !("password" in creds) || !("clientId" in creds) ||
             !("clientSecret" in creds)) {
             // Cannot login without required credentials, return error
             local err = "[Salesforce] Login failed. Missing one or more credentials: username, password, clientId and clientSecret";
@@ -127,8 +127,8 @@ class Salesforce {
         return _processRequest(req, processAuthResp, cb);
     }
 
-    // Note callback parameter is only needed for use with library's 
-    // login method, public function should always return the table 
+    // Note callback parameter is only needed for use with library's
+    // login method, public function should always return the table
     function processAuthResp(resp, cb = null) {
         // Parse HTTP response body, returns table - err, data
         local parsed = _parseResponse(resp);
@@ -147,7 +147,7 @@ class Salesforce {
         }
 
         if (cb == null) return parsed;
-        cb(parsed.err, parsed.data); 
+        cb(parsed.err, parsed.data);
     }
 
     function isLoggedIn() {
@@ -197,13 +197,13 @@ class Salesforce {
     function _parseResponse(resp, cb = null) {
         local err  = null;
         local data = resp;
-        try { 
+        try {
             if (!(resp.statuscode >= 200 && resp.statuscode < 300)) {
                 err = "[Salesforce] Unexpected response from server, Status Code: " + resp.statuscode;
             } else {
-                data = http.jsondecode(resp.body); 
+                data = http.jsondecode(resp.body);
             }
-        } catch (e) { 
+        } catch (e) {
             err = "[Salesforce] Error processing response from server, Error: " + e;
         }
 
