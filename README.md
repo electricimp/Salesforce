@@ -18,8 +18,6 @@ Release 3.0.0 contains breaking changes to support authentication using the Elec
 - Removed methods:
     - *setLoginService()*
 
-If you are not using the OAuth2 library for authentication, you may continue to use [version 2.0.1](https://github.com/electricimp/Salesforce/releases/tag/v2.0.1-docs).
-
 **To include this library in your project, add** `#require "Salesforce.agent.lib.nut:3.0.0"` **at the top of your agent code.**
 
 ## Class Usage ##
