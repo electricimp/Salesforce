@@ -2,7 +2,7 @@
 
 The following examples will use a Salesforce Connected App for communication between the imp and Salesforce. These examples require you to have an [Electric Imp developer account](https://impcentral.electricimp.com), the Electric Imp mobile app, a [Salesforce developer account](https://developer.salesforce.com/signup?d=70130000000td6N) and the hardware listed below.
 
-Please note that these instructions are not actively updated. If any errors are found, please submit pull requests to help us maintain these examples. 
+Please note that these instructions are not actively updated, and are compatible with v2.0.1 of the library only. If any errors are found, please submit pull requests to help us maintain these examples. Please ignore any warnings in the ide about updating to the latest library version.
 
 ## Hardware ##
 

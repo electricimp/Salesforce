@@ -12,6 +12,8 @@ Salesforce stores the incoming data and opens a Case using IoT Explorer Orchestr
 
 All thresholds are defined later, at the step when you set up IoT Explorer Orchestration.
 
+**Note** This example has not been updated to use OAuth2 library to authenticate with Salesforce, and so it has not been updated to use the the latest version of the Salesforce library. Instead it is using v2.0.1 of the Salesforce library. Please ignore any warnings in the ide about updating to the latest library version.
+
 ## Step 1: What You Need
 
 ### General
