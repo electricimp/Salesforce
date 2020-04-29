@@ -84,6 +84,10 @@ class SmartFridge {
                 i2c = hardware.i2cQP;
                 server.log("imp004m detected, using i2cQP");
                 break;
+            case "imp006":
+                i2c = hardware.i2cLM;
+                server.log("imp006 detected, using i2cLM");
+                break;
             default:
                 server.log("Unsupported imp: " + impType.type);
         }
